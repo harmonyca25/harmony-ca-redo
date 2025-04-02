@@ -183,48 +183,37 @@ window.addEventListener('message', function(event) {
     window.addEventListener('scroll', headerScroll);
     
     // Mobile navigation
-    const navToggle = document.querySelector('.nav-toggle');
-    const navClose = document.querySelector('.nav-close');
-    const nav = document.querySelector('nav');
-    
+ // Mobile navigation
+const navToggle = document.querySelector('.nav-toggle');
+const navClose = document.querySelector('.nav-close');
+const nav = document.querySelector('nav');
+
+if (navToggle) {
     navToggle.addEventListener('click', function() {
         nav.classList.add('active');
+        if (navClose) navClose.style.display = 'block';
     });
-    
+}
+
+if (navClose) {
     navClose.addEventListener('click', function() {
         nav.classList.remove('active');
+        this.style.display = 'none';
     });
-    
-    // Close mobile nav when clicking a link
-    document.querySelectorAll('nav ul li a').forEach(link => {
-        link.addEventListener('click', function() {
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(event) {
+    if (nav && navToggle) {
+        const isClickInsideNav = nav.contains(event.target);
+        const isClickOnToggle = navToggle.contains(event.target);
+        
+        if (nav.classList.contains('active') && !isClickInsideNav && !isClickOnToggle) {
             nav.classList.remove('active');
-        });
-    });
-    
-    // Active link on scroll
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('nav ul li a');
-    
-    window.addEventListener('scroll', function() {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (window.scrollY >= sectionTop - 100) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
-    });
+            if (navClose) navClose.style.display = 'none';
+        }
+    }
+});
     
     // Privacy policy toggle
     const privacyLink = document.getElementById('privacy-link');
