@@ -183,36 +183,34 @@ window.addEventListener('message', function(event) {
     window.addEventListener('scroll', headerScroll);
     
     // Mobile navigation
- // Mobile navigation
 const navToggle = document.querySelector('.nav-toggle');
 const navClose = document.querySelector('.nav-close');
 const nav = document.querySelector('nav');
 
-if (navToggle) {
+if (navToggle && nav) {
     navToggle.addEventListener('click', function() {
         nav.classList.add('active');
-        if (navClose) navClose.style.display = 'block';
+        // No need to manually set display for nav-close
+        // It will become visible due to the CSS rule:
+        // nav.active .nav-close { display: block; }
     });
 }
 
-if (navClose) {
+if (navClose && nav) {
     navClose.addEventListener('click', function() {
         nav.classList.remove('active');
-        this.style.display = 'none';
+        // No need to manually hide it, as removing 'active' class
+        // will make it disappear due to CSS
     });
 }
 
-// Close menu when clicking outside
-document.addEventListener('click', function(event) {
-    if (nav && navToggle) {
-        const isClickInsideNav = nav.contains(event.target);
-        const isClickOnToggle = navToggle.contains(event.target);
-        
-        if (nav.classList.contains('active') && !isClickInsideNav && !isClickOnToggle) {
+// Close mobile nav when clicking a link
+document.querySelectorAll('nav ul li a').forEach(link => {
+    link.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
             nav.classList.remove('active');
-            if (navClose) navClose.style.display = 'none';
         }
-    }
+    });
 });
     
     // Privacy policy toggle
