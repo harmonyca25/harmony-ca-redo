@@ -230,6 +230,7 @@ header.scrolled {
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
+    border:0.5pt solid
 }
 
 .logo-text {
