@@ -1,0 +1,198 @@
+<!-- Contact Form Section -->
+<div class="section" id="contact-section">
+    <div class="section-header" onclick="toggleSection(this)">
+        <h2>Contact Us</h2>
+        <span class="toggle-icon">+</span>
+    </div>
+    <div class="section-content">
+        <div id="form-container">
+            <p>Please fill out the form below to get in touch with us about your insurance needs.</p>
+            <form id="contactForm">
+                <div style="margin-bottom: 15px;">
+                    <label for="name" style="display: block; margin-bottom: 5px;">Full Name*</label>
+                    <input type="text" id="name" name="name" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="email" style="display: block; margin-bottom: 5px;">Email*</label>
+                    <input type="email" id="email" name="email" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="phone" style="display: block; margin-bottom: 5px;">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="message" style="display: block; margin-bottom: 5px;">Message*</label>
+                    <textarea id="message" name="message" rows="4" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">I consent to being contacted about my insurance needs.</label>
+                </div>
+                <button type="submit" style="background-color: #2c3e50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+            </form>
+        </div>
+        
+        <!-- Thank you message (hidden by default) -->
+        <div id="thankYouMessage" style="display: none; text-align: center;">
+            <div class="success-animation">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" style="width: 80px; height: 80px; border-radius: 50%; display: block; stroke: #4BB543; stroke-width: 2; stroke-miterlimit: 10; box-shadow: inset 0px 0px 0px #4BB543; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; margin: 0 auto;">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" style="stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #4BB543; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;"></circle>
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" style="transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;"></path>
+                </svg>
+            </div>
+            <h3>Thank you, <span id="submitterName"></span>!</h3>
+            <p>Your message has been successfully submitted. We'll get back to you soon.</p>
+            <button onclick="resetForm()" style="background-color: #2c3e50; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px;">Submit Another Message</button>
+        </div>
+        
+        <!-- Toast notification for duplicates -->
+        <div id="toastNotification" style="visibility: hidden; min-width: 250px; background-color: #333; color: white; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 1; bottom: 30px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+            <div id="toastMessage"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<!-- Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script>
+// Animation styles
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes stroke {
+        100% { stroke-dashoffset: 0; }
+    }
+    @keyframes scale {
+        0%, 100% { transform: none; }
+        50% { transform: scale3d(1.1, 1.1, 1); }
+    }
+    @keyframes fill {
+        100% { box-shadow: inset 0px 0px 0px 30px #4BB543; }
+    }
+`;
+document.head.appendChild(style);
+
+// Initialize Firebase using the config stored in GitHub Secrets
+let firebaseApp;
+let db;
+
+// Function to initialize Firebase
+function initializeFirebase() {
+    try {
+        // Manually define the Firebase config for now
+        // In production, this would be replaced by the GitHub workflow
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7T1RFr4Fm1iPlDGDYniz8I4LoDY8iSfc",
+            authDomain: "rekhacanada-73839.firebaseapp.com",
+            projectId: "rekhacanada-73839",
+            storageBucket: "rekhacanada-73839.firebasestorage.app",
+            messagingSenderId: "665190770519",
+            appId: "1:665190770519:web:9f996932356b3d4679c012"
+        };
+        
+        // Initialize Firebase
+        firebaseApp = firebase.initializeApp(firebaseConfig);
+        db = firebaseApp.firestore();
+        console.log('Firebase initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Firebase:', error);
+        showToast('Unable to connect to our database. Please try again later.');
+    }
+}
+
+// Call initialize function when the page loads
+document.addEventListener('DOMContentLoaded', initializeFirebase);
+
+// Handle form submission
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    if (!db) {
+        showToast('Database connection not established. Please refresh and try again.');
+        return;
+    }
+    
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const message = document.getElementById('message').value;
+    const consent = document.getElementById('consent').checked;
+    
+    // Check for duplicate submission
+    try {
+        const querySnapshot = await db.collection('contactSubmissions')
+            .where('email', '==', email)
+            .get();
+        
+        if (!querySnapshot.empty) {
+            // Get the most recent submission
+            let lastSubmission = null;
+            let latestDate = new Date(0); // Start with oldest possible date
+            
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const submissionDate = data.timestamp.toDate();
+                if (submissionDate > latestDate) {
+                    latestDate = submissionDate;
+                    lastSubmission = data;
+                }
+            });
+            
+            // Format the date for display
+            const formattedDate = latestDate.toLocaleDateString('en-US', {
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            showToast(`You've already submitted a message on ${formattedDate}. We'll get back to you soon.`);
+            return;
+        }
+        
+        // If no duplicate, proceed with submission
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        
+        await db.collection('contactSubmissions').add({
+            name,
+            email,
+            phone,
+            message,
+            consent,
+            timestamp
+        });
+        
+        // Show thank you message with the submitter's name
+        document.getElementById('submitterName').textContent = name;
+        document.getElementById('form-container').style.display = 'none';
+        document.getElementById('thankYouMessage').style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showToast('There was an error submitting your message. Please try again.');
+    }
+});
+
+// Function to reset the form for another submission
+function resetForm() {
+    document.getElementById('contactForm').reset();
+    document.getElementById('form-container').style.display = 'block';
+    document.getElementById('thankYouMessage').style.display = 'none';
+}
+
+// Function to show toast notification
+function showToast(message) {
+    const toast = document.getElementById('toastNotification');
+    document.getElementById('toastMessage').textContent = message;
+    
+    toast.style.visibility = 'visible';
+    
+    // Hide toast after 5 seconds
+    setTimeout(() => {
+        toast.style.visibility = 'hidden';
+    }, 5000);
+}
+</script>
