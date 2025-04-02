@@ -953,6 +953,7 @@ footer {
     }
 }
 
+/* Change in the mobile view section */
 @media (max-width: 768px) {
     .nav-toggle {
         display: block;
@@ -989,7 +990,7 @@ footer {
     }
     
     .nav-close {
-        display: block !important;
+        display: none; /* Default state is hidden */
         position: absolute;
         top: 1rem;
         right: 1rem;
@@ -998,34 +999,11 @@ footer {
         cursor: pointer;
     }
     
-    .hero {
-        height: auto;
-        min-height: 100vh;
-        text-align: center;
-        padding: 150px 0 80px;
-    }
-    
-    .hero h1 {
-        font-size: 2.3rem;
-    }
-    
-    .hero-content {
-        text-align: center;
-    }
-    
-    .hero-btn-group {
-        justify-content: center;
-    }
-    
-    section {
-        padding: 4rem 0;
-    }
-    
-    .modal-content {
-        width: 95%;
-        height: 95vh;
+    nav.active .nav-close {
+        display: block; /* Only show when navigation is active */
     }
 }
+
 
 @media (max-width: 576px) {
     h1 {
