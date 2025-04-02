@@ -1,0 +1,23 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Create Firebase config
+        run: |
+          echo 'const firebaseConfig = ${{ secrets.FIREBASE_CONFIG }};
+          // Initialize Firebase with compat version
+          const app = firebase.initializeApp(firebaseConfig);' > ./src/firebaseConfig.js
+      
+      # Add your build steps here
+      
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: build
