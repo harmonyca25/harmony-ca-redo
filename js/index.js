@@ -44,7 +44,10 @@ window.addEventListener('load', function() {
     }
 });
 
-// Modal functionality
+// Modal functionality is already defined inline in the HTML for immediate availability
+// These functions are here as a reference and for consistency
+
+/* 
 function openContactModal() {
     const modal = document.getElementById('contactModal');
     modal.classList.add('show');
@@ -67,6 +70,7 @@ function closeContactModal() {
     // Accessibility improvements
     modal.setAttribute('aria-hidden', 'true');
 }
+*/
 
 // Close the modal when clicking outside of it
 window.onclick = function(event) {
