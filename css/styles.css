@@ -222,7 +222,7 @@ header.scrolled {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/logo-new.png');
+    background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/hpca-logo.webp');
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
@@ -316,7 +316,7 @@ nav ul li a:hover:after, nav ul li a.active:after {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/hero-ontario-cityscapeview.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/ontario-cityscape.webp');
     background-size: cover;
     background-position: center;
     color: var(--white);
@@ -582,7 +582,7 @@ nav ul li a:hover:after, nav ul li a.active:after {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/hero-ontario-cityscapeview.png') center/cover no-repeat;
+    background: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/ontario-cityscape.webp') center/cover no-repeat;
     opacity: 0.1;
     pointer-events: none;
 }
