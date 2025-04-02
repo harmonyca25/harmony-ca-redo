@@ -1,4 +1,24 @@
-/* Global Styles */
+.container:has(.hero-content) {
+    max-width: 1400px;
+}
+
+.hero-btn-group:has(.btn-white) {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+section:has(+ #about) {
+    margin-bottom: 0;
+}
+
+.testimonial-card:has(p:contains("Rekha")) {
+    border-left: 3px solid var(--accent-color);
+}
+
+nav ul li:has(> a:hover) {
+    transform: translateY(-2px);
+}/* Global Styles */
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
@@ -199,44 +219,63 @@ header.scrolled {
 }
 
 .logo-img {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/logo-new.png');
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
 }
+
+.logo-text {
+    display: flex;
+    align-items: center;
+    font-size: 1.7rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    /* Advanced font features */
+    font-feature-settings: "kern", "liga", "calt";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.logo-harmony {
+    color: #34495e;
+    font-weight: 600;
+    position: relative;
+    /* Subtle text effect */
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.logo-plan {
+    color: #e67e22;
+    font-weight: 600;
+    /* Subtle transition */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect with :has() */
+.logo:has(:hover) .logo-plan {
+    color: #f39c12;
+    transform: translateY(-1px);
+}
+
+/* Add slight spacing and adjust position */
 .logo-harmony::after {
     content: "";
     display: inline-block;
     width: 0.08em;
 }
-.logo-harmony {
-    color: #34495e;  /* Dark blue-gray shade */
-    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-}
 
-.logo-plan {
-    color: #e67e22;  /* Orange shade */
-}
-
-.logo-text {
-    display: flex;
-    align-items: center;
-}
-
-.logo span {
-    color: var(--accent-color);
-}
-
-.nav-toggle {
+.nav-toggle, .nav-close {
     display: none;
     background: none;
     border: none;
     cursor: pointer;
     font-size: 1.5rem;
     color: var(--primary-color);
+    position: absolute;
 }
 
 nav ul {
@@ -277,7 +316,7 @@ nav ul li a:hover:after, nav ul li a.active:after {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/hero-ontario-cityscapeview.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/hero-ontario-cityscapeview.png');
     background-size: cover;
     background-position: center;
     color: var(--white);
@@ -286,6 +325,17 @@ nav ul li a:hover:after, nav ul li a.active:after {
     padding-top: 0;
     padding-bottom: 0;
     position: relative;
+}
+
+.hero:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    pointer-events: none;
 }
 
 .hero-content {
@@ -298,13 +348,30 @@ nav ul li a:hover:after, nav ul li a.active:after {
     font-size: 3.5rem;
     line-height: 1.2;
     margin-bottom: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    /* Primary method: text-stroke for supported browsers */
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);
+    /* Fallback: text-shadow method for all browsers */
+    text-shadow:
+       -1px -1px 0 rgba(0,0,0,0.5),  
+        1px -1px 0 rgba(0,0,0,0.5),
+       -1px 1px 0 rgba(0,0,0,0.5),
+        1px 1px 0 rgba(0,0,0,0.5),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
 }
 
 .hero p {
     font-size: 1.25rem;
     margin-bottom: 2rem;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    /* Multiple text-shadow approach for better readability */
+    text-shadow:
+       -1px -1px 0 rgba(0,0,0,0.5),  
+        1px -1px 0 rgba(0,0,0,0.5),
+       -1px 1px 0 rgba(0,0,0,0.5),
+        1px 1px 0 rgba(0,0,0,0.5),
+        0 1px 3px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
 }
 
 .hero-btn-group {
@@ -863,9 +930,6 @@ footer {
     transform: translateX(-50%);
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
-    svg.svg-inline--fa.fa-xmark {
-    display: none;
-}
 
 /* Responsive Styles */
 @media (max-width: 992px) {
@@ -997,5 +1061,4 @@ footer {
     .logo-text {
         font-size: 1.3rem;
     }
-
 }
