@@ -28,10 +28,6 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -98,6 +94,36 @@
     
     <!-- CSS styles will be linked here -->
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- JavaScript with defer attribute -->
+    <script src="js/index.js" defer></script>
+    
+    <!-- Inline modal functions to ensure they're available immediately -->
+    <script>
+        // Modal functionality
+        function openContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            
+            // Accessibility improvements
+            modal.setAttribute('aria-hidden', 'false');
+            
+            // Set focus to the modal close button
+            setTimeout(() => {
+                document.querySelector('.modal-close').focus();
+            }, 100);
+        }
+        
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Allow scrolling again
+            
+            // Accessibility improvements
+            modal.setAttribute('aria-hidden', 'true');
+        }
+    </script>
 </head>
 <body>
     <!-- Preloader -->
@@ -480,7 +506,7 @@
     </footer>
 
     <!-- Modal for Contact Form -->
-    <div id="contactModal" class="modal" role="dialog" aria-labelledby="contactModalTitle" aria-modal="true">
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="contactModalTitle" aria-modal="true" aria-hidden="true">
         <div class="modal-content">
             <span class="modal-close" onclick="closeContactModal()" aria-label="Close contact form">&times;</span>
             <div class="modal-iframe-container">
@@ -500,6 +526,6 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="js/index.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
