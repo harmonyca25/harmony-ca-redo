@@ -199,8 +199,8 @@ header.scrolled {
 }
 
 .logo-img {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/logo-new.png');
     background-size: cover;
