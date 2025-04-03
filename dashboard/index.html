@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent Insurance Query Dashboard - Query Management</title>
+    <style>
+      /* Root variables */
+      :root {
+        --primary-color: #0056b3;
+        --secondary-color: #4a90e2;
+        --accent-color: #ff6b6b;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+        --success-color: #28a745;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+      }
+
+      /* Reset & global settings */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        width: 95%;
+        max-width: 1400px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      header {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 20px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .logo span {
+        color: var(--accent-color);
+      }
+      .user-info {
+        font-size: 16px;
+      }
+
+      /* Dashboard Title & Stats */
+      .dashboard-title {
+        margin: 30px 0;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 10px;
+      }
+      .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+      .stat-card {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .stat-card h3 {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 10px;
+      }
+      .stat-card .stat-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+      .stat-card.new {
+        border-top: 4px solid var(--accent-color);
+      }
+      .stat-card.today {
+        border-top: 4px solid var(--success-color);
+      }
+      .stat-card.week {
+        border-top: 4px solid var(--warning-color);
+      }
+      .stat-card.total {
+        border-top: 4px solid var(--secondary-color);
+      }
+
+      /* Filters & Sorting */
+      .filter-controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 10px;
+      }
+      .search-box {
+        display: flex;
+        gap: 10px;
+      }
+      input[type="text"],
+      select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        background-color: var(--primary-color);
+        color: #fff;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: var(--secondary-color);
+      }
+      button.reset {
+        background-color: #6c757d;
+      }
+      button.reset:hover {
+        background-color: #5a6268;
+      }
+
+      /* Queries Grid & Cards */
+      .queries-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .query-card {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+      }
+      .query-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      }
+      .query-header {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .query-content {
+        padding: 15px;
+      }
+      .query-timestamp {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 10px;
+      }
+      .query-contact {
+        margin-bottom: 10px;
+      }
+      .contact-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--dark-color);
+      }
+      .contact-info {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin: 10px 0;
+        font-size: 14px;
+      }
+      .contact-email,
+      .contact-phone {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .query-message {
+        background-color: #f8f9fa;
+        padding: 12px;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-size: 14px;
+        max-height: 120px;
+        overflow-y: auto;
+      }
+      .query-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        gap: 10px;
+      }
+      .btn-sm {
+        padding: 6px 10px;
+        font-size: 12px;
+        flex: 1;
+      }
+      .btn-contact {
+        background-color: var(--warning-color);
+        color: #333;
+      }
+      .btn-contact:hover {
+        background-color: #e0a800;
+      }
+      .btn-complete {
+        background-color: var(--success-color);
+      }
+      .btn-complete:hover {
+        background-color: #218838;
+      }
+      .btn-delete {
+        background-color: var(--danger-color);
+      }
+      .btn-delete:hover {
+        background-color: #c82333;
+      }
+      .status-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        border-bottom-left-radius: 8px;
+      }
+      .status-new {
+        background-color: var(--accent-color);
+      }
+      .status-contacted {
+        background-color: var(--warning-color);
+        color: #333;
+      }
+      .status-completed {
+        background-color: var(--success-color);
+      }
+      .loading,
+      .no-results {
+        text-align: center;
+        padding: 50px;
+        font-size: 18px;
+        color: #666;
+      }
+      .no-results {
+        background-color: #fff;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+
+      /* Toast Notification */
+      .toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        padding: 16px;
+        position: fixed;
+        z-index: 100;
+        bottom: 30px;
+        right: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      .toast.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header-container {
+          flex-direction: column;
+          text-align: center;
+        }
+        .filter-controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .search-box {
+          flex-direction: column;
+        }
+        .queries-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container header-container">
+        <div class="logo">
+          Harmonyplan <span>Insurance</span> Dashboard
+        </div>
+        <div class="user-info">Welcome, Agent Rekha</div>
+      </div>
+    </header>
+
+    <div class="container">
+      <h1 class="dashboard-title">Insurance Query Management Dashboard</h1>
+      <div class="dashboard-stats">
+        <div class="stat-card new">
+          <h3>New Queries</h3>
+          <div class="stat-value" id="new-count">0</div>
+        </div>
+        <div class="stat-card today">
+          <h3>Today's Queries</h3>
+          <div class="stat-value" id="today-count">0</div>
+        </div>
+        <div class="stat-card week">
+          <h3>This Week</h3>
+          <div class="stat-value" id="week-count">0</div>
+        </div>
+        <div class="stat-card total">
+          <h3>Total Queries</h3>
+          <div class="stat-value" id="total-count">0</div>
+        </div>
+      </div>
+
+      <div class="filter-controls">
+        <div class="search-box">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search by name, email or message..."
+          />
+          <select id="status-filter">
+            <option value="all">All Statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="completed">Completed</option>
+          </select>
+          <select id="date-filter">
+            <option value="all">All Time</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+          </select>
+          <button id="filter-btn">Filter</button>
+          <button id="reset-btn" class="reset">Reset</button>
+        </div>
+        <div class="sort-options">
+          <select id="sort-by">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="loading" id="loading-indicator">Loading queries...</div>
+      <div class="queries-grid" id="queries-container">
+        <!-- Query cards will be generated here -->
+      </div>
+      <div class="no-results" id="no-results" style="display: none;">
+        No queries found matching your criteria.
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+      // Firebase configuration and initialization
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7T1RFr4Fm1iPlDGDYniz8I4LoDY8iSfc",
+        authDomain: "rekhacanada-73839.firebaseapp.com",
+        projectId: "rekhacanada-73839",
+        storageBucket: "rekhacanada-73839.firebasestorage.app",
+        messagingSenderId: "665190770519",
+        appId: "1:665190770519:web:9f996932356b3d4679c012",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      // DOM Elements
+      const queriesContainer = document.getElementById("queries-container");
+      const loadingIndicator = document.getElementById("loading-indicator");
+      const noResultsMessage = document.getElementById("no-results");
+      const searchInput = document.getElementById("search-input");
+      const statusFilter = document.getElementById("status-filter");
+      const dateFilter = document.getElementById("date-filter");
+      const sortBy = document.getElementById("sort-by");
+      const filterBtn = document.getElementById("filter-btn");
+      const resetBtn = document.getElementById("reset-btn");
+      const toast = document.getElementById("toast");
+
+      // Stats Elements
+      const newCount = document.getElementById("new-count");
+      const todayCount = document.getElementById("today-count");
+      const weekCount = document.getElementById("week-count");
+      const totalCount = document.getElementById("total-count");
+
+      // Local state
+      let allQueries = [];
+      let filteredQueries = [];
+
+      // Toast Notification
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // Date formatting and checks
+      function formatDate(timestamp) {
+        if (!timestamp) return "Date not available";
+        const date = timestamp.toDate();
+        return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function isToday(date) {
+        const today = new Date();
+        return (
+          date.getDate() === today.getDate() &&
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
+        );
+      }
+
+      function isThisWeek(date) {
+        const now = new Date();
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+        return date >= startOfWeek && date <= endOfWeek;
+      }
+
+      function isThisMonth(date) {
+        const now = new Date();
+        return (
+          date.getMonth() === now.getMonth() &&
+          date.getFullYear() === now.getFullYear()
+        );
+      }
+
+      // Create Query Card
+      function createQueryCard(query) {
+        const card = document.createElement("div");
+        card.className = "query-card";
+        card.id = "query-" + query.id;
+
+        let statusText = "New";
+        let badgeClass = "status-new";
+        if (query.status === "contacted") {
+          statusText = "Contacted";
+          badgeClass = "status-contacted";
+        } else if (query.status === "completed") {
+          statusText = "Completed";
+          badgeClass = "status-completed";
+        }
+
+        card.innerHTML = `
+          <div class="status-badge ${badgeClass}">${statusText}</div>
+          <div class="query-header">
+            <h3>${query.insurance || "General Inquiry"}</h3>
+          </div>
+          <div class="query-content">
+            <div class="query-timestamp">${formatDate(query.timestamp)}</div>
+            <div class="query-contact">
+              <div class="contact-name">${query.name}</div>
+              <div class="contact-info">
+                <div class="contact-email">
+                  <i class="fas fa-envelope"></i>
+                  <a href="mailto:${query.email}">${query.email}</a>
+                </div>
+                ${
+                  query.phone
+                    ? `<div class="contact-phone">
+                      <i class="fas fa-phone"></i>
+                      <a href="tel:${query.phone}">${query.phone}</a>
+                    </div>`
+                    : ""
+                }
+              </div>
+            </div>
+            <div class="query-message">${query.message}</div>
+            <div class="query-actions">
+              ${
+                query.status !== "contacted"
+                  ? `<button class="btn-sm btn-contact" onclick="markAsContacted('${query.id}')">
+                  Mark Contacted
+                </button>`
+                  : ""
+              }
+              ${
+                query.status !== "completed"
+                  ? `<button class="btn-sm btn-complete" onclick="markAsCompleted('${query.id}')">
+                  Mark Completed
+                </button>`
+                  : ""
+              }
+              <button class="btn-sm btn-delete" onclick="deleteQuery('${query.id}')">
+                Delete
+              </button>
+            </div>
+          </div>
+        `;
+        return card;
+      }
+
+      // Display Queries
+      function displayQueries(queries) {
+        queriesContainer.innerHTML = "";
+        if (queries.length === 0) {
+          loadingIndicator.style.display = "none";
+          noResultsMessage.style.display = "block";
+          return;
+        }
+        noResultsMessage.style.display = "none";
+        queries.forEach((query) => {
+          const card = createQueryCard(query);
+          queriesContainer.appendChild(card);
+        });
+        loadingIndicator.style.display = "none";
+      }
+
+      // Update Stats
+      function updateStats() {
+        const newQueries = allQueries.filter(
+          (q) => !q.status || q.status === "new"
+        );
+        newCount.textContent = newQueries.length;
+
+        const todayQueries = allQueries.filter(
+          (q) => q.timestamp && isToday(q.timestamp.toDate())
+        );
+        todayCount.textContent = todayQueries.length;
+
+        const weekQueries = allQueries.filter(
+          (q) => q.timestamp && isThisWeek(q.timestamp.toDate())
+        );
+        weekCount.textContent = weekQueries.length;
+
+        totalCount.textContent = allQueries.length;
+      }
+
+      // Sort Queries
+      function sortQueries(criteria) {
+        switch (criteria) {
+          case "newest":
+            filteredQueries.sort((a, b) => {
+              if (!a.timestamp) return 1;
+              if (!b.timestamp) return -1;
+              return b.timestamp.seconds - a.timestamp.seconds;
+            });
+            break;
+          case "oldest":
+            filteredQueries.sort((a, b) => {
+              if (!a.timestamp) return -1;
+              if (!b.timestamp) return 1;
+              return a.timestamp.seconds - b.timestamp.seconds;
+            });
+            break;
+          case "name":
+            filteredQueries.sort((a, b) => {
+              if (!a.name) return 1;
+              if (!b.name) return -1;
+              return a.name.localeCompare(b.name);
+            });
+            break;
+        }
+        displayQueries(filteredQueries);
+      }
+
+      // Filter Queries
+      function filterQueries() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusVal = statusFilter.value;
+        const dateVal = dateFilter.value;
+
+        filteredQueries = allQueries.filter((query) => {
+          const matchesSearch =
+            !searchTerm ||
+            (query.name && query.name.toLowerCase().includes(searchTerm)) ||
+            (query.email && query.email.toLowerCase().includes(searchTerm)) ||
+            (query.message &&
+              query.message.toLowerCase().includes(searchTerm)) ||
+            (query.phone && query.phone.toLowerCase().includes(searchTerm));
+
+          const matchesStatus =
+            statusVal === "all" ||
+            (statusVal === "new" &&
+              (!query.status || query.status === "new")) ||
+            query.status === statusVal;
+
+          let matchesDate = true;
+          if (dateVal !== "all" && query.timestamp) {
+            const date = query.timestamp.toDate();
+            if (dateVal === "today") {
+              matchesDate = isToday(date);
+            } else if (dateVal === "week") {
+              matchesDate = isThisWeek(date);
+            } else if (dateVal === "month") {
+              matchesDate = isThisMonth(date);
+            }
+          }
+          return matchesSearch && matchesStatus && matchesDate;
+        });
+        sortQueries(sortBy.value);
+      }
+
+      // Fetch Queries from Firestore
+      async function fetchQueries() {
+        loadingIndicator.style.display = "block";
+        queriesContainer.innerHTML = "";
+        try {
+          const snapshot = await db.collection("contactSubmissions").get();
+          allQueries = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          filteredQueries = [...allQueries];
+          updateStats();
+          sortQueries("newest");
+        } catch (error) {
+          console.error("Error fetching queries:", error);
+          showToast("Error loading queries. Please try again.");
+          loadingIndicator.style.display = "none";
+        }
+      }
+
+      // Mark as Contacted
+      window.markAsContacted = async function (queryId) {
+        try {
+          await db.collection("contactSubmissions").doc(queryId).update({
+            status: "contacted",
+            contactedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+          const index = allQueries.findIndex((q) => q.id === queryId);
+          if (index !== -1) {
+            allQueries[index].status = "contacted";
+            allQueries[index].contactedAt = new Date();
+          }
+          const card = document.getElementById("query-" + queryId);
+          if (card) {
+            const badge = card.querySelector(".status-badge");
+            badge.textContent = "Contacted";
+            badge.className = "status-badge status-contacted";
+            card.replaceWith(createQueryCard(allQueries.find((q) => q.id === queryId)));
+          }
+          showToast("Query marked as contacted");
+          updateStats();
+        } catch (error) {
+          console.error("Error updating query:", error);
+          showToast("Failed to update query status");
+        }
+      };
+
+      // Mark as Completed
+      window.markAsCompleted = async function (queryId) {
+        try {
+          await db.collection("contactSubmissions").doc(queryId).update({
+            status: "completed",
+            completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+          const index = allQueries.findIndex((q) => q.id === queryId);
+          if (index !== -1) {
+            allQueries[index].status = "completed";
+            allQueries[index].completedAt = new Date();
+          }
+          const card = document.getElementById("query-" + queryId);
+          if (card) {
+            const badge = card.querySelector(".status-badge");
+            badge.textContent = "Completed";
+            badge.className = "status-badge status-completed";
+            card.replaceWith(createQueryCard(allQueries.find((q) => q.id === queryId)));
+          }
+          showToast("Query marked as completed");
+          updateStats();
+        } catch (error) {
+          console.error("Error updating query:", error);
+          showToast("Failed to update query status");
+        }
+      };
+
+      // Delete Query
+      window.deleteQuery = async function (queryId) {
+        if (!confirm("Are you sure you want to delete this query? This action cannot be undone.")) {
+          return;
+        }
+        try {
+          await db.collection("contactSubmissions").doc(queryId).delete();
+          allQueries = allQueries.filter((q) => q.id !== queryId);
+          filteredQueries = filteredQueries.filter((q) => q.id !== queryId);
+          const card = document.getElementById("query-" + queryId);
+          if (card) card.remove();
+          if (filteredQueries.length === 0) noResultsMessage.style.display = "block";
+          showToast("Query deleted successfully");
+          updateStats();
+        } catch (error) {
+          console.error("Error deleting query:", error);
+          showToast("Failed to delete query");
+        }
+      };
+
+      // Event Listeners and Real-Time Updates
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchQueries();
+
+        filterBtn.addEventListener("click", filterQueries);
+        resetBtn.addEventListener("click", () => {
+          searchInput.value = "";
+          statusFilter.value = "all";
+          dateFilter.value = "all";
+          sortBy.value = "newest";
+          filteredQueries = [...allQueries];
+          sortQueries("newest");
+        });
+        sortBy.addEventListener("change", () => {
+          sortQueries(sortBy.value);
+        });
+
+        // Real-time updates for changes in Firestore
+        db.collection("contactSubmissions").onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+              const newQuery = { id: change.doc.id, ...change.doc.data() };
+              if (!allQueries.some((q) => q.id === newQuery.id)) {
+                allQueries.unshift(newQuery);
+                updateStats();
+
+                let showNew = true;
+                const term = searchInput.value.toLowerCase();
+                if (term) {
+                  showNew =
+                    (newQuery.name &&
+                      newQuery.name.toLowerCase().includes(term)) ||
+                    (newQuery.email &&
+                      newQuery.email.toLowerCase().includes(term)) ||
+                    (newQuery.message &&
+                      newQuery.message.toLowerCase().includes(term)) ||
+                    (newQuery.phone &&
+                      newQuery.phone.toLowerCase().includes(term));
+                }
+                if (showNew && statusFilter.value !== "all") {
+                  showNew =
+                    (statusFilter.value === "new" &&
+                      (!newQuery.status || newQuery.status === "new")) ||
+                    newQuery.status === statusFilter.value;
+                }
+                if (showNew && dateFilter.value !== "all" && newQuery.timestamp) {
+                  const d = newQuery.timestamp.toDate();
+                  if (dateFilter.value === "today") {
+                    showNew = isToday(d);
+                  } else if (dateFilter.value === "week") {
+                    showNew = isThisWeek(d);
+                  } else if (dateFilter.value === "month") {
+                    showNew = isThisMonth(d);
+                  }
+                }
+                if (showNew) {
+                  filteredQueries.unshift(newQuery);
+                  sortQueries(sortBy.value);
+                }
+              }
+            }
+            if (change.type === "modified") {
+              const modifiedQuery = { id: change.doc.id, ...change.doc.data() };
+              const idx = allQueries.findIndex((q) => q.id === modifiedQuery.id);
+              if (idx !== -1) {
+                allQueries[idx] = modifiedQuery;
+                updateStats();
+                const card = document.getElementById("query-" + modifiedQuery.id);
+                if (card) card.replaceWith(createQueryCard(modifiedQuery));
+              }
+            }
+            if (change.type === "removed") {
+              allQueries = allQueries.filter((q) => q.id !== change.doc.id);
+              filteredQueries = filteredQueries.filter((q) => q.id !== change.doc.id);
+              const card = document.getElementById("query-" + change.doc.id);
+              if (card) card.remove();
+              updateStats();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
