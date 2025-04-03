@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekha Harmony Plan CA</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin-inline: auto;
+    }
+
+    .info-btn {
+      display: block;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.6s ease-out forwards;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .card-content {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .card-content h3 {
+      text-transform: capitalize;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .card-content h3::after {
+      content: '\2139';
+      font-size: 0.9rem;
+      color: #999;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    .card-content p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.5rem;
+    }
+
+    .card-details,
+    .cta-button {
+      display: none;
+    }
+
+    .card.active .card-details,
+    .card.active .cta-button {
+      display: block;
+    }
+
+    .cta-button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #333;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border-radius: 6px;
+      display: none;
+      z-index: 1001;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 700px;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .form-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .form-modal-content {
+      background: white;
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .form-modal-content input,
+    .form-modal-content textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-modal-content label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .form-modal-content button[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .close-form {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Prepared for selecting theme and mood of the page for client name: <strong>Rekha Kumar</strong> (insurance agent in Ontario, Canada), seeking client's approval prior to finalizing the single page site with database connection at Firebase Firestore for customer data captured online by the insurance agent for follow-up on leads generation and expanding customer base in Ontario.
+  </h1>
+
+  <div class="info-btn">
+    <button id="openModal">What does "Ghibli Style" mean?</button>
+  </div>
+
+  <div class="grid" id="imageGrid"></div>
+
+  <footer>
+    Prepared by Vipul Anand [Web Developer], India, Haryana, Kurukshetra
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Ghibli Style Modal -->
+  <div id="ghibliModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2>What is "Ghibli Style"?</h2>
+      <p><strong>Ghibli style</strong> refers to the distinctive visual and emotional aesthetic used by <strong>Studio Ghibli</strong>, a world-renowned Japanese animation studio co-founded by <em>Hayao Miyazaki</em> in 1985. The studio is known for beloved films like:</p>
+      <ul>
+        <li>Spirited Away</li>
+        <li>My Neighbor Totoro</li>
+        <li>Princess Mononoke</li>
+        <li>Howl's Moving Castle</li>
+      </ul>
+      <p><strong>Key traits include:</strong></p>
+      <ul>
+        <li>Soft, hand-painted look with warm tones</li>
+        <li>Detailed natural environments (forests, skies, homes)</li>
+        <li>A blend of whimsy and real life</li>
+        <li>Emotional depth and human-centered storytelling</li>
+      </ul>
+      <p>This style evokes calm, warmth, and authenticity, making it ideal for wellness, family, nature, and emotionally rich storytelling websites.</p>
+    </div>
+  </div>
+
+  <!-- Interest Form Modal -->
+  <div class="form-modal" id="interestForm">
+    <div class="form-modal-content">
+      <span class="close-form" onclick="document.getElementById('interestForm').style.display='none'">&times;</span>
+      <form id="submissionForm" autocomplete="on">
+        <label for="username">Name*</label>
+        <input type="text" id="username" name="username" required autocomplete="name" />
+
+        <label for="email">Email*</label>
+        <input type="email" id="email" name="email" required autocomplete="email" />
+
+        <label for="phone">Phone Number*</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" readonly></textarea>
+
+        <label>
+          <input type="checkbox" id="consent" required /> I consent to be contacted by the insurance agent as per Ontario privacy laws.
+        </label>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const imageData = {
+      'critical': 'A plan that covers unforeseen critical illnesses with financial protection for treatment and recovery.',
+      'disabilty': 'Provides income replacement and support if the client is unable to work due to injury or illness.',
+      'happycouple': 'Life insurance tailored for couples planning their financial future and family security.',
+      'parent': 'Insurance designed for aging parents to manage healthcare costs and provide peace of mind.',
+      'travelinsurance': 'Covers medical emergencies and travel disruptions while clients explore the world.',
+      'visitor-insurance': 'Protects visiting family or friends with temporary health insurance during their stay.'
+    };
+
+    const grid = document.getElementById('imageGrid');
+    const toast = document.getElementById('toast');
+    const formModal = document.getElementById('interestForm');
+    const form = document.getElementById('submissionForm');
+    const messageField = document.getElementById('message');
+    let currentPlanKey = '';
+
+    const storageKey = 'submittedInterests';
+    let savedSubmissions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
+    // Set up Ghibli modal
+    const modal = document.getElementById("ghibliModal");
+    const openModalBtn = document.getElementById("openModal");
+    const closeModalBtn = document.getElementById("closeModal");
+
+    openModalBtn.onclick = () => {
+      modal.style.display = "block";
+    };
+
+    closeModalBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // Create cards
+    Object.entries(imageData).forEach(([name, description], index) => {
+      const imageUrl = `https://raw.githubusercontent.com/anandvip/rekha-harmony-plan-ca/main/assets/${name}.jpg`;
+      const img = new Image();
+      img.src = imageUrl;
+      img.alt = name;
+
+      img.onload = () => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.animationDelay = `${index * 0.1}s`;
+
+        const content = document.createElement('div');
+        content.className = 'card-content';
+        const title = document.createElement('h3');
+        title.textContent = name.replace(/[-_]/g, ' ');
+
+        const details = document.createElement('p');
+        details.className = 'card-details';
+        details.textContent = description;
+
+        const ctaButton = document.createElement('button');
+        ctaButton.className = 'cta-button';
+        ctaButton.textContent = 'Yes, I am interested in this';
+        ctaButton.onclick = (e) => {
+          e.stopPropagation();
+          currentPlanKey = name;
+          messageField.value = `${title.textContent}\n${description}`;
+          formModal.style.display = 'block';
+
+          const userData = JSON.parse(localStorage.getItem('userInfo') || '{}');
+          if (userData) {
+            form.username.value = userData.name || '';
+            form.email.value = userData.email || '';
+            form.phone.value = userData.phone || '';
+          }
+        };
+
+        content.appendChild(title);
+        content.appendChild(details);
+        content.appendChild(ctaButton);
+        card.appendChild(img);
+        card.appendChild(content);
+        grid.appendChild(card);
+
+        card.addEventListener('click', () => {
+          card.classList.toggle('active');
+        });
+      };
+
+      img.onerror = () => {
+        console.warn(`Image failed to load: ${imageUrl}`);
+        
+        // Create card even when image fails to load
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.animationDelay = `${index * 0.1}s`;
+        
+        // Create a placeholder image
+        const placeholderImg = document.createElement('img');
+        placeholderImg.alt = name.replace(/[-_]/g, ' ');
+        placeholderImg.src = `/api/placeholder/400/300`;
+        
+        const content = document.createElement('div');
+        content.className = 'card-content';
+        
+        const title = document.createElement('h3');
+        title.textContent = name.replace(/[-_]/g, ' ');
+        
+        const details = document.createElement('p');
+        details.className = 'card-details';
+        details.textContent = description;
+        
+        const ctaButton = document.createElement('button');
+        ctaButton.className = 'cta-button';
+        ctaButton.textContent = 'Yes, I am interested in this';
+        
+        ctaButton.onclick = (e) => {
+          e.stopPropagation();
+          currentPlanKey = name;
+          messageField.value = `${title.textContent}\n${description}`;
+          formModal.style.display = 'block';
+          
+          const userData = JSON.parse(localStorage.getItem('userInfo') || '{}');
+          if (userData) {
+            form.username.value = userData.name || '';
+            form.email.value = userData.email || '';
+            form.phone.value = userData.phone || '';
+          }
+        };
+        
+        content.appendChild(title);
+        content.appendChild(details);
+        content.appendChild(ctaButton);
+        card.appendChild(placeholderImg);
+        card.appendChild(content);
+        grid.appendChild(card);
+        
+        card.addEventListener('click', () => {
+          card.classList.toggle('active');
+        });
+      };
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = form.username.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const consent = form.consent.checked;
+
+      if (!name || !email || !phone || !consent) return;
+
+      const submissionKey = `${email}_${currentPlanKey}`;
+
+      savedSubmissions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
+      if (savedSubmissions[submissionKey]) {
+        showToast('You have already submitted for this plan.');
+      } else {
+        savedSubmissions[submissionKey] = true;
+        localStorage.setItem(storageKey, JSON.stringify(savedSubmissions));
+        localStorage.setItem('userInfo', JSON.stringify({ name, email, phone }));
+        showToast(`Thank you, ${name}. You will hear from us within 72 hours.`);
+      }
+
+      formModal.style.display = 'none';
+      form.reset();
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
