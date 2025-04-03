@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Agent Website Compliance Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .section-header:hover {
+            background-color: #34495e;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.3em;
+        }
+
+        .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .section-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background-color: #f9f9f9;
+        }
+
+        .section-content.active {
+            max-height: 5000px;
+            padding: 20px;
+            transition: max-height 1s ease-in;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .intro {
+            background-color: #f0f7fb;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .small {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .section-header h2 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+    <script>
+        // Define the toggleSection function
+        function toggleSection(element) {
+            const content = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            
+            // Toggle the active class on the content
+            content.classList.toggle('active');
+            
+            // Change the icon based on whether the section is open or closed
+            if (content.classList.contains('active')) {
+                icon.textContent = '-';
+            } else {
+                icon.textContent = '+';
+            }
+        }
+        
+        // Function to open the first section by default when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstSection = document.querySelector('.section-header');
+            if (firstSection) {
+                toggleSection(firstSection);
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Website Compliance Checklist for Ontario Insurance Agents</h1>
+    </header>
+
+    <div class="intro">
+        <p>Thanks for your business! I've researched & gathered a clear list of the mandatory and recommended requirements for insurance agents operating in Ontario who offer life, health, travel, critical illness, disability, retirement savings, and tax-free savings plans. This includes whether you must display your license number on a static website and a breakdown of advertising dos and don'ts according to Ontario and Canadian regulations.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2>Mandatory Elements and Disclosures</h2>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="section-content">
+            <ul>
+                <li><strong>Licensed Name Display:</strong> Always advertise under the name in which you are licensed. Your website <strong>must show your legal licensed name</strong> (either your personal name or your corporate/partnership name as on the FSRA licence) – you cannot "hold out" or do business under an unlicensed trade name (<a href="https://www.fsrao.ca/media/9096/download#:~:text=All%20agents%2C%20whether%20a%20corporation%2C,or%20style%20added%20to%20the" target="_blank">Helpful Licensing Information for Ontario Insurance Agents</a>). <span class="small">(In Ontario, individual agents are not allowed to use a separate trade or team name unless they have a licensed corporation. An individual agent must operate under their own licensed name) (<a href="https://www.fsrao.ca/media/9096/download#:~:text=Individually%20licensed%20agents%20may%20only,and%20General%20Insurance%20Agent%20Licences" target="_blank">Helpful Licensing Information for Ontario Insurance Agents</a>).</span></li>
+                
+                <li><strong>License Number (Optional):</strong> Ontario regulations do <strong>not</strong> require life/health insurance agents to display their licence number on a static website. FSRA permits agents to include their individual licence number or a <strong>link to their FSRA licence</strong> for consumer verification, but <strong>"there is no requirement to do so."</strong> (<a href="https://www.fsrao.ca/industry/mortgage-brokering/compliance-and-other-resources/mortgage-industry-public-relations-and-advertising-requirements#:~:text=Agents%20and%20brokers%20may%20also,no%20requirement%20to%20do%20so" target="_blank">Mortgage industry public relations and advertising requirements | Financial Services Regulatory Authority of Ontario</a>). (It's a good practice to mention that you are "FSRA licensed" and provide a way to verify your licence, but it's not mandated by law.)</li>
+                
+                <li><strong>Identification of Agent and Credentials:</strong> Clearly identify yourself as a licensed insurance agent and list your authorized credentials. For example, state your licence category (e.g., <em>"Licensed Life and Accident & Sickness Insurance Agent in Ontario"</em>) so clients know you are properly licensed. Ensure any titles or designations used are legitimate and current (e.g., only use <em>"CFP®"</em> if you are certified). Always include a reference that you are an insurance agent/advisor to avoid confusion (<a href="https://www.hubfinancial.com/insights/holding-out/#:~:text=British%20Columbia%3A%C2%A0Licensees%20are%20required%20to,assist%20in%20meeting%20this%20license" target="_blank"> | HUB International</a>). <span class="small">(Ontario's rules now also protect certain titles – see <strong>Restrictions</strong> below if you plan to call yourself a <em>Financial Advisor</em> or <em>Financial Planner</em>.)</span></li>
+                
+                <li><strong>Mandatory Disclosure Statements:</strong> Include any required legal disclosures on your site. Ontario's Insurance Act requires agents to disclose <strong>conflicts of interest</strong> in writing to clients (<a href="https://www.advisor.ca/industry-news/industry/fsco-updates-disclosure-guidelines-for-life-agents/#:~:text=,to%20potential%20conflicts%20of%20interest" target="_blank">FSCO updates disclosure guidelines for life agents | Advisor.ca</a>), so if you have an insurer affiliation or incentive that could be a conflict, <strong>disclose it</strong> (e.g., "I may receive commissions or incentives from insurers; any potential conflict of interest will be disclosed to you in writing" ). If you sell products from only one insurer, make that clear to avoid implying you broker the whole market.</li>
+                
+                <li><strong>Privacy Policy and Consent:</strong> Because federal law (PIPEDA) governs personal information, you <strong>must post a privacy policy</strong> if your site collects any personal data (quotes, contact forms, newsletter sign-ups). Explain what information you collect and how it's used/stored. Obtain consent for collecting personal details and assure visitors you protect their data. Also, include your contact information in any data collection forms, as required by anti-spam and privacy laws.</li>
+                
+                <li><strong>CASL Compliance for Emails:</strong> If your website offers a newsletter or "Contact me for updates" feature, comply with Canada's Anti-Spam Law (CASL). This means <strong>do not send commercial emails without consent</strong>, clearly identify yourself in any emails, and provide a simple unsubscribe option. (On your site, you might include a checkbox for people to opt-in to emails, and a note like "By providing your email, you consent to receive insurance news from [Your Name], and you can unsubscribe anytime.")</li>
+                
+                <li><strong>Terms of Use and Liability Disclaimer:</strong> It's recommended (and in some cases expected) to include a general disclaimer that information on the site is for <strong>informational purposes only</strong> and not tailored financial advice. Clarify that clients should consult you for personal advice before acting. Also consider a terms of use page limiting liability for use of the site content. While not a specific FSRA requirement, this is standard legal protection for compliance.</li>
+                
+                <li><strong>Accessible and Accurate Content:</strong> Ensure your website content meets any applicable accessibility requirements (Ontario's AODA may require certain businesses to have accessible websites). Also, make sure all statements are accurate and up-to-date (e.g., current TFSA/RRSP limits if mentioned, correct product features) – providing <strong>accurate, timely information</strong> is part of fair communication to consumers (<a href="https://www.fsrao.ca/industry/life-and-health-insurance/proposed-principles-conduct-insurance-intermediaries#:~:text=6,all%20necessary%20and%20appropriate%20information" target="_blank">Proposed Principles of Conduct for Insurance Intermediaries | Financial Services Regulatory Authority of Ontario</a>).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2>Advertising Do's (Compliant Practices)</h2>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="section-content">
+            <ul>
+                <li><strong>Be Truthful, Clear, and Accurate:</strong> All information on your site <strong>must be truthful and not misleading</strong>. Avoid hype or ambiguity. FSRA and the Competition Act prohibit any false or deceptive statements in advertising (<a href="https://www.fsrao.ca/industry/mortgage-brokering/compliance-and-other-resources/mortgage-industry-public-relations-and-advertising-requirements#:~:text=There%20are%20some%20general%20requirements,that%20all%20licensees%20must%20observe" target="_blank">Mortgage industry public relations and advertising requirements | Financial Services Regulatory Authority of Ontario</a>) (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=No%20advertisement%20shall%20be%20untrue%2C,a%20general%20nature%2C%20be%20authentic" target="_blank">April 1996</a>). Present features and benefits in plain language and <strong>ensure the overall impression is accurate</strong> – clarity is key so the average consumer understands your offerings (<a href="https://www.fsrao.ca/industry/life-and-health-insurance/proposed-principles-conduct-insurance-intermediaries#:~:text=6,all%20necessary%20and%20appropriate%20information" target="_blank">Proposed Principles of Conduct for Insurance Intermediaries | Financial Services Regulatory Authority of Ontario</a>).</li>
+                
+                <li><strong>Disclose Benefits <em>and</em> Limitations:</strong> If you mention a product's advantages, you <strong>must also disclose any key limitations or conditions</strong>. For example, if you highlight <em>"Tax-free benefits to your beneficiaries"</em> for life insurance, you should also note any conditions (e.g., "benefits are tax-free <strong>provided premiums are paid and policy conditions met</strong>"). <strong>Don't list only the pros</strong> – regulatory guidelines (e.g., CLHIA's advertising standards) require that an ad which cites specific benefits must <em>"fairly disclose, in close proximity, any limitations, exceptions or reductions"</em> that affect those benefits (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=7,Advertisement%20Not%20to%20be%20Misleading" target="_blank">April 1996</a>). Always balance your marketing claims with the necessary caveats so consumers get the full picture.</li>
+                
+                <li><strong>Use Approved and Precise Wording:</strong> Describe insurance products using their correct names and approved descriptions. Ensure any technical terms (like "Participating Whole Life," "Critical Illness Insurance," or "Tax-Free Savings Account") are used in line with their legal definitions. For segregated funds or annuity products, make it clear they are insurance contracts (not bank products) and use the insurer's approved marketing language when possible to avoid misrepresentation. If quoting features, you can link to official brochures or include footnotes to clarify details.</li>
+                
+                <li><strong>Identify the Insurer and Product Sponsor:</strong> If you talk about specific insurance products, <strong>name the insurer</strong> offering the product. For instance, if you describe a travel insurance plan or a disability policy, clearly indicate which insurance company underwrites it. Industry guidelines state the insurer's <strong>corporate name should be conspicuous in advertisements</strong> for insurance products (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=7,in%20a%20conspicuous%20manner%20on" target="_blank">April 1996</a>). This transparency helps consumers know the product's provider and verify that company's credentials. (E.g., "Travel Insurance by ABC Insurance Co." or "TFSA investments via XYZ Life's segregated funds.")</li>
+                
+                <li><strong>Keep Information Current:</strong> Regularly review your website to ensure all content is up-to-date with current laws, rates, and guidelines. For example, if tax laws change or TFSA contribution limits increase, update that info promptly. An outdated website can inadvertently mislead (which can become a compliance issue). Showing that you maintain current information also reflects professionalism and adherence to industry standards of communication.</li>
+                
+                <li><strong>Provide Balanced Comparisons (if any):</strong> If you compare products (say, one insurance plan vs another) or discuss market statistics, do so fairly. <strong>Cite your sources for any statistics or claims</strong> to stay transparent and credible (for example, if you say "XYZ Insurance is the largest travel insurer in Canada," cite the source or report). The CLHIA guidelines note that no advertisement should use statistics without clearly identifying the source (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=No%20advertisement%20shall%20be%20untrue%2C,a%20general%20nature%2C%20be%20authentic" target="_blank">April 1996</a>). Ensure comparisons are accurate, up-to-date, and not presented in a way that could mislead.</li>
+                
+                <li><strong>Include Required Footnotes/Disclaimers:</strong> <strong>Important disclaimers must be easy to notice.</strong> If an advertisement claim needs a disclaimer (common for things like "conditions apply" or "subject to underwriting approval"), don't hide it. Place disclaimers near the claim or with an asterisk that clearly points to a footnote. Regulatory guidance says disclaimers should be clearly visible (e.g. in at least 10-point font on a webpage) and presented in a way that the reader will see them (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=7,way%20of%20an%20electronic%20medium" target="_blank">April 1996</a>). For instance, if you mention potential investment returns, include a disclaimer like "<em>Investment values can fluctuate and are not guaranteed; past performance is not indicative of future results.</em>" Make sure such text isn't in a tiny font or faint color – it should be readable.</li>
+                
+                <li><strong>Emphasize Your Credentials Correctly:</strong> It's a "do" to mention your professional designations or memberships (like CFP, CLU, CHS, membership in Advocis or IFB) as these can increase consumer confidence – <strong>but use them properly</strong>. Follow the governing body's guidelines for any designations (e.g., show registered trademark symbols if required, and don't abbreviate in an incorrect way). Also, ensure the designation is relevant to the services you're offering on the site. (For example, if you use the title "Certified Financial Planner", you should indeed be offering financial planning services and meet the FSRA title protection requirements.)</li>
+                
+                <li><strong>Highlight Consumer Protection and Resources:</strong> It's good practice to add links or references that show you abide by industry regulations. For example, you might provide a link to FSRA's consumer site or the <strong>life insurance ombudservice</strong> (OLHI) for dispute resolution info. While not strictly mandatory, <strong>showing consumers how to verify your licence or how to get more information</strong> (like a link to the FSRA license lookup, or "Learn about life insurance – see the FSRA/CLHIA consumer guide") demonstrates transparency and aligns with the expectation of fair dealing.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2>Advertising Don'ts and Restrictions</h2>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="section-content">
+            <ul>
+                <li><strong>Don't Mislead or Deceive:</strong> <strong>Never post false, misleading or deceptive information.</strong> This is an absolute rule. Any information that misrepresents products or your services – or even information that is technically true but presented incompletely such that it misleads – is prohibited (<a href="https://www.fsrao.ca/industry/mortgage-brokering/compliance-and-other-resources/mortgage-industry-public-relations-and-advertising-requirements#:~:text=There%20are%20some%20general%20requirements,that%20all%20licensees%20must%20observe" target="_blank">Mortgage industry public relations and advertising requirements | Financial Services Regulatory Authority of Ontario</a>). For example, don't advertise a policy as "free" or "guaranteed issue" unless it truly has no cost or no medical underwriting in all cases. Misleading or unclear statements, or anything conflicting with the actual policy documents, violate both Ontario's <strong>Insurance Act</strong> and federal law (Competition Act) (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=No%20advertisement%20shall%20be%20untrue%2C,a%20general%20nature%2C%20be%20authentic" target="_blank">April 1996</a>). Always consider the <strong>overall impression</strong> your website gives; if the average consumer could walk away misunderstanding something important, that's a red flag to fix.</li>
+                
+                <li><strong>No Unsubstantiated Claims or Superlatives:</strong> Avoid making grand promises or unverifiable claims. <strong>Do not claim to be "#1" or "the best"</strong> unless you have objective evidence (and even then, use caution and disclaimers). Phrases like "we guarantee you the lowest rates" or "this investment will secure 8% returns" are problematic – insurance agents cannot guarantee returns or outcomes that the products themselves don't guarantee. Any performance claims must be backed by proper data and explained with context. Canadian advertising law requires that <strong>performance claims be substantiated</strong> with adequate and proper testing or data (<a href="https://www.canadianadvertisinglaw.com/testimonials/#:~:text=False%20or%20misleading%20testimonials%2Fendorsements%3A%C2%A0In%20Canada%2C,have%20not%20disclosed%20these%20connections" target="_blank">Canadian Advertising/Marketing Lawyer</a>). So, don't use language that could set unrealistic expectations (e.g., "buying life insurance will make you financially set for life" – that's exaggeration). Stick to facts and avoid puffery that can't be proven.</li>
+                
+                <li><strong>No Illegal Rebates or Inducements:</strong> <strong>Do not offer rebates, discounts, or gifts</strong> that aren't allowed. In Ontario, offering to pay part of the client's premium or giving an inducement to buy (like "Sign up and I'll give you a $100 gift card") is <strong>illegal</strong> for insurance agents. Under Ontario Regulation 7/00 it is <strong>unlawful to offer or pay any rebate of an insurance premium</strong> (this applies to life, health, property, etc.) (<a href="https://www.insurancebusinessmag.com/ca/news/breaking-news/insurance-agent-faces-17000-fine-for-illegal-rebates-514281.aspx#:~:text=Under%20the%20terms%20of%20Ontario,provision%2C%20leading%20to%20the%20penalty" target="_blank">Insurance agent faces $17,000 fine for illegal rebates | Insurance Business Canada</a>). That means your website should <strong>not advertise any rebate or kickback</strong>. Even seemingly minor inducements (concert tickets, expensive gifts in exchange for a policy purchase) are banned as unfair practices (<a href="https://www.advisor.ca/insurance/life/understanding-rebating-rules-for-insurance/#:~:text=Insurance%20agents%20may%20also%20be,agrees%20to%20purchase%20the%20policy" target="_blank">Understanding rebating rules for insurance | Advisor.ca</a>). The only exceptions would be token gifts of nominal value <em>if</em> permitted by law, but as a rule, it's safest to avoid advertising any incentive aside from the policy benefits themselves.</li>
+                
+                <li><strong>Don't Use Restricted Titles Improperly:</strong> Ontario now regulates the use of the titles <em>"Financial Planner"</em> and <em>"Financial Advisor."</em> <strong>Do NOT call yourself a Financial Planner or Financial Advisor</strong> (or similar terms that could confuse consumers) unless you have obtained an approved credential and are in good standing with a FSRA-approved credentialing body. As of 2024, the transition period for the "Financial Advisor" title has ended – anyone using that title in Ontario <strong>must hold an approved credential</strong> (<a href="https://www.fsrao.ca/your-financial-planner-advisor-title#:~:text=,credential%20from%20a%20%205" target="_blank">What you need to know to use the Financial Planner / Financial Advisor title in Ontario | Financial Services Regulatory Authority of Ontario</a>). If you lack those credentials, stick to titles like "Insurance Broker/Agent," "Insurance Advisor," or other allowed descriptions. Misusing a protected title on your website could result in regulatory action. Similarly, don't use company-specific titles (like "Wealth Manager") that might imply licenses or expertise you don't have. Always represent your role accurately (for instance, if you only sell insurance, don't label yourself "Investment Advisor").</li>
+                
+                <li><strong>No Misrepresentation of Your Business Structure:</strong> <strong>Do not advertise under a fake company or team name</strong> if you're not licensed that way. You cannot, for example, brand your website "ABC Insurance Solutions" unless <strong>ABC Insurance Solutions</strong> is a licensed entity or a registered trade name on your licence. FSRA rules require agents to use only their licensed name in all advertising (<a href="https://www.fsrao.ca/media/9096/download#:~:text=All%20agents%2C%20whether%20a%20corporation%2C,or%20style%20added%20to%20the" target="_blank">Helpful Licensing Information for Ontario Insurance Agents</a>). So avoid logos or branding that omit your legal name or give the impression of an unlicensed entity. If you work with a Managing General Agency (MGA) or a marketing group, you can mention that relationship, but your primary identification must still be your licensed name. <em>Bottom line:</em> no ghost companies or unlicensed trade styles in your web branding.</li>
+                
+                <li><strong>Don't Misuse Insurer Logos or Content:</strong> You generally shouldn't plaster insurer logos on your site without permission – many insurers have policies about how their agents can use their branding. Using an insurer's logo might imply an endorsement or exclusive relationship that isn't there. Only use logos or marketing content that insurers or industry associations have approved for agent use. And <strong>never modify official product information</strong> in a way that could mislead (e.g., editing an insurer's brochure text). If you provide downloadable brochures or links, use the originals so that you remain compliant with the insurer's approved advertising.</li>
+                
+                <li><strong>Handle Testimonials and Reviews Carefully:</strong> If you choose to include client testimonials, there are <strong>strict rules</strong> to follow. Testimonials <strong>must be genuine and typical</strong> – they should reflect a normal customer experience, not an outlier. Avoid cherry-picking only ultra-positive statements that might misrepresent expected results. <strong>Never fabricate testimonials</strong> or attribute quotes to people who don't exist. According to industry guidelines, testimonials in insurance ads <em>"must be of a general nature, be authentic, and express the current opinion of the author."</em> If a testimonial was paid for (even in a small way, like a gift in thanks), <strong>you must disclose that</strong> in the ad (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=7,a%20general%20nature%2C%20be%20authentic" target="_blank">April 1996</a>). Also remember that if you publish someone's endorsement, you (and the insurer) are effectively vouching that the content is truthful (<a href="https://www.clhia.ca/web/CLHIA_LP4W_LND_Webstation.nsf/page/A2653E476D68FE0D8525784F0058BF59/$file/Guideline G2.pdf#:~:text=Testimonials%20used%20in%20an%20advertisement,a%20general%20nature%2C%20be%20authentic" target="_blank">April 1996</a>). From a federal law perspective, false or misleading testimonials are an enforcement priority – the Competition Bureau can take action if, for example, a review is fake or material facts (like a paid endorsement) aren't disclosed (<a href="https://www.canadianadvertisinglaw.com/testimonials/#:~:text=False%20testimonials%2Fendorsements%20have%20been%20one,issuing%20compliance%20guidance%20for%20companies" target="_blank">Canadian Advertising/Marketing Lawyer</a>) (<a href="https://www.canadianadvertisinglaw.com/testimonials/#:~:text=False%20or%20misleading%20testimonials%2Fendorsements%3A%C2%A0In%20Canada%2C,have%20not%20disclosed%20these%20connections" target="_blank">Canadian Advertising/Marketing Lawyer</a>). <strong>Tip:</strong> If possible, avoid testimonials altogether or stick to very generic positive statements, to stay on the safe side of compliance.</li>
+                
+                <li><strong>No Unauthorized Advice or Services:</strong> <strong>Stay in your lane of licensing.</strong> Do not advertise or offer services that require another licence you don't hold. For example, as a life insurance agent you can advise on life insurance, seg funds (if licensed for A&S), and related products, but if you are <em>not</em> licensed to sell mutual funds or securities, your website should not talk about offering mutual funds, stocks, or investment advice. If you mention RRSPs or TFSAs, be clear you provide <strong>insurance-based solutions</strong> for those (like segregated funds or annuities) unless you are also a registered investment advisor. Similarly, don't give the impression you're a mortgage broker, real estate agent, lawyer, or any other professional service outside your scope. Holding out as something you're not is not only misleading, it could breach regulatory rules. Always accurately represent the products you are authorized to sell and the advice you are qualified to give.</li>
+                
+                <li><strong>Avoid Unrealistic Guarantees:</strong> Do not use absolutes like "always," "never," or overhyped phrases. Insurance and investment products come with conditions; saying <strong>"100% guarantee"</strong> or <strong>"no risk at all"</strong> is almost always inaccurate. Even "free" can be a forbidden word – nothing is truly free if a client has to buy a policy to get it. Steer clear of any wording that a regulator might view as an over-promise. For example, promising <strong>"instant approval"</strong> or <strong>"payout within 24 hours guaranteed"</strong> could violate advertising rules unless you can truly deliver that in every case (which is unlikely, given underwriting and claims processes). <strong>All guarantees should be only those guaranteed by the policy/insurer</strong> (and usually described as such). When in doubt, use softer language (e.g., "you <strong>may</strong> benefit from…", "insurance can help provide…") and encourage readers to contact you for personalized details rather than making blanket promises online.</li>
+                
+                <li><strong>Don't Hide Important Information:</strong> All legally required info and any crucial terms should be readily visible – <strong>no fine-print tricks</strong>. For instance, if a certain offer on your site is only for a limited time or only for people of a certain age, don't bury that detail. Hiding fees, conditions, or exclusions until after a client signs up is considered misleading. Ensure that any <em>"</em>read more<em>"
