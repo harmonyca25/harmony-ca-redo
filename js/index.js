@@ -31,18 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             element.classList.add('active');
         });
 
-// Preloader
-window.addEventListener('load', function() {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
-            preloader.style.opacity = '0';
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 300);
-        }, 500);
-    }
-});
+
 
 // Modal functionality is already defined inline in the HTML for immediate availability
 // These functions are here as a reference and for consistency
@@ -71,6 +60,18 @@ function closeContactModal() {
     modal.setAttribute('aria-hidden', 'true');
 }
 */
+        // Preloader
+window.addEventListener('load', function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 300);
+        }, 500);
+    }
+});
 
 // Close the modal when clicking outside of it
 window.onclick = function(event) {
