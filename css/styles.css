@@ -223,14 +223,14 @@ header.scrolled {
 }
 
 .logo-img {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/hpca-logo.webp');/*i added it*/
+    width: 75px;
+    height: 75px;
+    border-radius: 5px;
+    background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/hpca-logo.webp');/*va added it*/
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
-    border:0.5pt solid
+    border:0.2pt solid
 }
 
 .logo-text {
@@ -572,7 +572,7 @@ nav ul li a:hover:after, nav ul li a.active:after {
 
 .cta:before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
