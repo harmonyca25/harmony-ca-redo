@@ -320,16 +320,18 @@ nav ul li a:hover:after, nav ul li a.active:after {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    height:auto;
+    min-height: 100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/ontario-cityscape.webp'); /*i added it*/
     background-size: cover;
     background-position: center;
     color: var(--white);
     display: flex;
     align-items: center;
-    padding-top: 0;
+    padding-top: 80px;
     padding-bottom: 0;
     position: relative;
+    z-index:1;
 }
 
 .hero:after {
@@ -1002,6 +1004,9 @@ footer {
     
     nav.active .nav-close {
         display: block; /* Only show when navigation is active */
+    }
+    .hero {
+        padding-top: 60px; /* Adjust for smaller header on mobile */
     }
 }
 
