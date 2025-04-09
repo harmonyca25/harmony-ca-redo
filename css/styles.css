@@ -225,7 +225,7 @@ header.scrolled {
 .logo-img {
     width: 72px;
     height: 72px;
-    border-radius: 5px;
+    border-radius: 50%;
     background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/webp/hpca-logo.webp');/*i added it*/
     background-size: cover;
     background-position: center;
