@@ -132,6 +132,47 @@
             modal.setAttribute('aria-hidden', 'true');
         }
     </script>
+    <style>
+        bbr[title] {
+      position: relative;
+      cursor: help;
+      text-decoration: underline dotted #666;
+      transition: all 0.2s ease;
+    }
+
+    abbr[title]::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 125%; /* position above */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      font-size: 0.875rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: opacity 0.3s;
+      z-index: 10;
+    }
+
+    abbr[title]:hover::after,
+    abbr[title]:focus::after {
+      opacity: 1;
+    }
+
+    /* Optional: subtle icon hint for accessibility */
+    abbr[title]::before {
+      content: "ⓘ";
+      font-size: 0.7em;
+      color: #0077cc;
+      margin-right: 2px;
+      vertical-align: top;
+    }
+    </style>
 </head>
 <body>
     <!-- Preloader -->
@@ -188,7 +229,7 @@
         <div class="container">
             <div class="about-content fade-in">
                 <div class="about-text">
-                    <span class="credentials">FSRA-Licensed Insurance Agent</span>
+                    <span class="credentials"><abbr title="Financial Services Regulatory Authority Ontario">FSRA</abbr>-Licensed Insurance Agent</span>
                     <h2>About Harmonyplan - Your Ontario Insurance Expert</h2>
                     <p>Hello, I'm Rekha from Harmonyplan Insurance Services, a FSRA-licensed insurance agent in Ontario with expertise in life, health, critical illness, disability, and travel insurance. I offer personalized solutions to help individuals and families secure their future with confidence.</p>
                     <p>Since becoming licensed in 2022, I've dedicated myself to providing Ontarians with comprehensive insurance coverage and retirement planning options including  savings & investment plans. My approach combines industry knowledge with a genuine commitment to understanding each client's unique situation.</p>
