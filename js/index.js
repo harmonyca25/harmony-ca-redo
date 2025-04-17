@@ -334,18 +334,25 @@ function generateServiceCards() {
         `;
         
         // Add event listener to the circle button
-        card.querySelector('.circle-button').addEventListener('click', () => {
-            // Store the selected service data in localStorage
-            localStorage.setItem('selectedService', JSON.stringify({
-                title: data.title,
-                text: data.text
-            }));
-            
-            // Open the contact modal
-            if (typeof openContactModal === 'function') {
-                openContactModal();
-            }
-        });
+       card.querySelector('.circle-button').addEventListener('click', () => {
+    // Clear first, then set
+    localStorage.removeItem('selectedInsuranceService');
+    
+    // Store the selected service data with a unique key different from other localStorage items
+    localStorage.setItem('selectedInsuranceService', JSON.stringify({
+        title: data.title,
+        text: data.text,
+        timestamp: new Date().getTime() // Add timestamp to ensure freshness
+    }));
+    
+    console.log('Selected service:', data.title);
+    
+    // Open the contact modal
+    if (typeof openContactModal === 'function') {
+        openContactModal();
+    }
+});
+
         
         grid.appendChild(card);
     });
