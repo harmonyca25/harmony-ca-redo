@@ -1049,7 +1049,9 @@ footer {
     }
 }
 
-/* Art Deco Card Grid Styles integrated with HPCA design language added on 17april2025 by vipul Anand */
+                /* Art Deco Card Grid Styles integrated with HPCA design language added on 17april2025 by vipul Anand */
+
+                /* Art Deco Card Grid Styles integrated with HPCA design language - Font Awesome version */
 .art-deco-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1105,10 +1107,9 @@ footer {
     border-top-right-radius: 10px;
 }
 
-.card-icon img {
-    width: 40px;
-    height: 40px;
-    filter: brightness(0) invert(1);
+.card-icon i {
+    font-size: 2.5rem;
+    color: var(--white);
 }
 
 .card-content {
