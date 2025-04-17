@@ -99,7 +99,6 @@ function initializeFirebase() {
             appId: "1:665190770519:web:9f996932356b3d4679c012"
         };
         
-        
         // Initialize Firebase
         firebaseApp = firebase.initializeApp(firebaseConfig);
         db = firebaseApp.firestore();
@@ -203,119 +202,52 @@ function showToast(message) {
         toast.style.visibility = 'hidden';
     }, 5000);
 }
-// Listen for messages from the parent window
-window.addEventListener('message', function(event) {
-    // Check if the message is the service selection data
-    if (event.data && event.data.type === 'serviceSelected') {
-        const serviceData = event.data.data;
-        
-        // Find the message textarea in your form - matches your existing form structure
-        const messageField = document.getElementById('message');
-        
-        if (messageField) {
-            // Pre-fill the message field with the service information
-            messageField.value = `I'm interested in: ${serviceData.title}\n\n${serviceData.text}\n\nPlease contact me about this service.`;
-            
-            // You can also highlight this field or scroll to it
-            messageField.focus();
-        }
-    }
-});
 
-// Notify the parent window when the iframe has loaded
-window.addEventListener('load', function() {
-    // Send a message to the parent window that the iframe is loaded and ready
-    window.parent.postMessage('iframeLoaded', '*');
-});
+// --- CLEAN IMPLEMENTATION FOR SERVICE DATA HANDLING ---
 
-// The rest of your existing form2.html script remains unchanged
-
-// Check for service data in localStorage when the page loads
-window.addEventListener('load', function() {
-    try {
-        // Retrieve from localStorage directly in the iframe
-        const serviceData = localStorage.getItem('selectedService');
-        
-        if (serviceData) {
-            const data = JSON.parse(serviceData);
-            const messageField = document.getElementById('message');
-            
-            if (messageField && data.title && data.text) {
-                // Pre-fill the message field with the service information
-                messageField.value = `I'm interested in: ${data.title}\n\n${data.text}\n\nPlease contact me about this service.`;
-                
-                // Optional: clear the localStorage after using it
-                // localStorage.removeItem('selectedService');
-                
-                // You can also highlight this field
-                messageField.focus();
-                
-                console.log('Service data loaded successfully');
-            }
-        }
-        
-        // Notify the parent window that the iframe has loaded (keep this)
-        window.parent.postMessage('iframeLoaded', '*');
-    } catch (error) {
-        console.error('Error loading service data:', error);
-    }
-});
-
-// Keep the existing message listener as a fallback
-window.addEventListener('message', function(event) {
-    // Check if the message is the service selection data
-    if (event.data && event.data.type === 'serviceSelected') {
-        const serviceData = event.data.data;
-        
-        // Find the message textarea in your form
-        const messageField = document.getElementById('message');
-        
-        if (messageField && serviceData.title && serviceData.text) {
-            // Pre-fill the message field with the service information
-            messageField.value = `I'm interested in: ${serviceData.title}\n\n${serviceData.text}\n\nPlease contact me about this service.`;
-            
-            // You can also highlight this field
-            messageField.focus();
-            
-            console.log('Service data received via postMessage');
-        }
-    }
-});
-    // Function to get service data and fill the form
-function checkForSelectedService() {
-    try {
-        // Use a unique key to avoid conflicts with other localStorage items
-        const serviceData = localStorage.getItem('selectedInsuranceService');
-        
-        if (serviceData) {
-            const data = JSON.parse(serviceData);
-            const messageField = document.getElementById('message');
-            
-            if (messageField && data.title && data.text) {
-                // Pre-fill the message field with the service information
-                messageField.value = `I'm interested in: ${data.title}\n\n${data.text}\n\nPlease contact me about this service.`;
-                messageField.focus();
-                
-                console.log('Form pre-filled with:', data.title);
-                
-                // Clear data after using it
-                localStorage.removeItem('selectedInsuranceService');
-            }
-        }
-    } catch (error) {
-        console.error('Error loading service data:', error);
+// Function to fill form with service data
+function fillFormWithServiceData(title, text) {
+    const messageField = document.getElementById('message');
+    if (messageField) {
+        messageField.value = `I'm interested in: ${title}\n\n${text}\n\nPlease contact me about this service.`;
+        messageField.focus();
+        console.log('Form pre-filled with:', title);
     }
 }
 
-// Run when page loads
+// Single load event listener
 window.addEventListener('load', function() {
-    // Check for selected service
-    checkForSelectedService();
-    
-    // Notify parent that iframe is loaded (optional)
-    if (window.parent) {
-        window.parent.postMessage('iframeLoaded', '*');
+    try {
+        // Try to get data from localStorage (check both possible keys)
+        const serviceData = localStorage.getItem('selectedInsuranceService') || 
+                           localStorage.getItem('selectedService');
+        
+        if (serviceData) {
+            const data = JSON.parse(serviceData);
+            if (data && data.title && data.text) {
+                fillFormWithServiceData(data.title, data.text);
+                
+                // Clear localStorage after using
+                localStorage.removeItem('selectedInsuranceService');
+                localStorage.removeItem('selectedService');
+            }
+        }
+        
+        // Notify parent that iframe is loaded
+        if (window.parent) {
+            window.parent.postMessage('iframeLoaded', '*');
+        }
+    } catch (error) {
+        console.error('Error processing service data:', error);
     }
 });
-    
+
+// Single message event listener (backup method)
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'serviceSelected' && 
+        event.data.data && event.data.data.title && event.data.data.text) {
+        
+        fillFormWithServiceData(event.data.data.title, event.data.data.text);
+    }
+});
 </script>
