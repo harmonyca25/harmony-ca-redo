@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Art Deco Card Grid</title>
+  <style>
+    body {
+      background: #f1f1f1;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1300px;
+      width: 100%;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 1; /* Fully opaque by default */
+      transition: opacity 0.5s ease;
+      z-index: 100;
+    }
+
+    .card:hover .card-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card-icon {
+      background-color: #2d3e50;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .card-icon img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .card-content {
+      padding: 20px;
+      z-index: 3;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-content h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+    }
+
+    .card-content p {
+      font-size: 0.95rem;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .interest-button {
+      padding: 20px;
+      text-align: center;
+      z-index: 3;
+    }
+
+    .circle-button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+      transform: scale(0);
+      transition: transform 0.4s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+
+    .card:hover .circle-button {
+      transform: scale(1);
+    }
+
+    .circle-button::before {
+      content: "+";
+      font-size: 26px;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    .circle-button:active {
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+      transform: scale(0.95);
+    }
+
+    .interest-button p {
+      font-size: 14px;
+      color: #333;
+      opacity: 0;
+      transition: opacity 0.3s ease 0.2s;
+    }
+
+    .card:hover .interest-button p {
+      opacity: 1;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      display: none;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+    }
+
+    .modal-content input,
+    .modal-content textarea,
+    .modal-content label {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .modal-content input[type="checkbox"] {
+      width: auto;
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background: #2d3e50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container" id="cardGrid"></div>
+
+  <div class="modal" id="formModal">
+    <div class="modal-content">
+      <h3>Contact Form</h3>
+      <label>Name <input type="text" /></label>
+      <label>Phone Number <input type="tel" /></label>
+      <label>Email Address <input type="email" /></label>
+      <label>Message <textarea id="messageArea" rows="4"></textarea></label>
+      <label><input type="checkbox" /> I consent to being contacted about my insurance needs.</label>
+      <button onclick="document.getElementById('formModal').style.display='none'">Submit</button>
+    </div>
+  </div>
+
+  <script>
+ const cardData = [
+   {
+        title: "Life Insurance",
+        text: "Protect your family's financial future with term, whole life, and universal life insurance policies tailored to Ontario residents. Get coverage that provides long-term security and peace of mind.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/lifeinsurance.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/3242/3242257.png"
+      },
+    {
+        title: "Health Insurance",
+        text: "Supplement OHIP with extended health insurance that covers prescription drugs, dental care, vision care, and more. Protect yourself from unexpected medical expenses not covered by provincial healthcare.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/healthinsurance.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+      },
+   {
+        title: "Critical Illness Insurance",
+        text: "Receive a tax-free lump sum payment upon diagnosis of covered critical illnesses like cancer, stroke, or heart attack. Use the funds for treatment, recovery, or maintaining your lifestyle during difficult times.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/critical.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/2784/2784460.png"
+      },
+   {
+        title: "Travel Insurance",
+        text: "Travel with confidence knowing you're covered for medical emergencies, trip cancellations, and lost baggage. Essential protection for Ontarians traveling outside the province or internationally.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/travelinsurance.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/3448/3448609.png"
+      },
+    {
+        title: "Retirement Planning",
+        text: "Secure your future with comprehensive retirement planning, including RRSP options, pension planning, and investment strategies designed to provide income security during your retirement years.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/retirement.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/616/616408.png"
+      },
+   {
+        title: "Tax-Free Savings (TFSA)",
+        text: "Maximize your savings potential with TFSA plans that offer tax-free growth and flexible withdrawal options. An essential component of financial planning for Ontario residents.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/tfsa.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/883/883806.png"
+      },
+     
+      {
+        title: "Disability Insurance",
+        text: "Protect your income if you're unable to work due to illness or injury. Disability insurance provides financial stability when you need it most, with plans specifically designed for Ontario professionals.",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/disabilty.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/3349/3349164.png"
+      },
+    {
+        title: "Education Plan (RESP)",
+        text: "Invest in your children's future with Registered Education Savings Plans (RESPs).",
+        image: "https://github.com/harmonyca25/rekha-harmony-plan-ca/blob/main/assets/resp.jpg?raw=true",
+        icon: "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"
+      }
+      
+    ];
+
+    const grid = document.getElementById("cardGrid");
+
+    cardData.forEach(data => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-overlay" style="background-image: url('${data.image}?auto=format&fit=crop&w=400&q=80');"></div>
+        <div class="card-icon">
+          <img src="${data.icon}" alt="Card Icon" />
+        </div>
+        <div class="card-content">
+          <h2>${data.title}</h2>
+          <p>${data.text}</p>
+        </div>
+        <div class="interest-button">
+          <div class="circle-button" style="background-image: url('${data.image}?auto=format&fit=crop&w=400&q=80');"></div>
+          <p>Yes, I am interested in this plan</p>
+        </div>
+      `;
+      card.querySelector('.circle-button').addEventListener('click', () => {
+        document.getElementById('formModal').style.display = 'flex';
+        document.getElementById('messageArea').value = `${data.title} - ${data.text}`;
+      });
+      grid.appendChild(card);
+    });
+    
+  </script>
+</body>
+</html>
