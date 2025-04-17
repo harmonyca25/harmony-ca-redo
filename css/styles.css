@@ -1048,3 +1048,160 @@ footer {
         font-size: 1.3rem;
     }
 }
+
+/* Art Deco Card Grid Styles integrated with HPCA design language added on 17april2025 by vipul Anand */
+.art-deco-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.art-deco-card {
+    position: relative;
+    width: 100%;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.art-deco-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 100;
+}
+
+.art-deco-card:hover .card-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card-icon {
+    background-color: var(--primary-color);
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-icon img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0) invert(1);
+}
+
+.card-content {
+    padding: 20px;
+    z-index: 3;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-content h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--dark-color);
+    font-family: 'Montserrat', sans-serif;
+    padding-bottom: 0;
+}
+
+.card-content h2:after {
+    display: none;
+}
+
+.card-content p {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    line-height: 1.5;
+    font-family: 'Poppins', sans-serif;
+}
+
+.interest-button {
+    padding: 20px;
+    text-align: center;
+    z-index: 3;
+}
+
+.circle-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    transform: scale(0);
+    transition: transform 0.4s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+.art-deco-card:hover .circle-button {
+    transform: scale(1);
+}
+
+.circle-button::before {
+    content: "+";
+    font-size: 26px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.circle-button:active {
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+    transform: scale(0.95);
+}
+
+.interest-button p {
+    font-size: 14px;
+    color: var(--text-color);
+    opacity: 0;
+    transition: opacity 0.3s ease 0.2s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.art-deco-card:hover .interest-button p {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .art-deco-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .art-deco-grid {
+        grid-template-columns: 1fr;
+    }
+}
