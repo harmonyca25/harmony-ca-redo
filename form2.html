@@ -281,5 +281,41 @@ window.addEventListener('message', function(event) {
         }
     }
 });
+    // Function to get service data and fill the form
+function checkForSelectedService() {
+    try {
+        // Use a unique key to avoid conflicts with other localStorage items
+        const serviceData = localStorage.getItem('selectedInsuranceService');
+        
+        if (serviceData) {
+            const data = JSON.parse(serviceData);
+            const messageField = document.getElementById('message');
+            
+            if (messageField && data.title && data.text) {
+                // Pre-fill the message field with the service information
+                messageField.value = `I'm interested in: ${data.title}\n\n${data.text}\n\nPlease contact me about this service.`;
+                messageField.focus();
+                
+                console.log('Form pre-filled with:', data.title);
+                
+                // Clear data after using it
+                localStorage.removeItem('selectedInsuranceService');
+            }
+        }
+    } catch (error) {
+        console.error('Error loading service data:', error);
+    }
+}
+
+// Run when page loads
+window.addEventListener('load', function() {
+    // Check for selected service
+    checkForSelectedService();
+    
+    // Notify parent that iframe is loaded (optional)
+    if (window.parent) {
+        window.parent.postMessage('iframeLoaded', '*');
+    }
+});
     
 </script>
