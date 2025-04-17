@@ -587,202 +587,6 @@
             <button class="btn" onclick="openContactModal()" aria-label="Request free consultation">Get Free Consultation</button>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>Rekha Insurance</h4>
-                    <p>Your trusted Ontario insurance agent for life, health, critical illness, disability, travel insurance, and retirement planning since 2023.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-col">
-                    <h4>Insurance Services</h4>
-                    <ul>
-                        <li><a href="#services">Life Insurance</a></li>
-                        <li><a href="#services">Health Insurance</a></li>
-                        <li><a href="#services">Critical Illness Insurance</a></li>
-                        <li><a href="#services">Disability Insurance</a></li>
-                        <li><a href="#services">Travel Insurance</a></li>
-                        <li><a href="#services">TFSA Plans</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="https://anandvip.github.io/rekha-2-canada/privacy-policy.html" target="_blank" id="privacy">Privacy Policy</a></li>
-                        <li><a href="https://anandvip.github.io/rekha-2-canada/sitemap.xml" target="_blank">Sitemap</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h4>Contact Hours</h4>
-                    <ul>
-                        <li>Monday - Friday: 9AM - 6PM</li>
-                        <li>Saturday: By appointment</li>
-                        <li>Sunday: Closed</li>
-                        <li>Emergency Contact: Available 24/7</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div id="privacy-policy" style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-bottom: 30px;">
-                <h4 style="color: white; margin-bottom: 20px;">Privacy Policy</h4>
-                <p style="margin-bottom: 15px;">At Rekha Insurance Services, we are committed to protecting your privacy and personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information in compliance with the Personal Information Protection and Electronic Documents Act (PIPEDA).</p>
-                
-                <h5 style="color: white; margin: 15px 0 10px;">Information We Collect</h5>
-                <p style="margin-bottom: 15px;">We collect only the personal information that is necessary to provide you with insurance services in Ontario, including your name, contact information, and specific insurance needs. This information is collected with your explicit consent.</p>
-                
-                <h5 style="color: white; margin: 15px 0 10px;">How We Use Your Information</h5>
-                <p style="margin-bottom: 15px;">Your personal information is used solely for the purpose of providing you with insurance services, processing your requests, and communicating with you about your insurance needs in Ontario.</p>
-                
-                <h5 style="color: white; margin: 15px 0 10px;">Your Rights</h5>
-                <p style="margin-bottom: 15px;">Under PIPEDA, you have the right to access, correct, and request deletion of your personal information. To exercise these rights, please contact us directly.</p>
-                
-                <h5 style="color: white; margin: 15px 0 10px;">Contact About Privacy</h5>
-                <p>If you have questions or concerns regarding your privacy or this policy, please contact us at privacy@rekhainsurance.com.</p>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2025 Rekha Insurance Services. FSRA-Licensed Insurance Agent in Ontario. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal for Contact Form -->
-    <div id="contactModal" class="modal" role="dialog" aria-labelledby="contactModalTitle" aria-modal="true">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeContactModal()" aria-label="Close contact form">&times;</span>
-            <div class="modal-iframe-container">
-                <iframe src="https://anandvip.github.io/rekha-2-canada/form2.html" class="modal-iframe" title="Contact Form" loading="lazy"></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript -->
-    <script>
-        // Add structured data dynamically
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add breadcrumbs schema
-            const breadcrumbsSchema = {
-                "@context": "https://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                    {
-                        "@type": "ListItem",
-                        "position": 1,
-                        "name": "Home",
-                        "item": "https://anandvip.github.io/rekha-2-canada/"
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 2,
-                        "name": "Insurance Services",
-                        "item": "https://anandvip.github.io/rekha-2-canada/#services"
-                    }
-                ]
-            };
-            
-            const breadcrumbsScript = document.createElement('script');
-            breadcrumbsScript.type = 'application/ld+json';
-            breadcrumbsScript.text = JSON.stringify(breadcrumbsSchema);
-            document.head.appendChild(breadcrumbsScript);
-        });
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-        
-        // Modal functionality
-        const modal = document.getElementById('contactModal');
-        
-        function openContactModal() {
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-            
-            // Accessibility improvements
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
-            
-            // Set focus to the modal close button
-            setTimeout(() => {
-                document.querySelector('.modal-close').focus();
-            }, 100);
-        }
-        
-        function closeContactModal() {
-            modal.classList.remove('show');
-            document.body.style.overflow = ''; // Allow scrolling again
-            
-            // Accessibility improvements
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
-        }
-        
-        // Close the modal when clicking outside of it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeContactModal();
-            }
-        }
-        
-        // Keyboard accessibility - close on escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && modal.classList.contains('show')) {
-                closeContactModal();
-            }
-        });
-        
-        // Listen for messages from the iframe
-        window.addEventListener('message', function(event) {
-            // Make sure the message is from our form page
-            if (event.origin === 'https://anandvip.github.io') {
-                const data = event.data;
-                
-                // If the message indicates form submission success
-                if (data.type === 'formSubmitted') {
-                    // You can add additional actions here when the form is submitted
-                    console.log('Form submitted successfully');
-                }
-                
-                // If the message indicates to close the modal
-                if (data.type === 'closeModal') {
-                    closeContactModal();
-                }
-            }
-        });
-    </script>
-    
-    <!-- Google Tag Manager -->
-    <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-XXXXXX');
-    </script>
-    <!-- End Google Tag Manager -->
-</body>
-</html>
-
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
@@ -1027,3 +831,200 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Rekha Insurance</h4>
+                    <p>Your trusted Ontario insurance agent for life, health, critical illness, disability, travel insurance, and retirement planning since 2023.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Insurance Services</h4>
+                    <ul>
+                        <li><a href="#services">Life Insurance</a></li>
+                        <li><a href="#services">Health Insurance</a></li>
+                        <li><a href="#services">Critical Illness Insurance</a></li>
+                        <li><a href="#services">Disability Insurance</a></li>
+                        <li><a href="#services">Travel Insurance</a></li>
+                        <li><a href="#services">TFSA Plans</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="https://anandvip.github.io/rekha-2-canada/privacy-policy.html" target="_blank" id="privacy">Privacy Policy</a></li>
+                        <li><a href="https://anandvip.github.io/rekha-2-canada/sitemap.xml" target="_blank">Sitemap</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contact Hours</h4>
+                    <ul>
+                        <li>Monday - Friday: 9AM - 6PM</li>
+                        <li>Saturday: By appointment</li>
+                        <li>Sunday: Closed</li>
+                        <li>Emergency Contact: Available 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="privacy-policy" style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-bottom: 30px;">
+                <h4 style="color: white; margin-bottom: 20px;">Privacy Policy</h4>
+                <p style="margin-bottom: 15px;">At Rekha Insurance Services, we are committed to protecting your privacy and personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information in compliance with the Personal Information Protection and Electronic Documents Act (PIPEDA).</p>
+                
+                <h5 style="color: white; margin: 15px 0 10px;">Information We Collect</h5>
+                <p style="margin-bottom: 15px;">We collect only the personal information that is necessary to provide you with insurance services in Ontario, including your name, contact information, and specific insurance needs. This information is collected with your explicit consent.</p>
+                
+                <h5 style="color: white; margin: 15px 0 10px;">How We Use Your Information</h5>
+                <p style="margin-bottom: 15px;">Your personal information is used solely for the purpose of providing you with insurance services, processing your requests, and communicating with you about your insurance needs in Ontario.</p>
+                
+                <h5 style="color: white; margin: 15px 0 10px;">Your Rights</h5>
+                <p style="margin-bottom: 15px;">Under PIPEDA, you have the right to access, correct, and request deletion of your personal information. To exercise these rights, please contact us directly.</p>
+                
+                <h5 style="color: white; margin: 15px 0 10px;">Contact About Privacy</h5>
+                <p>If you have questions or concerns regarding your privacy or this policy, please contact us at privacy@rekhainsurance.com.</p>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Rekha Insurance Services. FSRA-Licensed Insurance Agent in Ontario. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Contact Form -->
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="contactModalTitle" aria-modal="true">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeContactModal()" aria-label="Close contact form">&times;</span>
+            <div class="modal-iframe-container">
+                <iframe src="https://anandvip.github.io/rekha-2-canada/form2.html" class="modal-iframe" title="Contact Form" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Add structured data dynamically
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add breadcrumbs schema
+            const breadcrumbsSchema = {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://anandvip.github.io/rekha-2-canada/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Insurance Services",
+                        "item": "https://anandvip.github.io/rekha-2-canada/#services"
+                    }
+                ]
+            };
+            
+            const breadcrumbsScript = document.createElement('script');
+            breadcrumbsScript.type = 'application/ld+json';
+            breadcrumbsScript.text = JSON.stringify(breadcrumbsSchema);
+            document.head.appendChild(breadcrumbsScript);
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Modal functionality
+        const modal = document.getElementById('contactModal');
+        
+        function openContactModal() {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            
+            // Accessibility improvements
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+            
+            // Set focus to the modal close button
+            setTimeout(() => {
+                document.querySelector('.modal-close').focus();
+            }, 100);
+        }
+        
+        function closeContactModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Allow scrolling again
+            
+            // Accessibility improvements
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+        }
+        
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeContactModal();
+            }
+        }
+        
+        // Keyboard accessibility - close on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.classList.contains('show')) {
+                closeContactModal();
+            }
+        });
+        
+        // Listen for messages from the iframe
+        window.addEventListener('message', function(event) {
+            // Make sure the message is from our form page
+            if (event.origin === 'https://anandvip.github.io') {
+                const data = event.data;
+                
+                // If the message indicates form submission success
+                if (data.type === 'formSubmitted') {
+                    // You can add additional actions here when the form is submitted
+                    console.log('Form submitted successfully');
+                }
+                
+                // If the message indicates to close the modal
+                if (data.type === 'closeModal') {
+                    closeContactModal();
+                }
+            }
+        });
+    </script>
+    
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXX');
+    </script>
+    <!-- End Google Tag Manager -->
+</body>
+</html>
+
+    
