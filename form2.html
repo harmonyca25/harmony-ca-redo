@@ -230,6 +230,56 @@ window.addEventListener('load', function() {
 
 // The rest of your existing form2.html script remains unchanged
 
+// Check for service data in localStorage when the page loads
+window.addEventListener('load', function() {
+    try {
+        // Retrieve from localStorage directly in the iframe
+        const serviceData = localStorage.getItem('selectedService');
+        
+        if (serviceData) {
+            const data = JSON.parse(serviceData);
+            const messageField = document.getElementById('message');
+            
+            if (messageField && data.title && data.text) {
+                // Pre-fill the message field with the service information
+                messageField.value = `I'm interested in: ${data.title}\n\n${data.text}\n\nPlease contact me about this service.`;
+                
+                // Optional: clear the localStorage after using it
+                // localStorage.removeItem('selectedService');
+                
+                // You can also highlight this field
+                messageField.focus();
+                
+                console.log('Service data loaded successfully');
+            }
+        }
+        
+        // Notify the parent window that the iframe has loaded (keep this)
+        window.parent.postMessage('iframeLoaded', '*');
+    } catch (error) {
+        console.error('Error loading service data:', error);
+    }
+});
 
+// Keep the existing message listener as a fallback
+window.addEventListener('message', function(event) {
+    // Check if the message is the service selection data
+    if (event.data && event.data.type === 'serviceSelected') {
+        const serviceData = event.data.data;
+        
+        // Find the message textarea in your form
+        const messageField = document.getElementById('message');
+        
+        if (messageField && serviceData.title && serviceData.text) {
+            // Pre-fill the message field with the service information
+            messageField.value = `I'm interested in: ${serviceData.title}\n\n${serviceData.text}\n\nPlease contact me about this service.`;
+            
+            // You can also highlight this field
+            messageField.focus();
+            
+            console.log('Service data received via postMessage');
+        }
+    }
+});
     
 </script>
