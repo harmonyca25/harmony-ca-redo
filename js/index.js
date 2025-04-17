@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://anandvip.github.io/rekha-2-canada/"
+                "item": "https://harmonyca25.github.io/harmony-ca-redo/"
             },
             {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Insurance Services",
-                "item": "https://anandvip.github.io/rekha-2-canada/#services"
+                "item": "https://harmonyca25.github.io/harmony-ca-redo/#services"
             }
         ]
     };
