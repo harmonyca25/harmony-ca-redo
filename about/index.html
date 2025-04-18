@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HarmonyPlan | Insurance That Grows With You</title>
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fdfdfd;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-template-columns: repeat(12, 1fr);
+      background: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/png/McCartney%20street.png?raw=true') no-repeat center center;
+      background-size: cover;
+      padding: 60px 20px 80px;
+      min-height: 720px;
+    }
+
+    .logo-overlay {
+      grid-column: 2 / span 4;
+      align-self: start;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+
+    .logo-overlay img {
+      height: 40px;
+      border-radius:50%
+    }
+
+    .logo-overlay span {
+      font-family: 'poppins', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #002952;
+    }
+
+    .hero-content {
+      grid-column: 2 / span 10;
+      align-self: center;
+      justify-self: center;
+      background-color: rgba(253, 253, 253, 0.88);
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #002952;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-family: 'Montserrat', serif;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #002952;
+    }
+
+    .cta-btn {
+      background-color: #002952;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Montserrat', serif;
+    }
+
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 80px 40px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .about-text h2 {
+      font-family: 'Montserrat', serif;
+      font-size: 2.2rem;
+      color: #002952;
+      margin-bottom: 20px;
+    }
+
+    .about-text p {
+      font-family:'Montserrat', serif;
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+
+    .about-img {
+      flex: 0 0 350px;
+      height: 350px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/rekhasagwal-profileimage.jpg?raw=true') no-repeat;
+      background-size: 210%;
+      background-position: 40% 20%;
+    }
+
+    .values {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .value {
+      max-width: 300px;
+      text-align: center;
+      margin: 20px 10px;
+    }
+
+    .value h3 {
+      font-family: 'Montserrat', serif;
+      color: #002952;
+      font-size: 1.4rem;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .value p {
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        padding: 40px 20px;
+      }
+
+      .hero-content {
+        grid-column: 1;
+        padding: 20px;
+      }
+
+      .logo-overlay {
+        grid-column: 1;
+        justify-self: start;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .about {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="logo-overlay">
+      <img src="https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/png/hpcalogo.png?raw=true" alt="HarmonyPlan Logo">
+      <span>HarmonyPlan</span>
+    </div>
+    <div class="hero-content">
+      <h1>Insurance That Grows With You</h1>
+      <p>Rooted in care. Guided by clarity. Here when life shifts, quietly and surely.</p>
+      <button class="cta-btn">Let's Begin With What Matters</button>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="about-text">
+      <h2>Meet Rekha:<br>Calm. Capable. Caring.</h2>
+      <p>My name is Rekha, and I’ve walked beside hundreds of Ontario families as they stepped into new chapters—marriage, parenthood, retirement, healing.</p>
+      <p>I listen first. Not to sell—but to understand.</p>
+      <p>I believe insurance isn’t about fear. It’s about preparation, dignity, and keeping your life gentle, even when it changes.</p>
+    </div>
+    <div class="about-img"></div>
+  </section>
+
+  <section class="values">
+    <div class="value">
+      <img src="https://cdn-icons-png.flaticon.com/512/929/929564.png" alt="Clarity Icon" width="50">
+      <h3>Clarity Over Jargon</h3>
+      <p>We explain everything in plain language. No pressure. No push.</p>
+    </div>
+    <div class="value">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50" height="50" fill="#002952">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+        </svg>
+      </div>
+      <h3>Licensed & Local</h3>
+      <p>FSRA-approved. Fully Ontario-based. We know the rhythm of your life here.</p>
+    </div>
+    <div class="value">
+      <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" alt="Family Icon" width="50">
+      <h3>Multi-Generational Mindset</h3>
+      <p>Whether you're buying your first policy or protecting your parents—this plan grows with your family.</p>
+    </div>
+  </section>
+</body>
+</html>
