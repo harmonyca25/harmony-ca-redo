@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HarmonyPlan | Insurance That Grows With You</title>
+  <meta name="description" content="FSRA-licensed insurance agent in Ontario specializing in life, health, critical illness, travel, disability insurance, and retirement planning. Get personalized insurance solutions.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -12,6 +14,75 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      overflow: auto;
+    }
+    
+    .modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: #fdfdfd;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    .close-modal {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #002952;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #002952;
+    }
+    
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .submit-btn {
+      background-color: #002952;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 10px;
     }
 
     /* Main body styles */
@@ -113,6 +184,13 @@
       color: #002952;
     }
 
+    .cta-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
     .cta-btn {
       background-color: #002952;
       color: white;
@@ -122,11 +200,23 @@
       border-radius: 5px;
       cursor: pointer;
       font-family: 'Montserrat', sans-serif;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
 
     .cta-btn:hover {
       background-color: #003e7a;
+      transform: translateY(-2px);
+    }
+    
+    .cta-btn.secondary {
+      background-color: transparent;
+      color: #002952;
+      border: 2px solid #002952;
+    }
+    
+    .cta-btn.secondary:hover {
+      background-color: rgba(0, 41, 82, 0.1);
     }
 
     /* About section styles */
@@ -264,7 +354,10 @@
     <div class="hero-content">
       <h1>Insurance That Grows With You</h1>
       <p>Rooted in care. Guided by clarity. Here when life shifts, quietly and surely.</p>
-      <button class="cta-btn">Let's Begin With What Matters</button>
+      <div class="cta-buttons">
+        <button class="cta-btn" onclick="openContactForm()">Let's Begin With What Matters</button>
+        <a href="https://harmonyplan.ca" class="cta-btn secondary">Explore Our Services</a>
+      </div>
     </div>
   </section>
 
@@ -300,9 +393,89 @@
     </div>
   </section>
 
-  <footer>
-    <p>© 2025 HarmonyPlan. All rights reserved.</p>
-    <p>Insurance solutions designed with care.</p>
+  <!-- Contact Modal -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeContactForm()">&times;</span>
+      <h2 style="color: #002952; margin-bottom: 20px; text-align: center;">Let's Start The Conversation</h2>
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="interest">I'm interested in:</label>
+          <select id="interest" name="interest">
+            <option value="Life Insurance">Life Insurance</option>
+            <option value="Health Insurance">Health Insurance</option>
+            <option value="Critical Illness Insurance">Critical Illness Insurance</option>
+            <option value="Disability Insurance">Disability Insurance</option>
+            <option value="Travel Insurance">Travel Insurance</option>
+            <option value="TFSA Plans">TFSA Plans</option>
+            <option value="Education Plan RESP">Education Plan (RESP)</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">Request Information</button>
+      </form>
+    </div>
+  </div>
+
+  <footer style="background-color: #f5f5f7; padding: 30px 40px; margin-top: 40px; border-top: 1px solid #eaeaea;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 15px;">
+      <p style="margin: 0; color: #333333;">© 2025 HarmonyPlan. All rights reserved.</p>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <a href="tel:+19053301216" style="color: #002952; text-decoration: none; font-weight: 500;">
+          <i class="fas fa-phone"></i> (905) 330-1216
+        </a>
+        <a href="mailto:info@harmonyplan.ca" style="color: #002952; text-decoration: none; font-weight: 500;">
+          <i class="fas fa-envelope"></i> info@harmonyplan.ca
+        </a>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+      <p style="margin: 0; color: #333333;">Insurance solutions designed with care.</p>
+      <p style="margin: 0;"><a href="https://harmonyplan.ca" style="color: #002952; font-weight: 600;">Visit our full website</a></p>
+    </div>
+    <div style="margin-top: 20px; font-size: 0.9rem;">
+      <p style="color: #333333;"><span style="color: #002952; font-weight: 600;">FSRA</span>-Licensed Insurance Agent in Ontario</p>
+    </div>
   </footer>
+  
+  <script>
+    function openContactForm() {
+      document.getElementById('contactModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeContactForm() {
+      document.getElementById('contactModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    
+    // Optional: close modal when clicking outside of it
+    window.onclick = function(event) {
+      const modal = document.getElementById('contactModal');
+      if (event.target === modal) {
+        closeContactForm();
+      }
+    }
+    
+    // Form submission handling
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Here you would normally send the form data to your server
+      // For demo purposes, we'll just close the modal and show an alert
+      alert('Thank you for your interest! We will contact you shortly.');
+      closeContactForm();
+    });
+  </script>
 </body>
 </html>
