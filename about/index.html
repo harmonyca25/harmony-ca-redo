@@ -4,23 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HarmonyPlan | Insurance That Grows With You</title>
- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Reset styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    /* Main body styles */
     body {
       font-family: 'Inter', sans-serif;
       background-color: #fdfdfd;
       color: #1a1a1a;
       line-height: 1.6;
+      /* Initial state with low saturation */
+      filter: saturate(0.2);
+      /* Animation to gradually increase saturation */
+      animation: saturateEffect 55s ease-in forwards;
     }
 
+    /* Animation keyframes for the saturation effect */
+    @keyframes saturateEffect {
+      from {
+        filter: saturate(0.2);
+      }
+      to {
+        filter: saturate(1);
+      }
+    }
+
+    /* Hero section styles */
     .hero {
       display: grid;
       grid-template-rows: auto 1fr;
@@ -44,11 +60,11 @@
 
     .logo-overlay img {
       height: 40px;
-      border-radius:50%
+      border-radius: 50%;
     }
 
     .logo-overlay span {
-      font-family: 'poppins', serif;
+      font-family: 'Poppins', sans-serif;
       font-size: 1.5rem;
       font-weight: 600;
       color: #002952;
@@ -63,6 +79,24 @@
       border-radius: 12px;
       max-width: 800px;
       text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 41, 82, 0.1);
+      /* Animation for rising from bottom */
+      animation: riseUp 1.5s ease-out forwards;
+      /* Initial position (below its final position) */
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    
+    /* Animation for hero content rising up */
+    @keyframes riseUp {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     .hero h1 {
@@ -73,7 +107,7 @@
     }
 
     .hero p {
-      font-family: 'Montserrat', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.1rem;
       margin-bottom: 30px;
       color: #002952;
@@ -87,9 +121,15 @@
       font-size: 1rem;
       border-radius: 5px;
       cursor: pointer;
-      font-family: 'Montserrat', serif;
+      font-family: 'Montserrat', sans-serif;
+      transition: background-color 0.3s ease;
     }
 
+    .cta-btn:hover {
+      background-color: #003e7a;
+    }
+
+    /* About section styles */
     .about {
       display: flex;
       flex-wrap: wrap;
@@ -105,14 +145,14 @@
     }
 
     .about-text h2 {
-      font-family: 'Montserrat', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 2.2rem;
       color: #002952;
       margin-bottom: 20px;
     }
 
     .about-text p {
-      font-family:'Montserrat', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.2rem;
       margin-bottom: 16px;
     }
@@ -125,8 +165,10 @@
       background: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/rekhasagwal-profileimage.jpg?raw=true') no-repeat;
       background-size: 210%;
       background-position: 40% 20%;
+      box-shadow: 0 4px 20px rgba(0, 41, 82, 0.1);
     }
 
+    /* Values section styles */
     .values {
       display: flex;
       flex-wrap: wrap;
@@ -140,10 +182,17 @@
       max-width: 300px;
       text-align: center;
       margin: 20px 10px;
+      padding: 20px;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .value:hover {
+      transform: translateY(-5px);
     }
 
     .value h3 {
-      font-family: 'Montserrat', serif;
+      font-family: 'Montserrat', sans-serif;
       color: #002952;
       font-size: 1.4rem;
       margin-top: 10px;
@@ -154,6 +203,29 @@
       font-size: 0.95rem;
     }
 
+    .value img, .value svg {
+      transition: transform 0.3s ease;
+    }
+
+    .value:hover img, .value:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* Footer section */
+    footer {
+      background-color: #002952;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    footer p {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    /* Responsive design */
     @media (max-width: 768px) {
       .hero {
         grid-template-columns: 1fr;
@@ -164,6 +236,8 @@
       .hero-content {
         grid-column: 1;
         padding: 20px;
+        /* Keep the animation in mobile view */
+        animation: riseUp 1.5s ease-out forwards;
       }
 
       .logo-overlay {
@@ -197,9 +271,9 @@
   <section class="about">
     <div class="about-text">
       <h2>Meet Rekha:<br>Calm. Capable. Caring.</h2>
-      <p>My name is Rekha, and I’ve walked beside hundreds of Ontario families as they stepped into new chapters—marriage, parenthood, retirement, healing.</p>
+      <p>My name is Rekha, and I've walked beside hundreds of Ontario families as they stepped into new chapters—marriage, parenthood, retirement, healing.</p>
       <p>I listen first. Not to sell—but to understand.</p>
-      <p>I believe insurance isn’t about fear. It’s about preparation, dignity, and keeping your life gentle, even when it changes.</p>
+      <p>I believe insurance isn't about fear. It's about preparation, dignity, and keeping your life gentle, even when it changes.</p>
     </div>
     <div class="about-img"></div>
   </section>
@@ -225,5 +299,10 @@
       <p>Whether you're buying your first policy or protecting your parents—this plan grows with your family.</p>
     </div>
   </section>
+
+  <footer>
+    <p>© 2025 HarmonyPlan. All rights reserved.</p>
+    <p>Insurance solutions designed with care.</p>
+  </footer>
 </body>
 </html>
