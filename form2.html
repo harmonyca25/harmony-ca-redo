@@ -222,8 +222,7 @@ function fillFormWithServiceData(title, text) {
 window.addEventListener('load', function() {
     try {
         // Try to get data from localStorage (check both possible keys)
-        const serviceData = localStorage.getItem('selectedInsuranceService') || 
-                           localStorage.getItem('selectedService');
+        const serviceData = localStorage.getItem('selectedInsuranceService');
         
         if (serviceData) {
             const data = JSON.parse(serviceData);
