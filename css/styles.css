@@ -918,7 +918,7 @@ footer {
     visibility: hidden;
     min-width: 250px;
     background-color: var(--dark-color);
-    color: white;
+    color: #e67e22;
     text-align: center;
     border-radius: 4px;
     padding: 16px;
