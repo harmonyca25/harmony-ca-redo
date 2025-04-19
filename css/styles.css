@@ -1206,3 +1206,155 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+/* form styles*/
+/* Modal Form Styles */
+.modal-content {
+    padding: 20px 30px;
+}
+
+/* Form Styles */
+#contact-section {
+    font-family: 'Poppins', sans-serif;
+}
+
+#contactForm input, 
+#contactForm textarea {
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#contactForm label {
+    display: block; 
+    margin-bottom: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#contactForm > div {
+    margin-bottom: 15px;
+}
+
+#contactForm button {
+    background-color: #2c3e50; 
+    color: white; 
+    padding: 10px 15px; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+#thankYouMessage {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+#thankYouMessage button {
+    background-color: #2c3e50; 
+    color: white; 
+    padding: 8px 12px; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    margin-top: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Fix consent checkbox alignment */
+#contactForm input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+#contactForm label[for="consent"] {
+    display: inline;
+    vertical-align: middle;
+}
+
+/* Animation styles */
+@keyframes circle-stroke {
+    100% { stroke-dashoffset: 0; }
+}
+@keyframes check-stroke {
+    100% { stroke-dashoffset: 0; }
+}
+@keyframes scale {
+    0%, 100% { transform: none; }
+    50% { transform: scale3d(1.1, 1.1, 1); }
+}
+@keyframes fill {
+    100% { box-shadow: inset 0px 0px 0px 3px #4BB543; }
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(75, 181, 67, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0); }
+}
+
+/* Checkmark animation styles */
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke: #4BB543;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #4BB543;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    margin: 0 auto;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 157;
+    stroke-dashoffset: 157;
+    stroke-width: 1;
+    stroke-miterlimit: 10;
+    stroke: #4BB543;
+    animation: circle-stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke: #4BB543;
+    stroke-width: 2;
+    animation: check-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+/* Highlight classes for form feedback */
+.message-highlight {
+    animation: pulse 1s;
+    border: 2px solid #4BB543 !important;
+    transition: all 0.3s ease;
+}
+
+.message-error {
+    border: 2px solid #FF6347 !important;
+    transition: all 0.3s ease;
+}
+
+/* Toast notification */
+#toastNotification {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    padding: 16px;
+    position: fixed;
+    z-index: 9999;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transition: opacity 0.3s;
+}
