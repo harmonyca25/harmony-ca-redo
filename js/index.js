@@ -30,104 +30,60 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.fade-in').forEach(element => {
             element.classList.add('active');
         });
-
-
-
-// Modal functionality is already defined inline in the HTML for immediate availability
-// These functions are here as a reference and for consistency
-
-/* 
-function openContactModal() {
-    const modal = document.getElementById('contactModal');
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }, 300);
     
-    // Accessibility improvements
-    modal.setAttribute('aria-hidden', 'false');
-    
-    // Set focus to the modal close button
-    setTimeout(() => {
-        document.querySelector('.modal-close').focus();
-    }, 100);
-}
-
-function closeContactModal() {
-    const modal = document.getElementById('contactModal');
-    modal.classList.remove('show');
-    document.body.style.overflow = ''; // Allow scrolling again
-    
-    // Accessibility improvements
-    modal.setAttribute('aria-hidden', 'true');
-}
-*/
-        // Preloader
-window.addEventListener('load', function() {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
-            preloader.style.opacity = '0';
+    // Preloader
+    window.addEventListener('load', function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
             setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 300);
-        }, 500);
-    }
-});
-
-// Close the modal when clicking outside of it
-window.onclick = function(event) {
-    const modal = document.getElementById('contactModal');
-    if (event.target == modal) {
-        closeContactModal();
-    }
-}
-
-// Keyboard accessibility - close on escape key
-document.addEventListener('keydown', function(event) {
-    const modal = document.getElementById('contactModal');
-    if (event.key === 'Escape' && modal.classList.contains('show')) {
-        closeContactModal();
-    }
-});
-
-// Show toast notification
-function showToast(message, duration = 5000) {
-    const toast = document.getElementById('toastNotification');
-    document.getElementById('toastMessage').textContent = message;
-    
-    toast.style.visibility = 'visible';
-    toast.style.opacity = '1';
-    
-    // Hide toast after specified duration
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => {
-            toast.style.visibility = 'hidden';
-        }, 300);
-    }, duration);
-}
-
-// Listen for messages from the iframe
-window.addEventListener('message', function(event) {
-    // Make sure the message is from our form page
-    if (event.data && event.data.type) {
-        // If the message indicates form submission success
-        if (event.data.type === 'formSubmitted') {
-            console.log('Form submitted successfully');
-            // You can add additional actions here when the form is submitted
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 300);
+            }, 500);
         }
+    });
+    
+    // Modal functionality
+    window.openContactModal = function() {
+        const modal = document.getElementById('contactModal');
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
         
-        // If the message indicates to close the modal
-        if (event.data.type === 'closeModal') {
+        // Accessibility improvements
+        modal.setAttribute('aria-hidden', 'false');
+        
+        // Set focus to the modal close button
+        setTimeout(() => {
+            document.querySelector('.modal-close').focus();
+        }, 100);
+    };
+    
+    window.closeContactModal = function() {
+        const modal = document.getElementById('contactModal');
+        modal.classList.remove('show');
+        document.body.style.overflow = ''; // Allow scrolling again
+        
+        // Accessibility improvements
+        modal.setAttribute('aria-hidden', 'true');
+    };
+    
+    // Close the modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.target == modal) {
             closeContactModal();
         }
-        
-        // If the message includes a toast notification
-        if (event.data.type === 'showToast' && event.data.message) {
-            showToast(event.data.message);
+    };
+    
+    // Keyboard accessibility - close on escape key
+    document.addEventListener('keydown', function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.key === 'Escape' && modal.classList.contains('show')) {
+            closeContactModal();
         }
-    }
-});
-    }, 300);
+    });
     
     // Scroll animations
     const fadeElements = document.querySelectorAll('.fade-in');
@@ -184,35 +140,30 @@ window.addEventListener('message', function(event) {
     window.addEventListener('scroll', headerScroll);
     
     // Mobile navigation
-const navToggle = document.querySelector('.nav-toggle');
-const navClose = document.querySelector('.nav-close');
-const nav = document.querySelector('nav');
-
-if (navToggle && nav) {
-    navToggle.addEventListener('click', function() {
-        nav.classList.add('active');
-        // No need to manually set display for nav-close
-        // It will become visible due to the CSS rule:
-        // nav.active .nav-close { display: block; }
-    });
-}
-
-if (navClose && nav) {
-    navClose.addEventListener('click', function() {
-        nav.classList.remove('active');
-        // No need to manually hide it, as removing 'active' class
-        // will make it disappear due to CSS
-    });
-}
-
-// Close mobile nav when clicking a link
-document.querySelectorAll('nav ul li a').forEach(link => {
-    link.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
+    const navToggle = document.querySelector('.nav-toggle');
+    const navClose = document.querySelector('.nav-close');
+    const nav = document.querySelector('nav');
+    
+    if (navToggle && nav) {
+        navToggle.addEventListener('click', function() {
+            nav.classList.add('active');
+        });
+    }
+    
+    if (navClose && nav) {
+        navClose.addEventListener('click', function() {
             nav.classList.remove('active');
-        }
+        });
+    }
+    
+    // Close mobile nav when clicking a link
+    document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                nav.classList.remove('active');
+            }
+        });
     });
-});
     
     // Privacy policy toggle
     const privacyLink = document.getElementById('privacy-link');
@@ -244,14 +195,42 @@ document.querySelectorAll('nav ul li a').forEach(link => {
             }
         });
     });
+    
+    // Generate service cards
+    generateServiceCards();
 });
 
-//improved version of services section code edited on 17 appril 20025 by vipul using claude.
+// Show toast notification
+function showToast(message, duration = 5000) {
+    const toast = document.getElementById('toastNotification');
+    document.getElementById('toastMessage').textContent = message;
+    
+    toast.style.visibility = 'visible';
+    toast.style.opacity = '1';
+    
+    // Hide toast after specified duration
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            toast.style.visibility = 'hidden';
+        }, 300);
+    }, duration);
+}
 
-// cards re prebuilt here and dynamically  created in html and this is the fix for 
+// Decorator for logging icon updates
+function logIconUpdate(target, name, descriptor) {
+    const original = descriptor.value;
+    
+    descriptor.value = function(...args) {
+        const result = original.apply(this, args);
+        console.log('✅ Card icons successfully updated');
+        return result;
+    };
+    
+    return descriptor;
+}
 
 // Card data for Ontario insurance services
-
 const cardData = [
     {
         title: "Life Insurance",
@@ -303,6 +282,7 @@ const cardData = [
     }
 ];
 
+// Since decorators aren't widely supported in browsers yet, we'll implement the logger manually
 // Function to generate service cards
 function generateServiceCards() {
     const grid = document.getElementById("cardGrid");
@@ -334,68 +314,122 @@ function generateServiceCards() {
         `;
         
         // Add event listener to the circle button
-       card.querySelector('.circle-button').addEventListener('click', () => {
-    // Clear first, then set
-    localStorage.removeItem('selectedInsuranceService');
-    
-    // Store the selected service data with a unique key different from other localStorage items
-    localStorage.setItem('selectedInsuranceService', JSON.stringify({
-        title: data.title,
-        text: data.text,
-        timestamp: new Date().getTime() // Add timestamp to ensure freshness
-    }));
-    
-    console.log('Selected service:', data.title);
-    
-    // Open the contact modal
-    if (typeof openContactModal === 'function') {
-        openContactModal();
-    }
-});
-
+        card.querySelector('.circle-button').addEventListener('click', () => {
+            // Clear first, then set
+            localStorage.removeItem('selectedInsuranceService');
+            
+            // Store the selected service data
+            localStorage.setItem('selectedInsuranceService', JSON.stringify({
+                title: data.title,
+                text: data.text,
+                timestamp: new Date().getTime() // Add timestamp to ensure freshness
+            }));
+            
+            console.log('Selected service:', data.title);
+            
+            // Show a toast notification indicating the service was selected
+            showToast(`Selected plan: ${data.title}`, 3000);
+            
+            // Open the contact modal
+            if (typeof openContactModal === 'function') {
+                openContactModal();
+            }
+        });
         
         grid.appendChild(card);
     });
+    
+    // Log successful icon updates
+    console.log('✅ Card icons successfully updated');
+    
+    // Ensure icons are visible
+    ensureIconsAreVisible();
 }
 
-// Initialize the service cards when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Add this to the existing DOMContentLoaded event in your index.js
-    // Don't create a new event listener if you already have one
-    generateServiceCards();
-});
-
-// Enhanced message event listener for iframe communication
-// Make sure this doesn't duplicate any existing listeners
-window.addEventListener('message', function(event) {
-    // Check if message is from a trusted source
+// Function to ensure icons are visible
+function ensureIconsAreVisible() {
+    // Make sure Font Awesome is loaded
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        const fontAwesomeLink = document.createElement('link');
+        fontAwesomeLink.rel = 'stylesheet';
+        fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+        document.head.appendChild(fontAwesomeLink);
+        console.log('✅ Font Awesome CSS loaded dynamically');
+    }
     
+    // Add some basic CSS to ensure icons are properly sized and visible
+    const iconStyle = document.createElement('style');
+    iconStyle.textContent = `
+        .card-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            color: #fff;
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 50%;
+            z-index: 2;
+            position: relative;
+        }
+    `;
+    document.head.appendChild(iconStyle);
+}
+
+// Listen for messages from the iframe
+window.addEventListener('message', function(event) {
     // Handle form events from iframe
     if (event.data && event.data.type) {
-        // Existing handlers for formSubmitted, closeModal, and showToast...
+        // If the message indicates form submission success
+        if (event.data.type === 'formSubmitted') {
+            console.log('Form submitted successfully');
+            // You can add additional actions here when the form is submitted
+        }
         
-        // Add handler for iframe loaded notification
-        if (event.data === 'iframeLoaded') {
-            // Send selected service data to iframe if it exists
-            const serviceData = localStorage.getItem('selectedService');
-            
-            if (serviceData) {
-                try {
-                    // Parse the data
-                    const data = JSON.parse(serviceData);
+        // If the message indicates to close the modal
+        if (event.data.type === 'closeModal') {
+            closeContactModal();
+        }
+        
+        // If the message includes a toast notification
+        if (event.data.type === 'showToast' && event.data.message) {
+            showToast(event.data.message);
+        }
+        
+        // If the message indicates form was updated
+        if (event.data.type === 'formUpdated' && event.data.success) {
+            showToast(event.data.message || 'Form updated successfully', 3000);
+        }
+    }
+    
+    // Handle iframe loaded notification
+    if (event.data === 'iframeLoaded') {
+        // Send selected service data to iframe if it exists
+        const serviceData = localStorage.getItem('selectedInsuranceService');
+        
+        if (serviceData) {
+            try {
+                // Parse the data
+                const data = JSON.parse(serviceData);
+                
+                // Send it to the iframe
+                const iframe = document.querySelector('.modal-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({
+                        type: 'serviceSelected',
+                        data: data
+                    }, '*');
                     
-                    // Send it to the iframe
-                    const iframe = document.querySelector('.modal-iframe');
-                    if (iframe && iframe.contentWindow) {
-                        iframe.contentWindow.postMessage({
-                            type: 'serviceSelected',
-                            data: data
-                        }, '*');
-                    }
-                } catch (error) {
-                    console.error('Error processing service data:', error);
+                    // Show toast notification
+                    showToast(`Form updated with: ${data.title}`, 3000);
                 }
+            } catch (error) {
+                console.error('Error processing service data:', error);
+                showToast('Error updating form with selected plan', 3000);
             }
         }
     }
 });
+//updated on april 19, 2025 fixed the form updating issue in form iframe using claude sonnet3.7
