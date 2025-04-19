@@ -66,7 +66,6 @@
 
 <script>
 // Animation styles
-// Animation styles
 const style = document.createElement('style');
 style.textContent = `
     @keyframes circle-stroke {
@@ -80,10 +79,25 @@ style.textContent = `
         50% { transform: scale3d(1.1, 1.1, 1); }
     }
     @keyframes fill {
-        100% { box-shadow: inset 0px 0px 0px 3px #4BB543; }
+        100% { box-shadow: inset 0px 0px 0px 3px #4BB543; } 
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(75, 181, 67, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0); }
+    }
+    .message-highlight {
+        animation: pulse 1s;
+        border: 2px solid #4BB543 !important;
+        transition: all 0.3s ease;
+    }
+    .message-error {
+        border: 2px solid #FF6347 !important;
+        transition: all 0.3s ease;
     }
 `;
 document.head.appendChild(style);
+
 // Initialize Firebase using the config stored in GitHub Secrets
 let firebaseApp;
 let db;
@@ -180,6 +194,14 @@ document.getElementById('contactForm').addEventListener('submit', async function
         document.getElementById('form-container').style.display = 'none';
         document.getElementById('thankYouMessage').style.display = 'block';
         
+        // Notify parent window that form was submitted
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'formSubmitted',
+                message: `Thank you, ${name}! Your message has been submitted.`
+            }, '*');
+        }
+        
     } catch (error) {
         console.error('Error submitting form:', error);
         showToast('There was an error submitting your message. Please try again.');
@@ -191,65 +213,149 @@ function resetForm() {
     document.getElementById('contactForm').reset();
     document.getElementById('form-container').style.display = 'block';
     document.getElementById('thankYouMessage').style.display = 'none';
+    
+    // Remove any highlighting from the message field
+    const messageField = document.getElementById('message');
+    if (messageField) {
+        messageField.classList.remove('message-highlight', 'message-error');
+    }
 }
 
 // Function to show toast notification
-function showToast(message) {
+function showToast(message, duration = 5000) {
     const toast = document.getElementById('toastNotification');
     document.getElementById('toastMessage').textContent = message;
     
     toast.style.visibility = 'visible';
     
-    // Hide toast after 5 seconds
+    // Hide toast after specified duration
     setTimeout(() => {
         toast.style.visibility = 'hidden';
-    }, 5000);
+    }, duration);
+    
+    // Also send toast message to parent window
+    if (window.parent) {
+        window.parent.postMessage({
+            type: 'showToast',
+            message: message
+        }, '*');
+    }
 }
-
-// --- CLEAN IMPLEMENTATION FOR SERVICE DATA HANDLING ---
 
 // Function to fill form with service data
 function fillFormWithServiceData(title, text) {
     const messageField = document.getElementById('message');
     if (messageField) {
+        // Set the value
         messageField.value = `I'm interested in: ${title}\n\n${text}\n\nPlease contact me about this service.`;
+        
+        // Highlight the field to show it was updated
+        messageField.classList.remove('message-error');
+        messageField.classList.add('message-highlight');
+        
+        // Focus on the field
         messageField.focus();
+        
+        // Notify parent window that form was updated
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'formUpdated',
+                success: true,
+                message: `Form updated with: ${title}`
+            }, '*');
+        }
+        
         console.log('Form pre-filled with:', title);
+        return true;
+    }
+    return false;
+}
+
+// Function to send iframe loaded message with retry logic
+function sendIframeLoadedMessage(retryCount = 0) {
+    const maxRetries = 5;
+    
+    if (window.parent) {
+        window.parent.postMessage('iframeLoaded', '*');
+        
+        // If we've already tried too many times, give up
+        if (retryCount >= maxRetries) {
+            console.warn('Max retries reached for iframe loaded message');
+            
+            // Mark the message field to show error
+            const messageField = document.getElementById('message');
+            if (messageField && !messageField.value) {
+                messageField.classList.add('message-error');
+            }
+            return;
+        }
+        
+        // Check if we need to retry after a delay
+        setTimeout(() => {
+            const messageField = document.getElementById('message');
+            const hasContent = messageField && 
+                               messageField.value && 
+                               messageField.value.includes('I\'m interested in:');
+            
+            // If no content yet, retry
+            if (!hasContent) {
+                sendIframeLoadedMessage(retryCount + 1);
+            }
+        }, 500); // 500ms retry interval
     }
 }
 
-// Single load event listener
+// Handle initial service data on page load
 window.addEventListener('load', function() {
     try {
-        // Try to get data from localStorage (check both possible keys)
+        // Only use the standardized key
         const serviceData = localStorage.getItem('selectedInsuranceService');
         
+        let success = false;
         if (serviceData) {
             const data = JSON.parse(serviceData);
             if (data && data.title && data.text) {
-                fillFormWithServiceData(data.title, data.text);
+                success = fillFormWithServiceData(data.title, data.text);
                 
                 // Clear localStorage after using
                 localStorage.removeItem('selectedInsuranceService');
-                localStorage.removeItem('selectedService');
             }
         }
         
-        // Notify parent that iframe is loaded
-        if (window.parent) {
-            window.parent.postMessage('iframeLoaded', '*');
+        // If not successful, mark the message area
+        if (!success) {
+            const messageField = document.getElementById('message');
+            if (messageField && !messageField.value) {
+                messageField.classList.add('message-error');
+            }
         }
+        
+        // Notify parent that iframe is loaded, with retry logic
+        sendIframeLoadedMessage();
+        
     } catch (error) {
         console.error('Error processing service data:', error);
+        showToast('Error loading form data');
     }
 });
 
-// Single message event listener (backup method)
+// Listen for messages from parent window
 window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'serviceSelected' && 
-        event.data.data && event.data.data.title && event.data.data.text) {
+    // Handle service selected message
+    if (event.data && 
+        event.data.type === 'serviceSelected' && 
+        event.data.data && 
+        event.data.data.title && 
+        event.data.data.text) {
         
         fillFormWithServiceData(event.data.data.title, event.data.data.text);
     }
+    
+    // Handle close modal message (for future use)
+    if (event.data && event.data.type === 'closeModal') {
+        // If we have any close modal functionality in the iframe
+        console.log('Received close modal message from parent');
+    }
 });
+    //updated on april 19 2025 the form loads as iframe in parent doc and retrieves the card data correctly and updates the message area properly and accurately. there was a confusion in retival from localstorage in parent window.
 </script>
