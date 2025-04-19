@@ -223,14 +223,14 @@ header.scrolled {
 }
 
 .logo-img {
-    width: 75px;
-    height: 75px;
+    width: 95px;
+    height: 95px;
     border-radius: 5px;
-    background-image: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/png/hpcalogo.png?raw=true');/*va added it*/
+    background-image: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/png/hpcalogo_no_bg.png?raw=true');/*va added it*/
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
-    border:0.2pt solid
+/*     border:0.2pt solid */
 }
 
 .logo-text {
