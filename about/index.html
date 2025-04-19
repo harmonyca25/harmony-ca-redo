@@ -448,34 +448,310 @@
       <p style="color: #333333;"><span style="color: #002952; font-weight: 600;">FSRA</span>-Licensed Insurance Agent in Ontario</p>
     </div>
   </footer>
-  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<!-- Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <script>
-    function openContactForm() {
-      document.getElementById('contactModal').classList.add('show');
-      document.body.style.overflow = 'hidden';
+
+    // Initialize Firebase when page loads
+let db;
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Firebase
+  try {
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7T1RFr4Fm1iPlDGDYniz8I4LoDY8iSfc",
+      authDomain: "rekhacanada-73839.firebaseapp.com",
+      projectId: "rekhacanada-73839",
+      storageBucket: "rekhacanada-73839.firebasestorage.app",
+      messagingSenderId: "665190770519",
+      appId: "1:665190770519:web:9f996932356b3d4679c012"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    console.log('Firebase initialized successfully');
+  } catch (error) {
+    console.error('Error initializing Firebase:', error);
+  }
+  
+  // Enhance modal styles via JavaScript
+  const styleElement = document.createElement('style');
+  styleElement.textContent = `
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      overflow: hidden;
     }
     
-    function closeContactForm() {
-      document.getElementById('contactModal').classList.remove('show');
-      document.body.style.overflow = '';
+    .modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    // Optional: close modal when clicking outside of it
-    window.onclick = function(event) {
-      const modal = document.getElementById('contactModal');
-      if (event.target === modal) {
-        closeContactForm();
+    .modal-content {
+      background-color: #fdfdfd;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    .close-modal {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #002952;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #002952;
+    }
+    
+    .form-group input, 
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    .consent-group {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    
+    .consent-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+      margin-top: 4px;
+    }
+    
+    .consent-group label {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      font-weight: normal;
+    }
+    
+    .submit-btn {
+      background-color: #002952;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    
+    @media (max-width: 480px) {
+      .modal-content {
+        width: 95%;
+        padding: 15px;
+        max-height: 85vh;
+      }
+      
+      .form-group input, 
+      .form-group select,
+      .form-group textarea {
+        padding: 12px;
+      }
+      
+      .submit-btn {
+        padding: 14px 20px;
       }
     }
-    
-    // Form submission handling
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
+  `;
+  document.head.appendChild(styleElement);
+  
+  // Create or update the contact modal HTML
+  const modalDiv = document.getElementById('contactModal') || document.createElement('div');
+  modalDiv.id = 'contactModal';
+  modalDiv.className = 'modal';
+  modalDiv.innerHTML = `
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeContactForm()">&times;</span>
+      <h2 style="color: #002952; margin-bottom: 20px; text-align: center;">Let's Start The Conversation</h2>
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="name">Name*</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone*</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email*</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="interest">I'm interested in:*</label>
+          <select id="interest" name="interest">
+            <option value="Life Insurance">Life Insurance</option>
+            <option value="Health Insurance">Health Insurance</option>
+            <option value="Critical Illness Insurance">Critical Illness Insurance</option>
+            <option value="Disability Insurance">Disability Insurance</option>
+            <option value="Travel Insurance">Travel Insurance</option>
+            <option value="TFSA Plans">TFSA Plans</option>
+            <option value="Education Plan RESP">Education Plan (RESP)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message*</label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </div>
+        <div class="form-group consent-group">
+          <input type="checkbox" id="consent" name="consent" required>
+          <label for="consent">I consent to the collection and use of my personal information as described in the privacy policy. I understand I may be contacted via email or phone regarding my insurance inquiry.*</label>
+        </div>
+        <button type="submit" class="submit-btn">Request Information</button>
+      </form>
+    </div>
+  `;
+  
+  // Add modal to body if it doesn't exist
+  if (!document.getElementById('contactModal')) {
+    document.body.appendChild(modalDiv);
+  }
+  
+  // Set up event listeners
+  const interestDropdown = document.getElementById('interest');
+  if (interestDropdown) {
+    interestDropdown.addEventListener('change', updateMessageFromInterest);
+  }
+  
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      // Here you would normally send the form data to your server
-      // For demo purposes, we'll just close the modal and show an alert
+      
+      if (!document.getElementById('consent').checked) {
+        alert('You must provide consent to submit this form.');
+        return;
+      }
+      
+      submitFormToFirebase();
+    });
+  }
+});
+
+// Function to open the contact form modal
+function openContactForm() {
+  const modal = document.getElementById('contactModal');
+  
+  // Reset any previous scroll position
+  if (modal.querySelector('.modal-content')) {
+    modal.querySelector('.modal-content').scrollTop = 0;
+  }
+  
+  // Show modal with proper centering
+  modal.classList.add('show');
+  
+  // Prevent body scrolling while modal is open
+  document.body.style.overflow = 'hidden';
+  
+  // Force layout recalculation to ensure proper positioning
+  window.requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+  });
+  
+  // Set initial message based on interest
+  updateMessageFromInterest();
+}
+
+// Function to close the contact form modal
+function closeContactForm() {
+  document.getElementById('contactModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// Function to update message field based on selected interest
+function updateMessageFromInterest() {
+  const interest = document.getElementById('interest').value;
+  const messageField = document.getElementById('message');
+  if (messageField) {
+    messageField.value = `I'm interested in learning more about ${interest} options and would appreciate information about coverage and rates.`;
+  }
+}
+
+// Function to submit form data to Firebase
+function submitFormToFirebase() {
+  if (!db) {
+    alert('Database connection not established. Please refresh and try again.');
+    return;
+  }
+  
+  // Get form values
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const interest = document.getElementById('interest').value;
+  const message = document.getElementById('message').value;
+  const consent = document.getElementById('consent').checked;
+  
+  // Create data object with proper field mapping for dashboard compatibility
+  const formData = {
+    name: name,
+    email: email,
+    phone: phone,
+    insurance: interest, // Maps to 'insurance' for dashboard compatibility
+    message: message,
+    consent: consent,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    status: "new" // Default status for new submissions
+  };
+  
+  // Submit to Firebase
+  db.collection('contactSubmissions').add(formData)
+    .then(() => {
       alert('Thank you for your interest! We will contact you shortly.');
       closeContactForm();
+    })
+    .catch(error => {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your request. Please try again.');
     });
+}
+
+// Close modal when clicking outside content
+window.onclick = function(event) {
+  const modal = document.getElementById('contactModal');
+  if (event.target === modal) {
+    closeContactForm();
+  }
+};
   </script>
 </body>
 </html>
