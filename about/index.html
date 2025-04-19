@@ -114,6 +114,17 @@
       /* Animation to gradually increase saturation */
       animation: saturateEffect 55s ease-in forwards;
 }
+    .logo-plan {
+    color: #e67e22;
+    font-weight: 600;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+    .logo-harmony {
+    color: #34495e;
+    font-weight: 600;
+    position: relative;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
     
 
     /* Animation keyframes for the saturation effect */
@@ -147,6 +158,16 @@
       padding: 8px 16px;
       border-radius: 8px;
     }
+    .logo-text {
+    display: flex;
+    align-items: center;
+    font-size: 1.7rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    font-feature-settings: "kern", "liga", "calt";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
     .logo-overlay img {
       height: 40px;
@@ -368,7 +389,11 @@
   <section class="hero">
     <div class="logo-overlay">
       <img src="https://github.com/harmonyca25/harmony-ca-redo/blob/main/img/png/hpcalogo_no_bg.png?raw=true" alt="HarmonyPlan Logo">
-      <span>HarmonyPlan</span>
+      <div class="logo-text">
+        <span class="logo-harmony">Harmony</span>
+        <span class="logo-plan">Plan</span>
+      </div>
+      
     </div>
     <div class="hero-content">
       <h1>Insurance That Grows With You</h1>
