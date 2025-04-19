@@ -25,6 +25,39 @@ document.addEventListener('DOMContentLoaded', function() {
     breadcrumbsScript.text = JSON.stringify(breadcrumbsSchema);
     document.head.appendChild(breadcrumbsScript);
     
+    // Add animation styles
+    const animationStyles = document.createElement('style');
+    animationStyles.textContent = `
+        @keyframes circle-stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes check-stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+        @keyframes fill {
+            100% { box-shadow: inset 0px 0px 0px 3px #4BB543; }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(75, 181, 67, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0); }
+        }
+        .message-highlight {
+            animation: pulse 1s;
+            border: 2px solid #4BB543 !important;
+            transition: all 0.3s ease;
+        }
+        .message-error {
+            border: 2px solid #FF6347 !important;
+            transition: all 0.3s ease;
+        }
+    `;
+    document.head.appendChild(animationStyles);
+    
     // Initialize animations with a slight delay
     setTimeout(() => {
         document.querySelectorAll('.fade-in').forEach(element => {
@@ -32,58 +65,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 300);
     
-    // Preloader
-    window.addEventListener('load', function() {
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 300);
-            }, 500);
-        }
-    });
+    // Generate service cards
+    generateServiceCards();
     
-    // Modal functionality
-    window.openContactModal = function() {
-        const modal = document.getElementById('contactModal');
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-        
-        // Accessibility improvements
-        modal.setAttribute('aria-hidden', 'false');
-        
-        // Set focus to the modal close button
-        setTimeout(() => {
-            document.querySelector('.modal-close').focus();
-        }, 100);
-    };
+    // Initialize Firebase
+    initializeFirebase();
     
-    window.closeContactModal = function() {
-        const modal = document.getElementById('contactModal');
-        modal.classList.remove('show');
-        document.body.style.overflow = ''; // Allow scrolling again
-        
-        // Accessibility improvements
-        modal.setAttribute('aria-hidden', 'true');
-    };
-    
-    // Close the modal when clicking outside of it
-    window.onclick = function(event) {
-        const modal = document.getElementById('contactModal');
-        if (event.target == modal) {
-            closeContactModal();
-        }
-    };
-    
-    // Keyboard accessibility - close on escape key
-    document.addEventListener('keydown', function(event) {
-        const modal = document.getElementById('contactModal');
-        if (event.key === 'Escape' && modal.classList.contains('show')) {
-            closeContactModal();
-        }
-    });
+    // Setup form event handlers
+    setupFormHandlers();
     
     // Scroll animations
     const fadeElements = document.querySelectorAll('.fade-in');
@@ -196,9 +185,66 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Generate service cards
-    generateServiceCards();
+    // Preloader
+    window.addEventListener('load', function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 300);
+            }, 500);
+        }
+    });
+    
+    // Modal functionality
+    setupModalHandlers();
 });
+
+// Modal handling functions
+function setupModalHandlers() {
+    // Close the modal when clicking outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.target == modal) {
+            closeContactModal();
+        }
+    };
+    
+    // Keyboard accessibility - close on escape key
+    document.addEventListener('keydown', function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.key === 'Escape' && modal.classList.contains('show')) {
+            closeContactModal();
+        }
+    });
+}
+
+// Modal open function
+function openContactModal() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    
+    // Accessibility improvements
+    modal.setAttribute('aria-hidden', 'false');
+    
+    // Set focus to the modal close button
+    setTimeout(() => {
+        document.querySelector('.modal-close').focus();
+    }, 100);
+}
+
+// Modal close function
+function closeContactModal() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = ''; // Allow scrolling again
+    
+    // Accessibility improvements
+    modal.setAttribute('aria-hidden', 'true');
+}
 
 // Show toast notification
 function showToast(message, duration = 5000) {
@@ -217,17 +263,27 @@ function showToast(message, duration = 5000) {
     }, duration);
 }
 
-// Decorator for logging icon updates
-function logIconUpdate(target, name, descriptor) {
-    const original = descriptor.value;
-    
-    descriptor.value = function(...args) {
-        const result = original.apply(this, args);
-        console.log('✅ Card icons successfully updated');
-        return result;
-    };
-    
-    return descriptor;
+// Function to fill form with service data
+function fillFormWithServiceData(title, text) {
+    const messageField = document.getElementById('message');
+    if (messageField) {
+        // Set the value
+        messageField.value = `I'm interested in: ${title}\n\n${text}\n\nPlease contact me about this service.`;
+        
+        // Highlight the field to show it was updated
+        messageField.classList.remove('message-error');
+        messageField.classList.add('message-highlight');
+        
+        // Focus on the field
+        messageField.focus();
+        
+        // Show toast notification
+        showToast(`Form updated with: ${title}`, 3000);
+        
+        console.log('Form pre-filled with:', title);
+        return true;
+    }
+    return false;
 }
 
 // Card data for Ontario insurance services
@@ -282,7 +338,6 @@ const cardData = [
     }
 ];
 
-// Since decorators aren't widely supported in browsers yet, we'll implement the logger manually
 // Function to generate service cards
 function generateServiceCards() {
     const grid = document.getElementById("cardGrid");
@@ -315,25 +370,18 @@ function generateServiceCards() {
         
         // Add event listener to the circle button
         card.querySelector('.circle-button').addEventListener('click', () => {
-            // Clear first, then set
-            localStorage.removeItem('selectedInsuranceService');
-            
-            // Store the selected service data
-            localStorage.setItem('selectedInsuranceService', JSON.stringify({
-                title: data.title,
-                text: data.text,
-                timestamp: new Date().getTime() // Add timestamp to ensure freshness
-            }));
-            
             console.log('Selected service:', data.title);
             
             // Show a toast notification indicating the service was selected
             showToast(`Selected plan: ${data.title}`, 3000);
             
-            // Open the contact modal
-            if (typeof openContactModal === 'function') {
-                openContactModal();
-            }
+            // Open the contact modal first
+            openContactModal();
+            
+            // Then fill the form with the service data (direct update without localStorage)
+            setTimeout(() => {
+                fillFormWithServiceData(data.title, data.text);
+            }, 300); // Small delay to ensure modal is open
         });
         
         grid.appendChild(card);
@@ -378,58 +426,146 @@ function ensureIconsAreVisible() {
     document.head.appendChild(iconStyle);
 }
 
-// Listen for messages from the iframe
-window.addEventListener('message', function(event) {
-    // Handle form events from iframe
-    if (event.data && event.data.type) {
-        // If the message indicates form submission success
-        if (event.data.type === 'formSubmitted') {
-            console.log('Form submitted successfully');
-            // You can add additional actions here when the form is submitted
+// Firebase Integration
+let firebaseApp;
+let db;
+
+// Function to initialize Firebase
+function initializeFirebase() {
+    try {
+        // Check if Firebase scripts are loaded
+        if (!window.firebase) {
+            // Dynamically load Firebase if not already loaded
+            loadFirebaseScripts();
+            return;
         }
         
-        // If the message indicates to close the modal
-        if (event.data.type === 'closeModal') {
-            closeContactModal();
-        }
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7T1RFr4Fm1iPlDGDYniz8I4LoDY8iSfc",
+            authDomain: "rekhacanada-73839.firebaseapp.com",
+            projectId: "rekhacanada-73839",
+            storageBucket: "rekhacanada-73839.firebasestorage.app",
+            messagingSenderId: "665190770519",
+            appId: "1:665190770519:web:9f996932356b3d4679c012"
+        };
         
-        // If the message includes a toast notification
-        if (event.data.type === 'showToast' && event.data.message) {
-            showToast(event.data.message);
-        }
-        
-        // If the message indicates form was updated
-        if (event.data.type === 'formUpdated' && event.data.success) {
-            showToast(event.data.message || 'Form updated successfully', 3000);
-        }
+        // Initialize Firebase
+        firebaseApp = firebase.initializeApp(firebaseConfig);
+        db = firebaseApp.firestore();
+        console.log('Firebase initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Firebase:', error);
+        showToast('Unable to connect to our database. Please try again later.');
     }
+}
+
+// Function to dynamically load Firebase scripts
+function loadFirebaseScripts() {
+    // Load Firebase App
+    const firebaseAppScript = document.createElement('script');
+    firebaseAppScript.src = 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js';
+    document.head.appendChild(firebaseAppScript);
     
-    // Handle iframe loaded notification
-    if (event.data === 'iframeLoaded') {
-        // Send selected service data to iframe if it exists
-        const serviceData = localStorage.getItem('selectedInsuranceService');
+    // Load Firestore
+    const firestoreScript = document.createElement('script');
+    firestoreScript.src = 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js';
+    
+    // Initialize Firebase after scripts are loaded
+    firestoreScript.onload = () => {
+        initializeFirebase();
+    };
+    
+    document.head.appendChild(firestoreScript);
+}
+
+// Function to set up form event handlers
+function setupFormHandlers() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+    
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        if (serviceData) {
-            try {
-                // Parse the data
-                const data = JSON.parse(serviceData);
-                
-                // Send it to the iframe
-                const iframe = document.querySelector('.modal-iframe');
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.postMessage({
-                        type: 'serviceSelected',
-                        data: data
-                    }, '*');
-                    
-                    // Show toast notification
-                    showToast(`Form updated with: ${data.title}`, 3000);
-                }
-            } catch (error) {
-                console.error('Error processing service data:', error);
-                showToast('Error updating form with selected plan', 3000);
-            }
+        if (!db) {
+            showToast('Database connection not established. Please refresh and try again.');
+            return;
         }
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const message = document.getElementById('message').value;
+        const consent = document.getElementById('consent').checked;
+        
+        // Check for duplicate submission
+        try {
+            const querySnapshot = await db.collection('contactSubmissions')
+                .where('email', '==', email)
+                .get();
+            
+            if (!querySnapshot.empty) {
+                // Get the most recent submission
+                let lastSubmission = null;
+                let latestDate = new Date(0); // Start with oldest possible date
+                
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const submissionDate = data.timestamp.toDate();
+                    if (submissionDate > latestDate) {
+                        latestDate = submissionDate;
+                        lastSubmission = data;
+                    }
+                });
+                
+                // Format the date for display
+                const formattedDate = latestDate.toLocaleDateString('en-US', {
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                showToast(`You've already submitted a message on ${formattedDate}. We'll get back to you soon.`);
+                return;
+            }
+            
+            // If no duplicate, proceed with submission
+            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            
+            await db.collection('contactSubmissions').add({
+                name,
+                email,
+                phone,
+                message,
+                consent,
+                timestamp
+            });
+            
+            // Show thank you message with the submitter's name
+            document.getElementById('submitterName').textContent = name;
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('thankYouMessage').style.display = 'block';
+            
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            showToast('There was an error submitting your message. Please try again.');
+        }
+    });
+}
+
+// Function to reset the form for another submission
+function resetForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) contactForm.reset();
+    
+    document.getElementById('form-container').style.display = 'block';
+    document.getElementById('thankYouMessage').style.display = 'none';
+    
+    // Remove any highlighting from the message field
+    const messageField = document.getElementById('message');
+    if (messageField) {
+        messageField.classList.remove('message-highlight', 'message-error');
     }
-});
-//updated on april 19, 2025 fixed the form updating issue in form iframe using claude sonnet3.7
+}
