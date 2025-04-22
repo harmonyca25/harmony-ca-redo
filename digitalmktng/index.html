@@ -6,316 +6,474 @@
   <title>Understanding Your Digital Marketing Journey</title>
   <style>
     :root {
-      --primary: #34495e;
+      --primary: #2c3e50;
+      --secondary: #3498db;
       --accent: #6c5ce7;
       --light: #f8f9fa;
       --text: #2d3436;
       --subtle: #dfe6e9;
-      --calm: #a3b1c6;
-      --warm: #c8a591;
-      --soft: #ffeaa7;
+      --background: #ecf0f1;
+      --white: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--light);
+      background-color: var(--background);
       color: var(--text);
-      margin: 0;
-      padding: 0;
-      line-height: 1.8;
-      font-size: 17px;
+      line-height: 1.6;
+      font-size: 16px;
     }
 
     header {
       text-align: center;
       padding: 3rem 1rem;
-      background-color: #e8f4f8;
+      background: linear-gradient(135deg, #3498db, #6c5ce7);
+      color: white;
       position: relative;
-      background-image: linear-gradient(to bottom, #e8f4f8, #d6e9f5);
     }
     
     .logo-container {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 2rem auto;
-      position: relative;
-    }
-    
-    .logo-placeholder {
-      width: 100%;
-      height: 100%;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background-color: white;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #8395a7;
-      font-style: italic;
-      font-size: 0.8rem;
-      border: 1px dashed #8395a7;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .logo {
+      width: 80%;
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary);
       border-radius: 50%;
+      color: white;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 15px;
     }
 
     main {
       max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
+      margin: -2rem auto 2rem;
       background-color: white;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+      box-shadow: 0 5px 20px var(--shadow);
       border-radius: 12px;
-      margin-top: -40px;
       position: relative;
       z-index: 2;
+      padding: 1.5rem;
     }
 
     h1 {
-      color: var(--primary);
-      font-weight: normal;
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
+      font-weight: 600;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+    
+    .tagline {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.9);
     }
     
     h2 {
-      color: var(--accent);
-      font-weight: normal;
-      font-size: 1.6rem;
-      margin-top: 2.5rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--subtle);
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
     }
     
     h3 {
-      font-size: 1.3rem;
-      color: var(--primary);
-      margin-top: 1.8rem;
+      font-size: 1.2rem;
+      color: var(--secondary);
+      margin-bottom: 0.8rem;
+      font-weight: 500;
     }
 
     p {
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       color: var(--text);
     }
     
-    .image-placeholder {
-      background-color: #f5f7fa;
-      border: 1px dashed #b2bec3;
-      border-radius: 8px;
-      height: 200px;
-      margin: 2rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: #636e72;
+    .section-header {
       padding: 1rem;
-      text-align: center;
-    }
-    
-    .image-placeholder p {
-      margin: 0.5rem 0;
-      font-style: italic;
-    }
-    
-    .prompt {
-      font-family: monospace;
-      font-size: 0.9rem;
-      background-color: #f1f2f6;
-      padding: 0.5rem;
-      border-radius: 4px;
-      color: #5758BB;
-    }
-    
-    .reflection {
-      background-color: #f1f6f9;
-      padding: 1.2rem 1.5rem;
+      background-color: #f1f6fc;
+      margin-bottom: 0.5rem;
       border-radius: 8px;
-      margin: 2rem 0;
-      border-left: 4px solid var(--accent);
+      border-left: 4px solid var(--secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
     
-    .soft-section {
-      background-color: #fef8f3;
-      padding: 1.5rem;
+    .section-header:hover {
+      background-color: #e3f0fc;
+    }
+    
+    .section-header h2 {
+      margin: 0;
+    }
+    
+    .toggle-icon {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .section-content {
+      padding: 0 1rem 1rem;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .section-active .section-content {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .hero-image {
+      height: 200px;
+      width: 100%;
+      background-image: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/path.png?raw=true');
+      background-size: cover;
+      background-position: center;
       border-radius: 8px;
-      margin: 2rem 0;
+      margin: 1rem 0;
     }
     
-    footer {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: #8395a7;
-      font-size: 0.9rem;
-      background-color: #e8f4f8;
-      margin-top: 4rem;
+    .timeline-image {
+      height: 180px;
+      width: 100%;
+      background-image: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/timeline.png?raw=true');
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    
+    .meeting-image {
+      height: 180px;
+      width: 100%;
+      background-image: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/review.png?raw=true');
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    
+    .beginning-image {
+      height: 180px;
+      width: 100%;
+      background-image: url('https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/begining.png?raw=true');
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      margin: 1rem 0;
     }
     
     .thought-bubble {
       background-color: #f4f6ff;
-      border-radius: 20px;
-      padding: 1.2rem;
-      margin: 1.5rem 0;
-      position: relative;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
       font-style: italic;
       color: #576574;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     }
     
-    .thought-bubble:before {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #f4f6ff;
-      top: -10px;
-      left: 30px;
-      border-radius: 50%;
+    .reflection {
+      background-color: #e3f2fd;
+      padding: 1.2rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--secondary);
     }
     
-    .thought-bubble:after {
-      content: "";
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: #f4f6ff;
-      top: -20px;
-      left: 15px;
-      border-radius: 50%;
+    .soft-section {
+      background-color: #fef8f3;
+      padding: 1.2rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+    
+    ul, ol {
+      margin: 0.8rem 0 1rem 1.5rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .cta-button {
+      display: block;
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      color: white;
+      padding: 1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      margin: 2rem auto 1rem;
+      text-align: center;
+      max-width: 250px;
+      box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+    
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .intro-text {
+      margin: 1rem 0;
+    }
+    
+    /* For better readability on mobile */
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
+        margin-top: -1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.6rem;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      .hero-image, .timeline-image, .meeting-image, .beginning-image {
+        height: 150px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo-container">
-      <div class="logo-placeholder">
-        Logo Placement
+    <div class="container">
+      <div class="logo-container">
+        <div class="logo">VA</div>
       </div>
+      <h1>Your Digital Marketing Journey</h1>
+      <p class="tagline">From strategy to success in insurance</p>
     </div>
-    <h1>Your Digital Marketing Journey</h1>
-    <p>Understanding the path from strategy to success</p>
   </header>
   
   <main>
-    <div class="image-placeholder">
-      <img src="https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/path.png?raw=true">
+    <div class="hero-image"></div>
+    
+    <div class="intro-text">
+      <p>Thank you for considering this digital marketing partnership. This guide will help you understand our journey together, addressing common questions and concerns.</p>
+      
+      <p><strong>Tap on each section below to expand and read more.</strong> Feel free to note any points that resonate with you or raise questions.</p>
     </div>
     
-    <p>Thank you for considering this digital marketing partnership. This guide is designed to help you understand the journey we'll take together, addressing common questions and concerns that arise during the process.</p>
-    
-    <p>As you review this in your own time, please note any points that particularly resonate with you or raise additional questions. This document is a starting point for our conversations, not the end.</p>
-    
-    <h2>Understanding Where You Are</h2>
-    
-    <p>Every insurance professional comes to digital marketing with unique strengths and concerns. Many find themselves in one of these positions:</p>
-    
-    <div class="thought-bubble">
-      "I know I need to be more visible online, but I'm not sure where to start or what really works for insurance."
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Understanding Where You Are</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p>Every insurance professional comes to digital marketing with unique strengths and concerns. Many find themselves in one of these positions:</p>
+        
+        <div class="thought-bubble">
+          "I know I need to be more visible online, but I'm not sure where to start or what really works for insurance."
+        </div>
+        
+        <div class="thought-bubble">
+          "I worry about spending money on marketing that doesn't bring in actual clients who purchase policies."
+        </div>
+        
+        <div class="thought-bubble">
+          "I'm concerned about how to maintain my personal approach while expanding my digital presence."
+        </div>
+        
+        <div class="reflection">
+          <h3>Reflection Point</h3>
+          <p>Which of these thoughts feels most familiar to you? Or is there another concern that's more pressing?</p>
+        </div>
+      </div>
     </div>
     
-    <div class="thought-bubble">
-      "I worry about spending money on marketing that doesn't bring in actual clients who purchase policies."
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>The Journey From Strategy to Results</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p>Digital marketing for insurance is a journey, not an overnight transformation. Understanding the typical timeline helps set realistic expectations:</p>
+        
+        <div class="timeline-image"></div>
+        
+        <h3>The First Month: Foundation</h3>
+        <p>We begin by understanding your ideal clients, your unique strengths as an agent, and the policies you most want to grow. This shapes every decision that follows.</p>
+        
+        <h3>Months 2-3: Building Visibility</h3>
+        <p>During this phase, we create consistent content and targeted ads that position you as a trustworthy expert. Early engagement metrics help us refine our approach.</p>
+        
+        <h3>Months 4-6: Lead Generation Focus</h3>
+        <p>Once visibility is established, we intensify lead generation efforts, with clear paths for interested prospects to connect with you directly.</p>
+        
+        <div class="soft-section">
+          <h3>A Note About Lead Generation</h3>
+          <p>For insurance professionals, quality leads are the ultimate goal. Our work focuses on attracting people who:</p>
+          <ul>
+            <li>Are actively seeking insurance solutions</li>
+            <li>Have specific needs that align with your offerings</li>
+            <li>Are ready to have meaningful conversations</li>
+          </ul>
+          <p>Rather than pursuing high volumes of unqualified interest, we aim for connections with genuine potential for conversion.</p>
+        </div>
+      </div>
     </div>
     
-    <div class="thought-bubble">
-      "I'm concerned about how to maintain my personal approach while expanding my digital presence."
+    <!-- Section 3 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Common Questions You Might Have</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <h3>"How will we know if this is working?"</h3>
+        <p>We'll establish clear metrics from the beginning, tracking not just engagement but meaningful business indicators like consultation requests, quote processes initiated, and policies written.</p>
+        
+        <h3>"Will the content feel authentic to my voice?"</h3>
+        <p>Your personal approach is your greatest strength. All content will be crafted to match your communication style and will always be presented for your approval before publication.</p>
+        
+        <h3>"What happens if I'm not seeing results?"</h3>
+        <p>Our regular check-ins allow us to pivot quickly if certain approaches aren't resonating. Digital marketing is always evolving, and flexibility is built into our process.</p>
+        
+        <div class="meeting-image"></div>
+      </div>
     </div>
     
-    <div class="reflection">
-      <h3>Reflection Point</h3>
-      <p>Which of these thoughts feels most familiar to you? Or is there another concern that's more pressing in your situation?</p>
+    <!-- Section 4 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Your Role in the Partnership</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p>The most successful digital marketing relationships involve clear roles that leverage everyone's strengths:</p>
+        
+        <h3>My Responsibilities:</h3>
+        <ul>
+          <li>Strategic content creation aligned with insurance industry best practices</li>
+          <li>Research and knowledge building to support your expertise</li>
+          <li>Ad creation and management focused on quality lead generation</li>
+          <li>Documentation of insights and results</li>
+          <li>Regular communication about performance and opportunities</li>
+        </ul>
+        
+        <h3>Your Strengths:</h3>
+        <ul>
+          <li>Personal connection with clients and prospects</li>
+          <li>Insurance expertise and policy knowledge</li>
+          <li>Understanding of your local Hamilton market</li>
+          <li>Feedback on which leads and content are most effective</li>
+          <li>Final decisions on how you're represented online</li>
+        </ul>
+        
+        <div class="reflection">
+          <h3>Reflection Point</h3>
+          <p>As you think about this partnership, what aspects of digital marketing would you most like to understand better?</p>
+        </div>
+      </div>
     </div>
     
-    <h2>The Journey From Strategy to Results</h2>
-    
-    <p>Digital marketing for insurance is a journey, not an overnight transformation. Understanding the typical timeline helps set realistic expectations:</p>
-    
-    <div class="image-placeholder">
-      <p>Image suggestion: Simple journey timeline with milestones</p>
-      <img src="https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/timeline.png?raw=true">
+    <!-- Section 5 -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Next Steps in Our Conversation</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p>After you've had time to review this information, I suggest we discuss:</p>
+        
+        <ol>
+          <li>Which of your insurance offerings you most want to focus on growing</li>
+          <li>Any digital marketing experiences you've had previously</li>
+          <li>How you prefer to measure success in our partnership</li>
+          <li>Any specific questions this document has raised for you</li>
+        </ol>
+        
+        <div class="beginning-image"></div>
+        
+        <p>Remember that digital marketing is a process of continuous refinement. The most valuable partnerships are those where both parties communicate openly about what's working and what could be improved.</p>
+        
+        <p>I look forward to our next conversation and learning more about your vision for your insurance practice.</p>
+      </div>
     </div>
     
-    <h3>The First Month: Foundation</h3>
-    <p>We begin by understanding your ideal clients, your unique strengths as an agent, and the policies you most want to grow. This shapes every decision that follows.</p>
-    
-    <h3>Months 2-3: Building Visibility</h3>
-    <p>During this phase, we create consistent content and targeted ads that position you as a trustworthy expert. Early engagement metrics help us refine our approach.</p>
-    
-    <h3>Months 4-6: Lead Generation Focus</h3>
-    <p>Once visibility is established, we intensify lead generation efforts, with clear paths for interested prospects to connect with you directly.</p>
-    
-    <div class="soft-section">
-      <h3>A Note About Lead Generation</h3>
-      <p>For insurance professionals, quality leads are the ultimate goal. Our work focuses on attracting people who:</p>
-      <ul>
-        <li>Are actively seeking insurance solutions</li>
-        <li>Have specific needs that align with your offerings</li>
-        <li>Are ready to have meaningful conversations</li>
-      </ul>
-      <p>Rather than pursuing high volumes of unqualified interest, we aim for connections with genuine potential for conversion.</p>
-    </div>
-    
-    <h2>Common Questions You Might Be Considering</h2>
-    
-    <h3>"How will we know if this is working?"</h3>
-    <p>We'll establish clear metrics from the beginning, tracking not just engagement but meaningful business indicators like consultation requests, quote processes initiated, and policies written.</p>
-    
-    <h3>"Will the content feel authentic to my voice?"</h3>
-    <p>Your personal approach is your greatest strength. All content will be crafted to match your communication style and will always be presented for your approval before publication.</p>
-    
-    <h3>"What happens if I'm not seeing results?"</h3>
-    <p>Our regular check-ins allow us to pivot quickly if certain approaches aren't resonating. Digital marketing is always evolving, and flexibility is built into our process.</p>
-    
-    <div class="image-placeholder">
-      <p>Image suggestion: Collaborative meeting scene</p>
-<img src="https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/review.png?raw=true">    
-    </div>
-    
-    <h2>Your Role in the Partnership</h2>
-    
-    <p>The most successful digital marketing relationships involve clear roles that leverage everyone's strengths:</p>
-    
-    <h3>My Responsibilities:</h3>
-    <ul>
-      <li>Strategic content creation aligned with insurance industry best practices</li>
-      <li>Research and knowledge building to support your expertise</li>
-      <li>Ad creation and management focused on quality lead generation</li>
-      <li>Documentation of insights and results</li>
-      <li>Regular communication about performance and opportunities</li>
-    </ul>
-    
-    <h3>Your Strengths:</h3>
-    <ul>
-      <li>Personal connection with clients and prospects</li>
-      <li>Insurance expertise and policy knowledge</li>
-      <li>Understanding of your local Hamilton market</li>
-      <li>Feedback on which leads and content are most effective</li>
-      <li>Final decisions on how you're represented online</li>
-    </ul>
-    
-    <div class="reflection">
-      <h3>Reflection Point</h3>
-      <p>As you think about this partnership, what aspects of digital marketing would you most like to understand better? What questions would help you feel more confident about this journey?</p>
-    </div>
-    
-    <h2>Next Steps in Our Conversation</h2>
-    
-    <p>After you've had time to review this information, I suggest we discuss:</p>
-    
-    <ol>
-      <li>Which of your insurance offerings you most want to focus on growing</li>
-      <li>Any digital marketing experiences (positive or challenging) you've had previously</li>
-      <li>How you prefer to measure success in our partnership</li>
-      <li>Any specific questions this document has raised for you</li>
-    </ol>
-    
-    <div class="image-placeholder">
-      <p>Image suggestion: Calming conclusion image</p>
-      <img src="https://github.com/harmonyca25/harmony-ca-redo/blob/main/digitalmktng/img/begining.png?raw=true">
-    </div>
-    
-    <p>Remember that digital marketing is a process of continuous refinement. The most valuable partnerships are those where both parties communicate openly about what's working and what could be improved.</p>
-    
-    <p>I look forward to our next conversation and learning more about your vision for your insurance practice.</p>
+    <a href="#" class="cta-button">Schedule Your Call</a>
   </main>
   
   <footer>
-    Prepared by Vipul Anand | April 2025<br>
-    Supporting insurance professionals in building meaningful client relationships
+    <div class="footer-content">
+      <p>Prepared by Vipul Anand | April 2025</p>
+      <p>Supporting insurance professionals in building meaningful client relationships</p>
+    </div>
   </footer>
+
+  <script>
+    // Simple script to handle collapsible sections
+    function toggleSection(element) {
+      const parentSection = element.parentElement;
+      const isActive = parentSection.classList.contains('section-active');
+      
+      // Close all sections first
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('section-active');
+        section.querySelector('.toggle-icon').textContent = '+';
+      });
+      
+      // If the clicked section wasn't active, open it
+      if (!isActive) {
+        parentSection.classList.add('section-active');
+        element.querySelector('.toggle-icon').textContent = '−';
+      }
+    }
+    
+    // Open the first section by default
+    document.addEventListener('DOMContentLoaded', function() {
+      const firstSection = document.querySelector('.section');
+      if (firstSection) {
+        firstSection.classList.add('section-active');
+        firstSection.querySelector('.toggle-icon').textContent = '−';
+      }
+    });
+  </script>
 </body>
 </html>
