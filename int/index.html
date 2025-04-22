@@ -3,205 +3,540 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top 10 Insurance Brokers in Hamilton, Ontario</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-  <header class="bg-blue-600 text-white py-6 shadow">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
-      <div>
-        <h1 class="text-3xl font-bold">Top 10 Insurance Brokers in Hamilton, Ontario</h1>
-        <p class="mt-2 text-lg">Explore leading insurance providers, their services, and online presence. frequent on their social media profiles. frequency is weekly, bi-weekly or occasional, on fb and instagram. highend broker companies that are dealing with HNI use instagram along with fb too.</p>
-      </div>
-      <div class="w-16 h-16">
-        <img src="https://github.com/anandvip/vipulAnand/blob/main/Sqr-va-logo.png?raw=true" alt="VA Graphics Logo" class="object-contain w-full h-full">
-      </div>
-
+  <title>Top Insurance Brokers in Hamilton</title>
+  <style>
+    :root {
+      --primary: #1a56db;
+      --primary-light: #dbeafe;
+      --secondary: #64748b;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f5f9;
+      color: #334155;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      padding: 1.5rem 1rem;
+      position: relative;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .subtitle {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+    
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .intro-message {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: -1.5rem auto 1.5rem;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 4px 6px var(--shadow);
+      font-size: 0.9rem;
+    }
+    
+    .section {
+      margin-bottom: 1rem;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px var(--shadow);
+    }
+    
+    .section-header {
+      padding: 0.75rem 1rem;
+      background-color: var(--primary-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .section-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .toggle-icon {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .section-content {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out, padding 0.2s ease;
+    }
+    
+    .section-active .section-content {
+      padding: 1rem;
+      max-height: 2000px;
+    }
+    
+    .broker-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    
+    .broker-table th {
+      text-align: left;
+      padding: 0.5rem;
+      background-color: #f1f5f9;
+      font-weight: 600;
+    }
+    
+    .broker-table td {
+      padding: 0.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .broker-table a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .broker-table a:hover {
+      text-decoration: underline;
+    }
+    
+    .mini-broker {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .mini-broker-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .mini-broker-name {
+      font-weight: 600;
+      flex: 1;
+    }
+    
+    .mini-broker-expand {
+      color: var(--primary);
+      background: none;
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0.25rem 0.75rem;
+    }
+    
+    .mini-broker-details {
+      display: none;
+      padding: 0.75rem 0 0.25rem 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    
+    .mini-broker.expanded .mini-broker-details {
+      display: block;
+    }
+    
+    .section-inner {
+      padding: 0 0.5rem;
+    }
+    
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin: 1rem 0 0.5rem;
+    }
+    
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    li {
+      margin-bottom: 0.25rem;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.75rem;
+      color: var(--secondary);
+      margin-top: 2rem;
+    }
+    
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .mobile-scroll-notice {
+      display: none;
+      font-size: 0.75rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+    
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 1.25rem;
+      }
       
+      .broker-table-container {
+        overflow-x: auto;
+      }
+      
+      .mobile-scroll-notice {
+        display: block;
+      }
+      
+      .logo {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div>
+        <h1>Top Insurance Brokers in Hamilton</h1>
+        <p class="subtitle">Market research for Harmonyplan</p>
+      </div>
+      <img src="https://github.com/anandvip/vipulAnand/blob/main/Sqr-va-logo.png?raw=true" alt="VA Graphics Logo" class="logo" />
     </div>
   </header>
-
-  <main class="max-w-7xl mx-auto px-4 py-10">
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Name</th>
-            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Website</th>
-            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Social Media</th>
-            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Primary Insurance Products</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-          <tr>
-            <td class="px-6 py-4">Morison Insurance</td>
-            <td class="px-6 py-4"><a href="https://www.morisoninsurance.ca/hamilton/" target="_blank" class="text-blue-600 hover:underline">morisoninsurance.ca</a></td>
-            <td class="px-6 py-4"><a href="https://www.facebook.com/MorisonInsurance" target="_blank" class="text-blue-600 hover:underline">Facebook</a></td>
-            <td class="px-6 py-4">Home, Auto, Condo, Commercial, Travel Trailer, High-Value Home, Luxury Car, Cottage, Bundled Insurance</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">Lawrie Insurance Group</td>
-            <td class="px-6 py-4"><a href="https://www.lawriegroup.com/" target="_blank" class="text-blue-600 hover:underline">lawriegroup.com</a></td>
-            <td class="px-6 py-4"><a href="https://www.instagram.com/lawriegroup/" target="_blank" class="text-blue-600 hover:underline">Instagram</a></td>
-            <td class="px-6 py-4">Personal & Corporate Insurance, Employee Benefits, Group Retirement, Financial Services</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">The Mitchell & Abbott Group</td>
-            <td class="px-6 py-4"><a href="https://mitchellandabbott.com/" target="_blank" class="text-blue-600 hover:underline">mitchellandabbott.com</a></td>
-            <td class="px-6 py-4"><a href="https://www.instagram.com/themitchellabbottgroup/" target="_blank" class="text-blue-600 hover:underline">Instagram</a></td>
-            <td class="px-6 py-4">Commercial, Home, Auto, Life, Business Insurance</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">Billyard Insurance Group</td>
-            <td class="px-6 py-4"><a href="https://www.thebig.ca/hamilton" target="_blank" class="text-blue-600 hover:underline">thebig.ca</a></td>
-            <td class="px-6 py-4"><a href="https://www.facebook.com/thebighamilton/" target="_blank" class="text-blue-600 hover:underline">Facebook</a></td>
-            <td class="px-6 py-4">Life, Home, Auto, Commercial, Travel Insurance</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">Anthony Brennan (Desjardins)</td>
-            <td class="px-6 py-4"><a href="https://www.anthonybrennan.ca/" target="_blank" class="text-blue-600 hover:underline">anthonybrennan.ca</a></td>
-            <td class="px-6 py-4">Not specified</td>
-            <td class="px-6 py-4">Auto, Home, Life, Business Insurance, Vehicle Loans, Financial Services</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">BrokerLink</td>
-            <td class="px-6 py-4"><a href="https://www.brokerlink.ca/locations/ontario/hamilton" target="_blank" class="text-blue-600 hover:underline">brokerlink.ca</a></td>
-            <td class="px-6 py-4">Not specified</td>
-            <td class="px-6 py-4">Home, Auto, Business, Life, Travel, Farm, Motorcycle, Tenant Insurance</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">All-Risks Insurance Brokers</td>
-            <td class="px-6 py-4"><a href="https://all-risks.com/locations/hamilton/" target="_blank" class="text-blue-600 hover:underline">all-risks.com</a></td>
-            <td class="px-6 py-4">Not specified</td>
-            <td class="px-6 py-4">Auto, Home, Life, Business, Travel Insurance</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">Lakeside Insurance</td>
-            <td class="px-6 py-4"><a href="https://www.lakesideinsurancefinancial.com/" target="_blank" class="text-blue-600 hover:underline">lakesideinsurancefinancial.com</a></td>
-            <td class="px-6 py-4">Not specified</td>
-            <td class="px-6 py-4">Home, Auto, Business, Financial Services</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">McDougall Insurance</td>
-            <td class="px-6 py-4"><a href="https://www.mcdougallinsurance.com/" target="_blank" class="text-blue-600 hover:underline">mcdougallinsurance.com</a></td>
-            <td class="px-6 py-4"><a href="https://www.facebook.com/McDougallInsurance/" target="_blank" class="text-blue-600 hover:underline">Facebook</a></td>
-            <td class="px-6 py-4">Auto, Home, Recreational, Life & Financial, Business, Farm Insurance</td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4">ThinkInsure</td>
-            <td class="px-6 py-4"><a href="https://www.thinkinsure.ca/insurance-broker/hamilton.php" target="_blank" class="text-blue-600 hover:underline">thinkinsure.ca</a></td>
-            <td class="px-6 py-4">Not specified</td>
-            <td class="px-6 py-4">Car, Home, Condo, Tenant, Commercial, Motorcycle, Travel, High-Risk Insurance</td>
-          </tr>
-        </tbody>
-      </table>
+  
+  <main>
+    <div class="intro-message">
+      <p><strong>Quick guide:</strong> This report contains market research to help build your side business. Tap any section heading to expand and view details. Take your time reviewing each section before making decisions.</p>
     </div>
-
-      <section class="bg-white p-6 rounded-lg shadow mb-10">
-  <h2 class="text-xl font-semibold text-blue-700 mb-2">Recommended Advertising Platform for Harmonyplan</h2>
-  <p class="text-sm leading-relaxed">
-    To establish a cost-effective presence and gain familiarity in the local insurance landscape, it is recommended that Harmonyplan initially focus on <strong>Facebook</strong> as their primary advertising platform.
-  </p>
-  <ul class="list-disc list-inside mt-3 text-sm text-gray-700">
-    <li>Lowest cost-per-click (CPC) among major platforms</li>
-    <li>Strong presence already established by local competitors</li>
-    <li>Supports visual storytelling, client testimonials, and multilingual outreach</li>
-    <li>Robust targeting features including age, location, profession, and insurance interests</li>
-    <li>Integration with WhatsApp and Messenger for instant engagement</li>
-  </ul>
-  <p class="text-sm leading-relaxed mt-3">
-    Over time, Harmonyplan may explore Google Display Ads, Instagram Reels, and localized LinkedIn campaigns for retirement and group insurance awareness. However, Facebook provides the most accessible and results-driven starting point for building brand familiarity among Hamilton residents.
-  </p>
-</section>
-    <section>
-  <h2>📊 Facebook Advertising Costs in Canada (2025)</h2>
-  <p>
-    For a dedicated agent managing Harmonyplan as a side business, understanding advertising expenses is crucial. Facebook offers a cost-effective platform to generate leads while keeping expenses in check.
-  </p>
-
-  <h3>💵 Average Costs</h3>
-  <ul>
-    <li><strong>Cost Per Click (CPC):</strong> Approximately $0.93 CAD per click. :contentReference[oaicite:0]{index=0}</li>
-    <li><strong>Cost Per 1,000 Impressions (CPM):</strong> Around $14.03 CAD. :contentReference[oaicite:1]{index=1}</li>
-  </ul>
-
-  <h3>📈 Budget Scenarios</h3>
-  <p>Here's how different monthly budgets could translate into website visits:</p>
-  <ol>
-    <li>
-      <strong>$100 CAD/month:</strong>
-      <ul>
-        <li>Approximately 107 clicks (based on $0.93 CPC).</li>
-      </ul>
-    </li>
-    <li>
-      <strong>$250 CAD/month:</strong>
-      <ul>
-        <li>Approximately 269 clicks.</li>
-      </ul>
-    </li>
-    <li>
-      <strong>$500 CAD/month:</strong>
-      <ul>
-        <li>Approximately 538 clicks.</li>
-      </ul>
-    </li>
-  </ol>
-
-  <h3>🎯 Why Choose Facebook?</h3>
-  <ul>
-    <li><strong>Cost-Effective:</strong> Lower CPC compared to platforms like LinkedIn ($2–$3). :contentReference[oaicite:2]{index=2}</li>
-    <li><strong>Targeted Reach:</strong> Ability to focus on specific demographics, locations, and interests.</li>
-    <li><strong>Immediate Engagement:</strong> Integration with WhatsApp and Messenger allows for direct communication with potential clients.</li>
-  </ul>
-
-  <h3>📝 Final Thoughts</h3>
-  <p>
-    Starting with Facebook ads offers a budget-friendly way to generate leads and build your brand presence. Given the average CPC in Canada, even a modest investment can yield substantial results.
-  </p>
-  <p>
-    Assess your budget and determine the level of investment that aligns with your business goals.
-  </p>
-</section>
-<section>
-  <h2>📅 How Often Should You Invest in Facebook Ads?</h2>
-  <p>
-    For a dedicated agent managing Harmonyplan as a side business, it's important to understand the recommended frequency and duration of Facebook ad investments to maximize effectiveness while keeping expenses in check.
-  </p>
-
-  <h3>🔁 Recommended Investment Frequency</h3>
-  <ul>
-    <li><strong>Initial Campaign Duration:</strong> Run ads for at least 7 days to allow Facebook's system to learn and optimize performance. <a href="https://www.facebook.com/business/help/1037425549606837" target="_blank">Source</a></li>
-    <li><strong>Ongoing Campaigns:</strong> Consider running campaigns continuously with periodic reviews and adjustments based on performance metrics.</li>
-    <li><strong>Budget Adjustments:</strong> Start with a modest budget (e.g., $10–$20 CAD per day) and adjust based on the results and business goals. <a href="https://www.everywheremarketer.com/blog/facebook-ads-small-business" target="_blank">Source</a></li>
-  </ul>
-
-  <h3>📈 Monitoring and Optimization</h3>
-  <p>
-    Regularly monitor ad performance using Facebook Ads Manager. Key metrics to watch include:
-  </p>
-  <ul>
-    <li><strong>Click-Through Rate (CTR):</strong> Indicates how often people click on your ad after seeing it.</li>
-    <li><strong>Cost Per Click (CPC):</strong> Helps determine the cost-effectiveness of your ads.</li>
-    <li><strong>Conversions:</strong> Measures how many desired actions (e.g., sign-ups, purchases) resulted from your ads.</li>
-  </ul>
-  <p>
-    Adjust your ad creatives, targeting, and budget based on these insights to improve performance over time.
-  </p>
-
-  <h3>📝 Final Thoughts</h3>
-  <p>
-    Investing in Facebook ads should be a continuous process with regular evaluations. Starting with a manageable budget and gradually scaling based on performance allows for sustainable growth and lead generation without overspending.
-  </p>
-</section>
-
+    
+    <!-- Section 1: Competitor Analysis -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Competitor Comparison</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p class="mobile-scroll-notice">Swipe left/right to see full table</p>
+        <div class="broker-table-container">
+          <table class="broker-table">
+            <thead>
+              <tr>
+                <th>Broker</th>
+                <th>Website</th>
+                <th>Social</th>
+                <th>Insurance Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Morison Insurance</td>
+                <td><a href="https://www.morisoninsurance.ca/hamilton/" target="_blank">morisoninsurance.ca</a></td>
+                <td><a href="https://www.facebook.com/MorisonInsurance" target="_blank">Facebook</a></td>
+                <td>Home, Auto, Condo, Commercial, Travel, Luxury</td>
+              </tr>
+              <tr>
+                <td>Lawrie Insurance</td>
+                <td><a href="https://www.lawriegroup.com/" target="_blank">lawriegroup.com</a></td>
+                <td><a href="https://www.instagram.com/lawriegroup/" target="_blank">Instagram</a></td>
+                <td>Personal, Corporate, Benefits, Retirement</td>
+              </tr>
+              <tr>
+                <td>Mitchell & Abbott</td>
+                <td><a href="https://mitchellandabbott.com/" target="_blank">mitchellandabbott.com</a></td>
+                <td><a href="https://www.instagram.com/themitchellabbottgroup/" target="_blank">Instagram</a></td>
+                <td>Commercial, Home, Auto, Life</td>
+              </tr>
+              <tr>
+                <td>Billyard Insurance</td>
+                <td><a href="https://www.thebig.ca/hamilton" target="_blank">thebig.ca</a></td>
+                <td><a href="https://www.facebook.com/thebighamilton/" target="_blank">Facebook</a></td>
+                <td>Life, Home, Auto, Commercial, Travel</td>
+              </tr>
+              <tr>
+                <td>BrokerLink</td>
+                <td><a href="https://www.brokerlink.ca/locations/ontario/hamilton" target="_blank">brokerlink.ca</a></td>
+                <td>Not listed</td>
+                <td>Home, Auto, Life, Travel, Farm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3 style="margin-top: 1.5rem;">Other Local Providers</h3>
+        <div class="section-inner">
+          <div class="mini-broker" id="broker-1">
+            <div class="mini-broker-header">
+              <div class="mini-broker-name">Anthony Brennan (Desjardins)</div>
+              <button class="mini-broker-expand" onclick="toggleBroker('broker-1')">Details +</button>
+            </div>
+            <div class="mini-broker-details">
+              <p><strong>Website:</strong> <a href="https://www.anthonybrennan.ca/" target="_blank">anthonybrennan.ca</a></p>
+              <p><strong>Insurance Types:</strong> Auto, Home, Life, Business, Loans</p>
+            </div>
+          </div>
+          
+          <div class="mini-broker" id="broker-2">
+            <div class="mini-broker-header">
+              <div class="mini-broker-name">All-Risks Insurance</div>
+              <button class="mini-broker-expand" onclick="toggleBroker('broker-2')">Details +</button>
+            </div>
+            <div class="mini-broker-details">
+              <p><strong>Website:</strong> <a href="https://all-risks.com/locations/hamilton/" target="_blank">all-risks.com</a></p>
+              <p><strong>Insurance Types:</strong> Auto, Home, Life, Business</p>
+            </div>
+          </div>
+          
+          <div class="mini-broker" id="broker-3">
+            <div class="mini-broker-header">
+              <div class="mini-broker-name">Lakeside Insurance</div>
+              <button class="mini-broker-expand" onclick="toggleBroker('broker-3')">Details +</button>
+            </div>
+            <div class="mini-broker-details">
+              <p><strong>Website:</strong> <a href="https://www.lakesideinsurancefinancial.com/" target="_blank">lakesideinsurancefinancial.com</a></p>
+              <p><strong>Insurance Types:</strong> Home, Auto, Business, Financial</p>
+            </div>
+          </div>
+          
+          <div class="mini-broker" id="broker-4">
+            <div class="mini-broker-header">
+              <div class="mini-broker-name">McDougall Insurance</div>
+              <button class="mini-broker-expand" onclick="toggleBroker('broker-4')">Details +</button>
+            </div>
+            <div class="mini-broker-details">
+              <p><strong>Website:</strong> <a href="https://www.mcdougallinsurance.com/" target="_blank">mcdougallinsurance.com</a></p>
+              <p><strong>Social:</strong> <a href="https://www.facebook.com/McDougallInsurance/" target="_blank">Facebook</a></p>
+              <p><strong>Insurance Types:</strong> Auto, Home, Business, Farm</p>
+            </div>
+          </div>
+          
+          <div class="mini-broker" id="broker-5">
+            <div class="mini-broker-header">
+              <div class="mini-broker-name">ThinkInsure</div>
+              <button class="mini-broker-expand" onclick="toggleBroker('broker-5')">Details +</button>
+            </div>
+            <div class="mini-broker-details">
+              <p><strong>Website:</strong> <a href="https://www.thinkinsure.ca/insurance-broker/hamilton.php" target="_blank">thinkinsure.ca</a></p>
+              <p><strong>Insurance Types:</strong> Auto, Condo, Tenant, High-Risk</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Section 2: Ad Strategy -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Recommended Ad Strategy</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+          <strong>Quick recommendation:</strong> Start with Facebook Ads for your side business. It's cost-effective and ideal for local outreach in Hamilton.
+        </p>
+        
+        <h3>Why Facebook?</h3>
+        <ul>
+          <li>Lowest average cost per click (~$0.93 CAD)</li>
+          <li>Popular among local Hamilton competitors</li>
+          <li>Supports visual storytelling and testimonials</li>
+          <li>WhatsApp/Messenger integration for quick client responses</li>
+        </ul>
+        
+        <h3>Future Expansion</h3>
+        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+          Once your Facebook campaigns show consistent results, consider:
+        </p>
+        <ul>
+          <li>Google Display Ads (for broader awareness)</li>
+          <li>Instagram Reels (for visual engagement)</li>
+          <li>LinkedIn (for high-income clients and group insurance)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Section 3: Facebook Ad Costs -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>Facebook Ad Costs (2025)</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+          Understanding ad costs is crucial for your side business budget planning. Facebook offers the most cost-effective option.
+        </p>
+        
+        <h3>Average Costs</h3>
+        <ul>
+          <li><strong>Cost per click:</strong> $0.93 CAD</li>
+          <li><strong>Cost per 1,000 impressions:</strong> $14.03 CAD</li>
+        </ul>
+        
+        <h3>Monthly Budget Scenarios</h3>
+        <ul>
+          <li><strong>$100/month:</strong> Approximately 107 clicks</li>
+          <li><strong>$250/month:</strong> Approximately 269 clicks</li>
+          <li><strong>$500/month:</strong> Approximately 538 clicks</li>
+        </ul>
+        
+        <h3>Comparing Platforms</h3>
+        <ul>
+          <li>Facebook: ~$0.93 per click</li>
+          <li>LinkedIn: $2-$3 per click</li>
+          <li>Google Search: $1-$2 per click (insurance keywords)</li>
+        </ul>
+        
+        <p style="font-size: 0.9rem; font-style: italic; margin-top: 0.75rem;">
+          Even modest investments on Facebook can yield meaningful results. Align your monthly budget with your business goals.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Section 4: Ad Frequency -->
+    <div class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h2>How Often to Run Ads</h2>
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="section-content">
+        <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+          Regular investment in Facebook ads improves ad learning and reach. Start with shorter durations, then adjust based on results.
+        </p>
+        
+        <h3>Getting Started</h3>
+        <ul>
+          <li>Run initial campaigns for at least 7 days</li>
+          <li>Facebook's algorithm needs time to learn and optimize</li>
+          <li>Start with daily budgets of $10-$20 CAD</li>
+        </ul>
+        
+        <h3>What to Monitor</h3>
+        <ul>
+          <li><strong>Click-through rate:</strong> Are users engaging?</li>
+          <li><strong>Cost per click:</strong> Is it within budget?</li>
+          <li><strong>Conversions:</strong> Are you getting leads?</li>
+        </ul>
+        
+        <h3>Scaling Strategy</h3>
+        <p style="font-size: 0.9rem;">
+          After a successful 7-day campaign:
+        </p>
+        <ol>
+          <li>Review results in Ads Manager</li>
+          <li>Scale budget by 20-30% for successful ads</li>
+          <li>Pause underperforming ads</li>
+          <li>Test new audiences with small budgets</li>
+        </ol>
+        
+        <p style="font-size: 0.9rem; font-style: italic; margin-top: 0.75rem;">
+          Remember: Advertising is an evolving process. Regular reviews and optimization are key to success.
+        </p>
+      </div>
+    </div>
   </main>
-
-  <footer class="bg-gray-100 mt-12 py-4">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500">
-      Market intelligence gathered, researched & prepared by <a href="https://vipulanand.in" target="_blank" class="text-blue-600 hover:underline">VA Graphics</a> in April 2025 | <a href="https://harmonyplan.ca" target="_blank" class="text-blue-600 hover:underline">harmonyplan.ca</a><br />
-      &copy; 2025 VA Graphics. All rights reserved.
-    </div>
+  
+  <footer>
+    <p>Market research prepared by <a href="https://vipulanand.in" target="_blank">VA Graphics</a> for <a href="https://harmonyplan.ca" target="_blank">harmonyplan.ca</a> &copy; April 2025</p>
   </footer>
+
+  <script>
+    // Handle section toggling
+    function toggleSection(element) {
+      const parentSection = element.parentElement;
+      const wasActive = parentSection.classList.contains('section-active');
+      
+      // Close all sections first
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('section-active');
+        section.querySelector('.toggle-icon').textContent = '+';
+      });
+      
+      // If this section wasn't already active, open it
+      if (!wasActive) {
+        parentSection.classList.add('section-active');
+        element.querySelector('.toggle-icon').textContent = '−';
+      }
+    }
+    
+    // Handle broker details expansion
+    function toggleBroker(brokerId) {
+      const broker = document.getElementById(brokerId);
+      const isExpanded = broker.classList.contains('expanded');
+      const button = broker.querySelector('.mini-broker-expand');
+      
+      if (isExpanded) {
+        broker.classList.remove('expanded');
+        button.textContent = 'Details +';
+      } else {
+        broker.classList.add('expanded');
+        button.textContent = 'Details −';
+      }
+    }
+    
+    // Open the first section by default
+    document.addEventListener('DOMContentLoaded', function() {
+      const firstSection = document.querySelector('.section');
+      if (firstSection) {
+        firstSection.classList.add('section-active');
+        firstSection.querySelector('.toggle-icon').textContent = '−';
+      }
+    });
+  </script>
 </body>
 </html>
