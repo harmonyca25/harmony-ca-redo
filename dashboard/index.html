@@ -513,6 +513,43 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <script>
+
+      // Add this code at the beginning of your script, before any other code
+document.addEventListener("DOMContentLoaded", function() {
+  // Hide dashboard content initially
+  document.getElementById("dashboard-content").style.display = "none";
+  // Show login overlay initially
+  document.getElementById("login-overlay").style.display = "flex";
+  
+  // Check auth state immediately
+  auth.onAuthStateChanged(async function(user) {
+    console.log("Auth state changed:", user ? user.email : "No user");
+    
+    if (user) {
+      // Verify admin status
+      const isAdmin = await checkAdminAccess(user.email);
+      console.log("Is admin:", isAdmin);
+      
+      if (isAdmin) {
+        // Show dashboard content
+        document.getElementById("login-overlay").style.display = "none";
+        document.getElementById("dashboard-content").style.display = "block";
+        userEmailDisplay.textContent = user.email;
+        fetchQueries();
+      } else {
+        // Not an admin, sign them out
+        console.log("Not an admin, signing out");
+        auth.signOut();
+        document.getElementById("login-error").textContent = 
+          "Unauthorized access. Only admin can access this dashboard.";
+      }
+    } else {
+      // User is signed out, ensure login is visible
+      document.getElementById("login-overlay").style.display = "flex";
+      document.getElementById("dashboard-content").style.display = "none";
+    }
+  });
+});
       // Firebase configuration and initialization
       const firebaseConfig = {
         apiKey: "AIzaSyB7T1RFr4Fm1iPlDGDYniz8I4LoDY8iSfc",
