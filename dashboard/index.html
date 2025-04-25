@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agent Insurance Query Dashboard - Query Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
       /* Root variables */
       :root {
@@ -513,13 +514,12 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <script>
+      // Ensure login overlay is visible when the page first loads
       document.addEventListener("DOMContentLoaded", function() {
-  // Force the login screen to be visible when the page loads
-  document.getElementById("login-overlay").style.display = "flex";
-  document.getElementById("dashboard-content").style.display = "none";
-  console.log("DOM loaded - login screen forced visible");
-});
-
+        document.getElementById("login-overlay").style.display = "flex";
+        document.getElementById("dashboard-content").style.display = "none";
+        console.log("DOM loaded - login screen forced visible");
+      });
       
       // Firebase configuration and initialization
       const firebaseConfig = {
@@ -530,12 +530,19 @@
         messagingSenderId: "665190770519",
         appId: "1:665190770519:web:9f996932356b3d4679c012",
       };
+      
+      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
       const auth = firebase.auth();
 
-      // Admin email configuration - change this to your desired admin email
+      // Admin configuration
       const ADMIN_EMAIL = "admin@harmonyplan.com";
+      const ADMIN_ROLES = {
+        SUPER_ADMIN: "super_admin",
+        ADMIN: "admin",
+        VIEWER: "viewer"
+      };
 
       // DOM Elements
       const queriesContainer = document.getElementById("queries-container");
@@ -568,22 +575,62 @@
       // Local state
       let allQueries = [];
       let filteredQueries = [];
+      let currentUser = null;
+      let userRole = null;
+
+      // ========== AUTHENTICATION FUNCTIONS ==========
+
+      // Check if user has admin access
+      async function checkAdminAccess(user) {
+        if (!user) return false;
+        
+        try {
+          // Check admins collection to see if user has rights
+          const adminDoc = await db.collection("admins").doc(user.uid).get();
+          
+          if (adminDoc.exists) {
+            const adminData = adminDoc.data();
+            userRole = adminData.role || ADMIN_ROLES.VIEWER;
+            return true;
+          } else if (user.email === ADMIN_EMAIL) {
+            // Fallback - super admin email always has access
+            userRole = ADMIN_ROLES.SUPER_ADMIN;
+            return true;
+          }
+          
+          return false;
+        } catch (error) {
+          console.error("Error checking admin access:", error);
+          return false;
+        }
+      }
 
       // Auth State Observer
-      auth.onAuthStateChanged(function(user) {
+      auth.onAuthStateChanged(async function(user) {
+        currentUser = user;
+        
         if (user) {
-          // User is signed in
-          if (user.email === ADMIN_EMAIL) {
-            // User is admin, show dashboard
+          // User is signed in, check admin access
+          const hasAccess = await checkAdminAccess(user);
+          
+          if (hasAccess) {
+            // User has admin access, show dashboard
             loginOverlay.style.display = "none";
             dashboardContent.style.display = "block";
             userEmailDisplay.textContent = user.email;
             fetchQueries(); // Load dashboard data
+            
+            // Show role-based message
+            const roleMessage = userRole === ADMIN_ROLES.SUPER_ADMIN ? 
+              "Super Admin Access" : 
+              userRole === ADMIN_ROLES.ADMIN ? 
+                "Admin Access" : "Viewer Access";
+            showToast(`Logged in successfully: ${roleMessage}`);
           } else {
-            // User is not admin, sign them out
-            showToast("Unauthorized access. Only admin can access this dashboard.");
+            // User does not have admin access, sign them out
+            showToast("Unauthorized access. You don't have admin privileges.");
             auth.signOut().then(() => {
-              loginError.textContent = "Unauthorized access. Only admin can access this dashboard.";
+              loginError.textContent = "Unauthorized access. You don't have admin privileges.";
             });
           }
         } else {
@@ -604,20 +651,22 @@
         // Clear previous errors
         loginError.textContent = "";
         
-        // Validate admin email
-        if (email !== ADMIN_EMAIL) {
-          loginError.textContent = "Unauthorized email. Only admin can access this dashboard.";
-          return;
-        }
+        // Show loading state
+        const loginBtn = document.getElementById("login-btn");
+        loginBtn.textContent = "Signing In...";
+        loginBtn.disabled = true;
         
         // Attempt to login
         auth.signInWithEmailAndPassword(email, password)
           .then((userCredential) => {
-            // Login successful
+            // Login successful, but access will be checked in onAuthStateChanged
             loginForm.reset();
           })
           .catch((error) => {
             // Handle errors
+            loginBtn.textContent = "Login";
+            loginBtn.disabled = false;
+            
             if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
               loginError.textContent = "Invalid email or password.";
             } else if (error.code === "auth/too-many-requests") {
@@ -634,11 +683,15 @@
           showToast("Logged out successfully");
         }).catch((error) => {
           console.error("Error signing out:", error);
+          showToast("Error signing out: " + error.message);
         });
       });
 
+      // ========== UTILITY FUNCTIONS ==========
+
       // Toast Notification
       function showToast(message) {
+        const toast = document.getElementById("toast");
         toast.textContent = message;
         toast.classList.add("show");
         setTimeout(() => {
@@ -687,6 +740,17 @@
         );
       }
 
+      // Can user perform action based on role
+      function canPerformAction(requiredRole) {
+        // Viewer < Admin < Super Admin
+        if (userRole === ADMIN_ROLES.SUPER_ADMIN) return true;
+        if (userRole === ADMIN_ROLES.ADMIN && requiredRole !== ADMIN_ROLES.SUPER_ADMIN) return true;
+        if (userRole === ADMIN_ROLES.VIEWER && requiredRole === ADMIN_ROLES.VIEWER) return true;
+        return false;
+      }
+
+      // ========== QUERY MANAGEMENT FUNCTIONS ==========
+
       // Create Query Card
       function createQueryCard(query) {
         const card = document.createElement("div");
@@ -701,6 +765,36 @@
         } else if (query.status === "completed") {
           statusText = "Completed";
           badgeClass = "status-completed";
+        }
+
+        // Prepare action buttons based on user role and query status
+        let actionButtons = '';
+        
+        if (canPerformAction(ADMIN_ROLES.ADMIN)) {
+          if (query.status !== "contacted") {
+            actionButtons += `<button class="btn-sm btn-contact" onclick="markAsContacted('${query.id}')">
+                               Mark Contacted
+                             </button>`;
+          }
+          
+          if (query.status !== "completed") {
+            actionButtons += `<button class="btn-sm btn-complete" onclick="markAsCompleted('${query.id}')">
+                               Mark Completed
+                             </button>`;
+          }
+          
+          if (canPerformAction(ADMIN_ROLES.SUPER_ADMIN)) {
+            actionButtons += `<button class="btn-sm btn-delete" onclick="deleteQuery('${query.id}')">
+                               Delete
+                             </button>`;
+          }
+        }
+        
+        // If no actions available, show a message for viewers
+        if (actionButtons === '' && userRole === ADMIN_ROLES.VIEWER) {
+          actionButtons = `<div style="text-align:center; color:#666; font-size:12px;">
+                            Viewer mode - contact admin for changes
+                          </div>`;
         }
 
         card.innerHTML = `
@@ -729,23 +823,7 @@
             </div>
             <div class="query-message">${query.message}</div>
             <div class="query-actions">
-              ${
-                query.status !== "contacted"
-                  ? `<button class="btn-sm btn-contact" onclick="markAsContacted('${query.id}')">
-                  Mark Contacted
-                </button>`
-                  : ""
-              }
-              ${
-                query.status !== "completed"
-                  ? `<button class="btn-sm btn-complete" onclick="markAsCompleted('${query.id}')">
-                  Mark Completed
-                </button>`
-                  : ""
-              }
-              <button class="btn-sm btn-delete" onclick="deleteQuery('${query.id}')">
-                Delete
-              </button>
+              ${actionButtons}
             </div>
           </div>
         `;
@@ -792,20 +870,6 @@
       function sortQueries(criteria) {
         switch (criteria) {
           case "newest":
-            filteredQueries.sort((a, b) => {
-              if (!a.timestamp) return 1;
-              if (!b.timestamp) return -1;
-              return b.timestamp.seconds - a.timestamp.seconds;
-            });
-            break;
-          case "oldest":
-            filteredQueries.sort((a, b) => {
-              if (!a.timestamp) return -1;
-              if (!b.timestamp) return 1;
-              return a.timestamp.seconds - b.timestamp.seconds;
-            });
-            break;
-          case "name":
             filteredQueries.sort((a, b) => {
               if (!a.name) return 1;
               if (!b.name) return -1;
@@ -873,11 +937,13 @@
         }
       }
 
+      // ========== ACTION HANDLERS ==========
+
       // Mark as Contacted
       window.markAsContacted = async function (queryId) {
-        // Check authentication first
-        if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) {
-          showToast("You must be logged in as admin to perform this action");
+        // Check authentication and permissions
+        if (!currentUser || !canPerformAction(ADMIN_ROLES.ADMIN)) {
+          showToast("You don't have permission to perform this action");
           return;
         }
 
@@ -885,21 +951,26 @@
           await db.collection("contactSubmissions").doc(queryId).update({
             status: "contacted",
             contactedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            contactedBy: currentUser.email
           });
+          
           const index = allQueries.findIndex((q) => q.id === queryId);
           if (index !== -1) {
             allQueries[index].status = "contacted";
             allQueries[index].contactedAt = new Date();
+            allQueries[index].contactedBy = currentUser.email;
           }
+          
           const card = document.getElementById("query-" + queryId);
           if (card) {
-            const badge = card.querySelector(".status-badge");
-            badge.textContent = "Contacted";
-            badge.className = "status-badge status-contacted";
             card.replaceWith(createQueryCard(allQueries.find((q) => q.id === queryId)));
           }
+          
           showToast("Query marked as contacted");
           updateStats();
+          
+          // Log activity
+          logUserActivity("Marked query as contacted", queryId);
         } catch (error) {
           console.error("Error updating query:", error);
           showToast("Failed to update query status");
@@ -908,9 +979,9 @@
 
       // Mark as Completed
       window.markAsCompleted = async function (queryId) {
-        // Check authentication first
-        if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) {
-          showToast("You must be logged in as admin to perform this action");
+        // Check authentication and permissions
+        if (!currentUser || !canPerformAction(ADMIN_ROLES.ADMIN)) {
+          showToast("You don't have permission to perform this action");
           return;
         }
 
@@ -918,21 +989,26 @@
           await db.collection("contactSubmissions").doc(queryId).update({
             status: "completed",
             completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            completedBy: currentUser.email
           });
+          
           const index = allQueries.findIndex((q) => q.id === queryId);
           if (index !== -1) {
             allQueries[index].status = "completed";
             allQueries[index].completedAt = new Date();
+            allQueries[index].completedBy = currentUser.email;
           }
+          
           const card = document.getElementById("query-" + queryId);
           if (card) {
-            const badge = card.querySelector(".status-badge");
-            badge.textContent = "Completed";
-            badge.className = "status-badge status-completed";
             card.replaceWith(createQueryCard(allQueries.find((q) => q.id === queryId)));
           }
+          
           showToast("Query marked as completed");
           updateStats();
+          
+          // Log activity
+          logUserActivity("Marked query as completed", queryId);
         } catch (error) {
           console.error("Error updating query:", error);
           showToast("Failed to update query status");
@@ -941,35 +1017,59 @@
 
       // Delete Query
       window.deleteQuery = async function (queryId) {
-        // Check authentication first
-        if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) {
-          showToast("You must be logged in as admin to perform this action");
+        // Check authentication and super admin permissions
+        if (!currentUser || !canPerformAction(ADMIN_ROLES.SUPER_ADMIN)) {
+          showToast("Only super admins can delete queries");
           return;
         }
 
         if (!confirm("Are you sure you want to delete this query? This action cannot be undone.")) {
           return;
         }
+        
         try {
           await db.collection("contactSubmissions").doc(queryId).delete();
+          
           allQueries = allQueries.filter((q) => q.id !== queryId);
           filteredQueries = filteredQueries.filter((q) => q.id !== queryId);
+          
           const card = document.getElementById("query-" + queryId);
           if (card) card.remove();
+          
           if (filteredQueries.length === 0) noResultsMessage.style.display = "block";
+          
           showToast("Query deleted successfully");
           updateStats();
+          
+          // Log activity
+          logUserActivity("Deleted query", queryId);
         } catch (error) {
           console.error("Error deleting query:", error);
           showToast("Failed to delete query");
         }
       };
 
-      // Event Listeners and Real-Time Updates
-      document.addEventListener("DOMContentLoaded", () => {
-        // Set up authentication listeners, forms already bound above
+      // Log user activity for audit trail
+      async function logUserActivity(action, queryId) {
+        try {
+          await db.collection("adminLogs").add({
+            userId: currentUser.uid,
+            userEmail: currentUser.email,
+            action: action,
+            queryId: queryId,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } catch (error) {
+          console.error("Error logging activity:", error);
+        }
+      }
 
+      // ========== EVENT LISTENERS ==========
+      
+      document.addEventListener("DOMContentLoaded", () => {
+        // Filter and sort controls
         filterBtn.addEventListener("click", filterQueries);
+        
         resetBtn.addEventListener("click", () => {
           searchInput.value = "";
           statusFilter.value = "all";
@@ -978,14 +1078,15 @@
           filteredQueries = [...allQueries];
           sortQueries("newest");
         });
+        
         sortBy.addEventListener("change", () => {
           sortQueries(sortBy.value);
         });
 
-        // Real-time updates for changes in Firestore
+        // Set up real-time updates for changes in Firestore
         db.collection("contactSubmissions").onSnapshot((snapshot) => {
-          // Only process if authenticated
-          if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) return;
+          // Only process if authenticated with admin access
+          if (!currentUser || !canPerformAction(ADMIN_ROLES.VIEWER)) return;
 
           snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
@@ -994,38 +1095,42 @@
                 allQueries.unshift(newQuery);
                 updateStats();
 
-                let showNew = true;
+                // Check if new query matches current filters
+                let showInCurrentView = true;
                 const term = searchInput.value.toLowerCase();
+                
                 if (term) {
-                  showNew =
-                    (newQuery.name &&
-                      newQuery.name.toLowerCase().includes(term)) ||
-                    (newQuery.email &&
-                      newQuery.email.toLowerCase().includes(term)) ||
-                    (newQuery.message &&
-                      newQuery.message.toLowerCase().includes(term)) ||
-                    (newQuery.phone &&
-                      newQuery.phone.toLowerCase().includes(term));
+                  showInCurrentView =
+                    (newQuery.name && newQuery.name.toLowerCase().includes(term)) ||
+                    (newQuery.email && newQuery.email.toLowerCase().includes(term)) ||
+                    (newQuery.message && newQuery.message.toLowerCase().includes(term)) ||
+                    (newQuery.phone && newQuery.phone.toLowerCase().includes(term));
                 }
-                if (showNew && statusFilter.value !== "all") {
-                  showNew =
+                
+                if (showInCurrentView && statusFilter.value !== "all") {
+                  showInCurrentView =
                     (statusFilter.value === "new" &&
                       (!newQuery.status || newQuery.status === "new")) ||
                     newQuery.status === statusFilter.value;
                 }
-                if (showNew && dateFilter.value !== "all" && newQuery.timestamp) {
+                
+                if (showInCurrentView && dateFilter.value !== "all" && newQuery.timestamp) {
                   const d = newQuery.timestamp.toDate();
                   if (dateFilter.value === "today") {
-                    showNew = isToday(d);
+                    showInCurrentView = isToday(d);
                   } else if (dateFilter.value === "week") {
-                    showNew = isThisWeek(d);
+                    showInCurrentView = isThisWeek(d);
                   } else if (dateFilter.value === "month") {
-                    showNew = isThisMonth(d);
+                    showInCurrentView = isThisMonth(d);
                   }
                 }
-                if (showNew) {
+                
+                if (showInCurrentView) {
                   filteredQueries.unshift(newQuery);
                   sortQueries(sortBy.value);
+                  
+                  // Show notification for new queries
+                  showToast("New query received from " + newQuery.name);
                 }
               }
             }
@@ -1035,8 +1140,13 @@
               if (idx !== -1) {
                 allQueries[idx] = modifiedQuery;
                 updateStats();
-                const card = document.getElementById("query-" + modifiedQuery.id);
-                if (card) card.replaceWith(createQueryCard(modifiedQuery));
+                
+                const filteredIdx = filteredQueries.findIndex((q) => q.id === modifiedQuery.id);
+                if (filteredIdx !== -1) {
+                  filteredQueries[filteredIdx] = modifiedQuery;
+                  const card = document.getElementById("query-" + modifiedQuery.id);
+                  if (card) card.replaceWith(createQueryCard(modifiedQuery));
+                }
               }
             }
             if (change.type === "removed") {
@@ -1050,19 +1160,65 @@
         });
       });
 
-      // Initialize the admin user if not exists (run this once)
-      // Uncomment and use in browser console to create the admin user
-      /*
-      function createAdminUser() {
-        auth.createUserWithEmailAndPassword(ADMIN_EMAIL, "your-secure-password")
-          .then((userCredential) => {
+      // ========== ADMIN USER MANAGEMENT ==========
+      
+      // Create or update admin user (for super admins only)
+      window.manageAdminUser = async function(email, role, action) {
+        // Check authorization
+        if (!currentUser || !canPerformAction(ADMIN_ROLES.SUPER_ADMIN)) {
+          showToast("Only super admins can manage other admins");
+          return;
+        }
+        
+        if (!email || !role) {
+          showToast("Email and role are required");
+          return;
+        }
+        
+        try {
+          // Find user by email
+          const userQuery = await firebase.auth().getUserByEmail(email);
+          
+          if (action === "add") {
+            // Add/update admin role
+            await db.collection("admins").doc(userQuery.uid).set({
+              email: email,
+              role: role,
+              addedBy: currentUser.email,
+              addedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast(`User ${email} granted ${role} access`);
+          } else if (action === "remove") {
+            // Remove admin access
+            await db.collection("admins").doc(userQuery.uid).delete();
+            showToast(`Admin access removed for ${email}`);
+          }
+          
+          // Log activity
+          logUserActivity(`${action === 'add' ? 'Added' : 'Removed'} admin user ${email}`, null);
+        } catch (error) {
+          console.error("Error managing admin user:", error);
+          showToast(`Error: ${error.message}`);
+        }
+      };
+
+      // Create admin user function (run this once in developer console to set up first admin)
+      function createInitialAdminUser() {
+        auth.createUserWithEmailAndPassword(ADMIN_EMAIL, "YourSecurePassword123!")
+          .then(async (userCredential) => {
+            // Set up as super admin
+            await db.collection("admins").doc(userCredential.user.uid).set({
+              email: ADMIN_EMAIL,
+              role: ADMIN_ROLES.SUPER_ADMIN,
+              addedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
             console.log("Admin user created successfully");
           })
           .catch((error) => {
             console.error("Error creating admin user:", error);
           });
       }
-      */
     </script>
   </body>
 </html>
+             
