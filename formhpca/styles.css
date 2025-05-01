@@ -1,0 +1,85 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 200px;
+}
+
+#contactForm {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 100px;
+}
+
+.consent-container {
+  margin-top: 15px;
+}
+
+.consent-container label {
+  display: inline;
+  font-weight: normal;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+#successMessage {
+  margin-top: 20px;
+  text-align: center;
+  color: green;
+  font-size: 1.2em;
+}
+
+#checkmark {
+  display: block;
+  margin: 10px auto;
+}
+
+/* Animation class (example; adjust to your SVG) */
+.animate {
+  display: block;
+  animation: draw 1s ease-in-out;
+}
+
+@keyframes draw {
+  0% { stroke-dasharray: 0 100; }
+  100% { stroke-dasharray: 100 0; }
+}
