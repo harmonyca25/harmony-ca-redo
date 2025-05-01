@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Harmony CA</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Assuming you have a separate CSS file -->
+</head>
+<body>
+  <!-- Logo -->
+  <header>
+    <img src="https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/png/hpcalogo_no_bg.png" alt="Harmony CA Logo" class="logo">
+  </header>
+
+  <!-- Form -->
+  <form id="contactForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" pattern="[0-9]{10}" required placeholder="e.g., 9051234567">
+
+    <label for="message">Message:</label>
+    <textarea id="message" required></textarea>
+
+    <div class="consent-container">
+      <input type="checkbox" id="consent" required>
+      <label for="consent">I consent to the collection of my personal information as per PIPEDA and FSRA norms.</label>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Success Message and SVG Animation -->
+  <div id="successMessage" style="display: none;"></div>
+  <svg id="checkmark" width="100" height="100" style="display: none;">
+    <!-- Placeholder SVG; replace with your actual animation -->
+    <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="none" />
+    <path d="M30 50 L45 65 L70 35" stroke="green" stroke-width="4" fill="none" />
+  </svg>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
