@@ -575,14 +575,21 @@ function setupFormHandlers() {
             
             // If no duplicate, proceed with submission
             const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            console.log('Submitting contact:', {
+  name,
+  email,
+  phone,
+  message,
+  consent,
+  timestamp
+});
             
             await db.collection('contactSubmissions').add({
                 name,
                 email,
                 phone,
                 message,
-                consent,
-                timestamp
+                consent
             });
             
             // Show thank you message with the submitter's name
