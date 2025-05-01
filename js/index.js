@@ -430,55 +430,71 @@ function ensureIconsAreVisible() {
 let firebaseApp;
 let db;
 
-// Function to initialize Firebase
-// Function to initialize Firebase
+
 // Function to initialize Firebase
 function initializeFirebase() {
     try {
-        // Check if Firebase scripts are loaded
-        if (!window.firebase) {
-            // Dynamically load Firebase if not already loaded
-            loadFirebaseScripts();
+        console.log("Starting Firebase initialization...");
+        
+        // Check if Firebase is already loaded
+        if (typeof firebase === 'undefined') {
+            console.error('Firebase SDK not found. Make sure to include the Firebase SDK script.');
+            showToast('Unable to connect to our database. Please refresh and try again.');
             return;
         }
         
-        // Since firebaseConfig.js already initializes Firebase, we just need to get the app instance
+        // Check if Firebase is already initialized (by firebaseConfig.js)
         if (firebase.apps.length > 0) {
-            // Firebase is already initialized by firebaseConfig.js
-            firebaseApp = firebase.apps[0]; // Get the existing app
+            console.log('Firebase already initialized by firebaseConfig.js');
+            // Get reference to the existing app
+            firebaseApp = firebase.apps[0];
+            // Get Firestore instance from the existing app
             db = firebaseApp.firestore();
-            console.log('Firebase reference obtained successfully');
-        } else {
-            // If Firebase isn't initialized yet, try to load the config
-            console.log('Firebase not initialized, attempting to load config...');
-            
-            // Try to find the config in the global scope
+            console.log('Successfully connected to Firestore');
+            return;
+        }
+        
+        console.log('Firebase is loaded but not initialized yet.');
+        
+        // Try to initialize Firebase ourselves if it wasn't already initialized
+        try {
+            // First check if the config is available in window scope
             if (typeof firebaseConfig !== 'undefined') {
-                // Initialize Firebase with the config
+                console.log('Found firebaseConfig in global scope');
                 firebaseApp = firebase.initializeApp(firebaseConfig);
                 db = firebaseApp.firestore();
-                console.log('Firebase initialized with found config');
-            } else {
-                // If all else fails, load the config file dynamically
-                const configScript = document.createElement('script');
-                configScript.src = 'src/firebaseConfig.js'; // Note the capital C
-                configScript.onload = function() {
-                    // After loading, just get the app since the script initializes Firebase
+                console.log('Firebase initialized successfully');
+                return;
+            }
+            
+            // If we get here, we need to load the config file
+            console.log('Loading Firebase config dynamically...');
+            const script = document.createElement('script');
+            script.src = 'src/firebaseConfig.js';
+            script.onload = function() {
+                console.log('Firebase config loaded, checking for initialized app');
+                setTimeout(function() {
                     if (firebase.apps.length > 0) {
                         firebaseApp = firebase.apps[0];
                         db = firebaseApp.firestore();
                         console.log('Firebase initialized by dynamically loaded config');
                     } else {
-                        console.error('Firebase initialization failed even after loading config');
+                        console.error('Firebase still not initialized after loading config');
                         showToast('Unable to connect to our database. Please try again later.');
                     }
-                };
-                document.head.appendChild(configScript);
-                return; // Exit and wait for the script to load
-            }
+                }, 500); // Give time for the script to execute
+            };
+            script.onerror = function() {
+                console.error('Failed to load Firebase config file');
+                showToast('Unable to connect to our database. Please refresh and try again.');
+            };
+            document.head.appendChild(script);
+        } catch (error) {
+            console.error('Error initializing Firebase:', error);
+            showToast('Unable to connect to our database. Please try again later.');
         }
     } catch (error) {
-        console.error('Error initializing Firebase:', error);
+        console.error('Unexpected error during Firebase initialization:', error);
         showToast('Unable to connect to our database. Please try again later.');
     }
 }
