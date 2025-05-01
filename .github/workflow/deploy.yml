@@ -10,9 +10,9 @@ jobs:
       
       - name: Create Firebase config
         run: |
-          echo 'const firebaseConfig = ${{ secrets.FIREBASE_CONFIG}};
-          // Initialize Firebase with compat version
-          const app = firebase.initializeApp(firebaseConfig);' > ./src/firebaseConfig.js
+         echo 'window.firebaseConfig = ${{ secrets.FIREBASE_CONFIG}};
+    // Log that config was loaded
+    console.log("Firebase configuration loaded successfully");' > ./src/firebaseConfig.js
       
       # Add your build steps here
       
