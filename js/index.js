@@ -431,6 +431,7 @@ let firebaseApp;
 let db;
 
 // Function to initialize Firebase
+// Function to initialize Firebase
 function initializeFirebase() {
     try {
         // Check if Firebase scripts are loaded
@@ -440,11 +441,16 @@ function initializeFirebase() {
             return;
         }
         
-        // Firebase configuration
-        const firebaseConfig;
+        // Firebase configuration from firebaseconfig.js
+        // This assumes firebaseconfig.js sets window.firebaseConfig
+        if (!window.firebaseConfig) {
+            console.error('Firebase configuration not found. Make sure firebaseconfig.js is loaded correctly.');
+            showToast('Configuration error. Please contact the administrator.');
+            return;
+        }
         
-        // Initialize Firebase
-        firebaseApp = firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase with the imported config
+        firebaseApp = firebase.initializeApp(window.firebaseConfig);
         db = firebaseApp.firestore();
         console.log('Firebase initialized successfully');
     } catch (error) {
