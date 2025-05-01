@@ -10,9 +10,11 @@ jobs:
       
       - name: Create Firebase config
         run: |
-         echo 'window.firebaseConfig = ${{ secrets.FIREBASE_CONFIG}};
-    // Log that config was loaded
-    console.log("Firebase configuration loaded successfully");' > ./src/firebaseConfig.js
+         echo 'if (typeof firebase !== "undefined" && !firebase.apps.length) {
+      const firebaseConfig = ${{ secrets.FIREBASE_CONFIG}};
+      firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized with production config");
+    }' > ./src/firebaseConfig.js
       
       # Add your build steps here
       
