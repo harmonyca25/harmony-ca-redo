@@ -1,3 +1,26 @@
+// Firebase initialization block - add this at the top of your file
+if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+    try {
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAprRe8E5qs8O3Zt2QOu7d-8eSvBW22AOeQ",
+            authDomain: "harmonyca-561a6.firebaseapp.com",
+            projectId: "harmonyca-561a6",
+            storageBucket: "harmonyca-561a6.firebasestorage.app",
+            messagingSenderId: "92847303206",
+            appId: "1:92847303206:web:1d06690a77a2548b1054e7"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        console.log("Firebase initialized successfully at startup");
+    } catch (error) {
+        console.error("Error initializing Firebase:", error);
+    }
+}
+
+
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Add structured data dynamically
@@ -436,15 +459,16 @@ function initializeFirebase() {
     try {
         console.log("Starting Firebase initialization...");
         
-        // Check if Firebase is already loaded and initialized
+        // Check if Firebase is loaded
         if (typeof firebase === 'undefined') {
             console.error('Firebase SDK not found. Make sure to include the Firebase SDK script.');
             showToast('Unable to connect to our database. Please refresh and try again.');
             return;
         }
         
+        // Check if Firebase is initialized
         if (firebase.apps.length > 0) {
-            console.log('Firebase already initialized');
+            console.log('Firebase initialized - getting references');
             // Get reference to the existing app
             firebaseApp = firebase.apps[0];
             // Get Firestore instance from the existing app
@@ -452,7 +476,25 @@ function initializeFirebase() {
             console.log('Successfully connected to Firestore');
         } else {
             console.error('Firebase SDK loaded but not initialized');
-            showToast('Unable to connect to our database. Please try again later.');
+            // Try to initialize it now as a fallback
+            try {
+                // Firebase configuration
+                const firebaseConfig = {
+                    apiKey: "AIzaSyAprRe8E5qs8O3Zt2QOu7d-8eSvBW22AOeQ",
+                    authDomain: "harmonyca-561a6.firebaseapp.com",
+                    projectId: "harmonyca-561a6",
+                    storageBucket: "harmonyca-561a6.firebasestorage.app",
+                    messagingSenderId: "92847303206",
+                    appId: "1:92847303206:web:1d06690a77a2548b1054e7"
+                };
+                
+                firebaseApp = firebase.initializeApp(firebaseConfig);
+                db = firebaseApp.firestore();
+                console.log('Firebase initialized during fallback');
+            } catch (initError) {
+                console.error('Failed to initialize Firebase in fallback:', initError);
+                showToast('Unable to connect to our database. Please try again later.');
+            }
         }
     } catch (error) {
         console.error('Unexpected error during Firebase initialization:', error);
