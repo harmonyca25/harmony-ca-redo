@@ -12,7 +12,7 @@ jobs:
         run: |
           echo 'const firebaseConfig = ${{ secrets.FIREBASE_CONFIG}};
           // Initialize Firebase with compat version
-          const app = firebase.initializeApp(firebaseConfig);' > ./src/firebaseConfig.js
+          const app = firebase.initializeApp(firebaseConfig);' > ./src/firebaseconfig.js
       
       # Add your build steps here
       
