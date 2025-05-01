@@ -432,6 +432,7 @@ let db;
 
 // Function to initialize Firebase
 // Function to initialize Firebase
+// Function to initialize Firebase
 function initializeFirebase() {
     try {
         // Check if Firebase scripts are loaded
@@ -441,18 +442,41 @@ function initializeFirebase() {
             return;
         }
         
-        // Firebase configuration from firebaseconfig.js
-        // This assumes firebaseconfig.js sets window.firebaseConfig
-        if (!window.firebaseConfig) {
-            console.error('Firebase configuration not found. Make sure firebaseconfig.js is loaded correctly.');
-            showToast('Configuration error. Please contact the administrator.');
-            return;
+        // Since firebaseConfig.js already initializes Firebase, we just need to get the app instance
+        if (firebase.apps.length > 0) {
+            // Firebase is already initialized by firebaseConfig.js
+            firebaseApp = firebase.apps[0]; // Get the existing app
+            db = firebaseApp.firestore();
+            console.log('Firebase reference obtained successfully');
+        } else {
+            // If Firebase isn't initialized yet, try to load the config
+            console.log('Firebase not initialized, attempting to load config...');
+            
+            // Try to find the config in the global scope
+            if (typeof firebaseConfig !== 'undefined') {
+                // Initialize Firebase with the config
+                firebaseApp = firebase.initializeApp(firebaseConfig);
+                db = firebaseApp.firestore();
+                console.log('Firebase initialized with found config');
+            } else {
+                // If all else fails, load the config file dynamically
+                const configScript = document.createElement('script');
+                configScript.src = 'src/firebaseConfig.js'; // Note the capital C
+                configScript.onload = function() {
+                    // After loading, just get the app since the script initializes Firebase
+                    if (firebase.apps.length > 0) {
+                        firebaseApp = firebase.apps[0];
+                        db = firebaseApp.firestore();
+                        console.log('Firebase initialized by dynamically loaded config');
+                    } else {
+                        console.error('Firebase initialization failed even after loading config');
+                        showToast('Unable to connect to our database. Please try again later.');
+                    }
+                };
+                document.head.appendChild(configScript);
+                return; // Exit and wait for the script to load
+            }
         }
-        
-        // Initialize Firebase with the imported config
-        firebaseApp = firebase.initializeApp(window.firebaseConfig);
-        db = firebaseApp.firestore();
-        console.log('Firebase initialized successfully');
     } catch (error) {
         console.error('Error initializing Firebase:', error);
         showToast('Unable to connect to our database. Please try again later.');
