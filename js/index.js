@@ -442,12 +442,7 @@ function initializeFirebase() {
         
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyB7T1RFr4Fm1iPlDGDYniz8I4LoDY8iSfc",
-            authDomain: "rekhacanada-73839.firebaseapp.com",
-            projectId: "rekhacanada-73839",
-            storageBucket: "rekhacanada-73839.firebasestorage.app",
-            messagingSenderId: "665190770519",
-            appId: "1:665190770519:web:9f996932356b3d4679c012"
+//how will the object properties come here when function executes?
         };
         
         // Initialize Firebase
