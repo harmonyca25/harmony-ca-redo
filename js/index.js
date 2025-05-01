@@ -436,61 +436,22 @@ function initializeFirebase() {
     try {
         console.log("Starting Firebase initialization...");
         
-        // Check if Firebase is already loaded
+        // Check if Firebase is already loaded and initialized
         if (typeof firebase === 'undefined') {
             console.error('Firebase SDK not found. Make sure to include the Firebase SDK script.');
             showToast('Unable to connect to our database. Please refresh and try again.');
             return;
         }
         
-        // Check if Firebase is already initialized (by firebaseConfig.js)
         if (firebase.apps.length > 0) {
-            console.log('Firebase already initialized by firebaseConfig.js');
+            console.log('Firebase already initialized');
             // Get reference to the existing app
             firebaseApp = firebase.apps[0];
             // Get Firestore instance from the existing app
             db = firebaseApp.firestore();
             console.log('Successfully connected to Firestore');
-            return;
-        }
-        
-        console.log('Firebase is loaded but not initialized yet.');
-        
-        // Try to initialize Firebase ourselves if it wasn't already initialized
-        try {
-            // First check if the config is available in window scope
-            if (typeof firebaseConfig !== 'undefined') {
-                console.log('Found firebaseConfig in global scope');
-                firebaseApp = firebase.initializeApp(firebaseConfig);
-                db = firebaseApp.firestore();
-                console.log('Firebase initialized successfully');
-                return;
-            }
-            
-            // If we get here, we need to load the config file
-            console.log('Loading Firebase config dynamically...');
-            const script = document.createElement('script');
-            script.src = 'src/firebaseConfig.js';
-            script.onload = function() {
-                console.log('Firebase config loaded, checking for initialized app');
-                setTimeout(function() {
-                    if (firebase.apps.length > 0) {
-                        firebaseApp = firebase.apps[0];
-                        db = firebaseApp.firestore();
-                        console.log('Firebase initialized by dynamically loaded config');
-                    } else {
-                        console.error('Firebase still not initialized after loading config');
-                        showToast('Unable to connect to our database. Please try again later.');
-                    }
-                }, 500); // Give time for the script to execute
-            };
-            script.onerror = function() {
-                console.error('Failed to load Firebase config file');
-                showToast('Unable to connect to our database. Please refresh and try again.');
-            };
-            document.head.appendChild(script);
-        } catch (error) {
-            console.error('Error initializing Firebase:', error);
+        } else {
+            console.error('Firebase SDK loaded but not initialized');
             showToast('Unable to connect to our database. Please try again later.');
         }
     } catch (error) {
