@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Harmony CA</title>
+  <style>
+    /* Form Styles */
+    form {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .consent-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .consent-container input {
+      width: auto;
+      margin-right: 10px;
+    }
+    .logo {
+      display: block;
+      margin: 20px auto;
+      max-width: 200px;
+    }
+
+    /* Message Styles */
+    #successMessage, #errorMessage {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    #successMessage {
+      background-color: #e6ffe6;
+      color: green;
+    }
+    #errorMessage {
+      background-color: #ffe6e6;
+      color: red;
+    }
+    #checkmark {
+      display: none;
+      margin: 10px auto;
+    }
+    .checkmark-path {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+    }
+    @keyframes draw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <header>
+    <img src="https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/png/hpcalogo_no_bg.png" alt="Harmony CA Logo" class="logo">
+  </header>
+
+  <!-- Form -->
+  <form id="contactForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" pattern="[0-9]{10}" required placeholder="e.g., 9051234567">
+
+    <label for="message">Message:</label>
+    <textarea id="message" required></textarea>
+
+    <div class="consent-container">
+      <input type="checkbox" id="consent" required>
+      <label for="consent">I consent to the collection of my personal information as per PIPEDA and FSRA norms.</label>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Success Message with SVG Animation -->
+  <div id="successMessage" style="display: none;">
+    <p id="successText"></p>
+    <svg id="checkmark" width="100" height="100" viewBox="0 0 100 100">
+      <path class="checkmark-path" d="M20 50 L40 70 L80 30" stroke="green" stroke-width="5" fill="none" />
+    </svg>
+  </div>
+
+  <!-- Error Message with Fallback -->
+  <div id="errorMessage" style="display: none;">
+    Oops! Something went wrong with your submission. Please try again later or contact us directly at 
+    <a href="mailto:plan@harmonyplan.ca">plan@harmonyplan.ca</a> or call 
+    <a href="tel:+19053301216">(905) 330-1216</a> to receive a callback.
+  </div>
+
+  <!-- Firebase SDK and Script -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAprRe8E5qs8O3Zt2QOu7d-8eSvBW22AOeQ",
+      authDomain: "harmonyca-561a6.firebaseapp.com",
+      projectId: "harmonyca-561a6",
+      storageBucket: "harmonyca-561a6.firebasestorage.app",
+      messagingSenderId: "92847303206",
+      appId: "1:92847303206:web:1d06690a77a2548b1054e7"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Form Submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Hide messages
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'none';
+
+      // Get form values
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const consent = document.getElementById('consent').checked;
+
+      // Validation
+      if (!consent) {
+        showErrorMessage('Please check the consent box to proceed.');
+        document.getElementById('consent').focus();
+        return;
+      }
+      if (!name || !email || !phone || !message) {
+        showErrorMessage('Please fill in all fields.');
+        return;
+      }
+      if (!validateEmail(email)) {
+        showErrorMessage('Please enter a valid email address.');
+        document.getElementById('email').focus();
+        return;
+      }
+      if (!validatePhone(phone)) {
+        showErrorMessage('Please enter a 10-digit phone number (e.g., 9051234567).');
+        document.getElementById('phone').focus();
+        return;
+      }
+
+      // Simple spam prevention (client-side rate limit)
+      const lastSubmission = localStorage.getItem('lastSubmission');
+      if (lastSubmission && (Date.now() - lastSubmission < 60000)) { // 1-minute cooldown
+        showErrorMessage('Please wait a moment before submitting another query.');
+        return;
+      }
+
+      // Disable button
+      const submitButton = this.querySelector('button');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+
+      // Prepare data
+      const data = {
+        name: name,
+        email: email,
+        phone: phone,
+        message: message,
+        consent: true,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // Submit to Firestore
+      db.collection('contactSubmissions').add(data)
+        .then(() => {
+          localStorage.setItem('lastSubmission', Date.now());
+          showSuccessMessage(name);
+          this.reset();
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showErrorMessage('An error occurred. Please try again later or contact us directly.');
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit';
+        });
+    });
+
+    // Helper Functions
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function validatePhone(phone) {
+      const re = /^[0-9]{10}$/;
+      return re.test(phone);
+    }
+
+    function showSuccessMessage(name) {
+      document.getElementById('successText').textContent = `Thank you, ${name}! We have received your query and will get back to you within 72 hours.`;
+      document.getElementById('successMessage').style.display = 'block';
+      const checkmark = document.getElementById('checkmark');
+      checkmark.style.display = 'block';
+      const path = checkmark.querySelector('.checkmark-path');
+      path.style.animation = 'none'; // Reset animation
+      setTimeout(() => {
+        path.style.animation = 'draw 1s ease forwards';
+      }, 10);
+    }
+
+    function showErrorMessage(message) {
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.innerHTML = message + '<br><br>Alternatively, contact us directly at <a href="mailto:plan@harmonyplan.ca">plan@harmonyplan.ca</a> or call <a href="tel:+19053301216">(905) 330-1216</a> to receive a callback.';
+      errorMessage.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
