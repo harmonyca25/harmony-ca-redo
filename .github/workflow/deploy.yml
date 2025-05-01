@@ -10,7 +10,7 @@ jobs:
       
       - name: Create Firebase config
         run: |
-          echo 'const firebaseConfig = ${{ secrets.FIREBASE_CONFIG }};
+          echo 'const firebaseConfig = ${{ secrets.FIREBASE_CONFIG}};
           // Initialize Firebase with compat version
           const app = firebase.initializeApp(firebaseConfig);' > ./src/firebaseConfig.js
       
