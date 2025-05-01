@@ -441,9 +441,7 @@ function initializeFirebase() {
         }
         
         // Firebase configuration
-        const firebaseConfig = {
-//how will the object properties come here when function executes?
-        };
+        const firebaseConfig;
         
         // Initialize Firebase
         firebaseApp = firebase.initializeApp(firebaseConfig);
