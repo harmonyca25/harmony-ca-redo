@@ -1213,6 +1213,7 @@ footer {
 /* Modal Form Styles */
 .modal-content {
     padding: 20px 30px;
+    overflow:scroll;
 }
 
 /* Form Styles */
