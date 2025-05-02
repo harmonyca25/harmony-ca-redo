@@ -540,9 +540,17 @@ function setupFormHandlers() {
     const message = document.getElementById('message').value;
     const consent = document.getElementById('consent').checked;
 
-   
+     const submissionData = {
+             name,
+             email,
+             phone, // <-- Still using potentially untrimmed 'phone' here, fix needed
+             message,
+             consent,
+             timestamp
+         };
     // proceed with submission
         console.log('Attempting to submit data:', submissionData);
+        
     try {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
         console.log('Submitting contact:', { name, email, phone, message, consent, timestamp });
