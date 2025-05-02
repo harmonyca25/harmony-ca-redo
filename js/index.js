@@ -527,92 +527,84 @@ function setupFormHandlers() {
     if (!contactForm) return;
     
     contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        if (!db) {
-            showToast('Database connection not established. Please refresh and try again.');
-            return;
-        }
-        
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const message = document.getElementById('message').value;
-        const consent = document.getElementById('consent').checked;
-        
-        // Check for duplicate submission
-        try {
-            const querySnapshot = await db.collection('contactSubmissions')
-                .where('email', '==', email)
-                .get();
-            
-            if (!querySnapshot.empty) {
-                // Get the most recent submission
-                let lastSubmission = null;
-                let latestDate = new Date(0); // Start with oldest possible date
-                
-                querySnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const submissionDate = data.timestamp.toDate();
-                    if (submissionDate > latestDate) {
-                        latestDate = submissionDate;
-                        lastSubmission = data;
-                    }
-                });
-                
-                // Format the date for display
-                const formattedDate = latestDate.toLocaleDateString('en-US', {
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                showToast(`You've already submitted a message on ${formattedDate}. We'll get back to you soon.`);
-                return;
-            }
-            
-            // If no duplicate, proceed with submission
-            const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-            console.log('Submitting contact:', {
-  name,
-  email,
-  phone,
-  message,
-  consent,
-  timestamp
-});
-            
-            await db.collection('contactSubmissions').add({
-                name,
-                email,
-                phone,
-                message,
-                consent
+    e.preventDefault();
+
+    if (!db) {
+        showToast('Database connection not established. Please refresh and try again.');
+        return;
+    }
+
+    const name    = document.getElementById('name').value;
+    const email   = document.getElementById('email').value;
+    const phone   = document.getElementById('phone').value;
+    const message = document.getElementById('message').value;
+    const consent = document.getElementById('consent').checked;
+
+    // Attempt duplicate‐check; if permission denied, proceed to submit
+    let isDuplicate = false;
+    try {
+        const querySnapshot = await db.collection('contactSubmissions')
+            .where('email', '==', email)
+            .get();
+
+        if (!querySnapshot.empty) {
+            // find the most recent submission
+            let latestDate = new Date(0);
+            querySnapshot.forEach(doc => {
+                const ts = doc.data().timestamp;
+                if (ts && ts.toDate) {
+                    const d = ts.toDate();
+                    if (d > latestDate) latestDate = d;
+                }
             });
-            
-            // Show thank you message with the submitter's name
-            document.getElementById('submitterName').textContent = name;
-            document.getElementById('form-container').style.display = 'none';
-            document.getElementById('thankYouMessage').style.display = 'block';
-            
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            showToast('There was an error submitting your message. Please try again.');
+
+            // show duplicate toast
+            const formatted = latestDate.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+            showToast(`You've already submitted a message on ${formatted}. We'll get back to you soon.`);
+            isDuplicate = true;
         }
-    });
-}
+    } catch (err) {
+        if (err.code !== 'permission-denied') {
+            console.error('Error checking duplicates:', err);
+            showToast('Error checking previous submissions; proceeding to submit.');
+        }
+    }
+    if (isDuplicate) return;
+
+    // proceed with submission
+    try {
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        console.log('Submitting contact:', { name, email, phone, message, consent, timestamp });
+
+        await db.collection('contactSubmissions').add({
+            name,
+            email,
+            phone,
+            message,
+            consent,
+            timestamp
+        });
+
+        document.getElementById('submitterName').textContent    = name;
+        document.getElementById('form-container').style.display  = 'none';
+        document.getElementById('thankYouMessage').style.display = 'block';
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showToast('There was an error submitting your message. Please try again.');
+    }
+});
 
 // Function to reset the form for another submission
 function resetForm() {
     const contactForm = document.getElementById('contactForm');
     if (contactForm) contactForm.reset();
-    
-    document.getElementById('form-container').style.display = 'block';
+
+    document.getElementById('form-container').style.display  = 'block';
     document.getElementById('thankYouMessage').style.display = 'none';
-    
-    // Remove any highlighting from the message field
+
     const messageField = document.getElementById('message');
     if (messageField) {
         messageField.classList.remove('message-highlight', 'message-error');
