@@ -540,40 +540,7 @@ function setupFormHandlers() {
     const message = document.getElementById('message').value;
     const consent = document.getElementById('consent').checked;
 
-    // Attempt duplicate‐check; if permission denied, proceed to submit
-    // let isDuplicate = false;
-    // try {
-    //     const querySnapshot = await db.collection('contactSubmissions')
-    //         .where('email', '==', email)
-    //         .get();
-
-    //     if (!querySnapshot.empty) {
-    //         // find the most recent submission
-    //         let latestDate = new Date(0);
-    //         querySnapshot.forEach(doc => {
-    //             const ts = doc.data().timestamp;
-    //             if (ts && ts.toDate) {
-    //                 const d = ts.toDate();
-    //                 if (d > latestDate) latestDate = d;
-    //             }
-    //         });
-
-    //         // show duplicate toast
-    //         const formatted = latestDate.toLocaleDateString('en-US', {
-    //             year: 'numeric', month: 'long', day: 'numeric',
-    //             hour: '2-digit', minute: '2-digit'
-    //         });
-    //         showToast(`You've already submitted a message on ${formatted}. We'll get back to you soon.`);
-    //         isDuplicate = true;
-    //     }
-    // } catch (err) {
-    //     if (err.code !== 'permission-denied') {
-    //         console.error('Error checking duplicates:', err);
-    //         showToast('Error checking previous submissions; proceeding to submit.');
-    //     }
-    // }
-    // if (isDuplicate) return;
-
+   
     // proceed with submission
     try {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
