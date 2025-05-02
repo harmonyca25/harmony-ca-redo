@@ -598,15 +598,18 @@ function setupFormHandlers() {
 });
 
 // Function to reset the form for another submission
+// Function to reset the form for another submission
 function resetForm() {
     const contactForm = document.getElementById('contactForm');
     if (contactForm) contactForm.reset();
 
-    document.getElementById('form-container').style.display  = 'block';
+    document.getElementById('form-container').style.display = 'block';
     document.getElementById('thankYouMessage').style.display = 'none';
 
     const messageField = document.getElementById('message');
     if (messageField) {
         messageField.classList.remove('message-highlight', 'message-error');
     }
-}
+} // End of resetForm function
+
+}); // <- Closing the DOMContentLoaded event listener
