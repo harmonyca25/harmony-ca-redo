@@ -612,4 +612,4 @@ function resetForm() {
     }
 } // End of resetForm function
 
-}); // <- Closing the DOMContentLoaded event listener
+}; // <- Closing the DOMContentLoaded event listener
