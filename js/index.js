@@ -542,6 +542,7 @@ function setupFormHandlers() {
 
    
     // proceed with submission
+        console.log('Attempting to submit data:', submissionData);
     try {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
         console.log('Submitting contact:', { name, email, phone, message, consent, timestamp });
@@ -563,7 +564,7 @@ function setupFormHandlers() {
         showToast('There was an error submitting your message. Please try again.');
     }
 });
-
+console.log('right here before reset form');
 // Function to reset the form for another submission
 // Function to reset the form for another submission
 function resetForm() {
