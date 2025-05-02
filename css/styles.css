@@ -823,7 +823,7 @@ footer {
     max-height: 800px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: modalIn 0.5s;
-    overflow: hidden;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
 }
