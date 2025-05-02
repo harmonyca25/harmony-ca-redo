@@ -539,7 +539,7 @@ function setupFormHandlers() {
     const phone   = document.getElementById('phone').value;
     const message = document.getElementById('message').value;
     const consent = document.getElementById('consent').checked;
-
+const timestamp = firebase.firestore.FieldValue.serverTimestamp();
      const submissionData = {
              name,
              email,
