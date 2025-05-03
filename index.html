@@ -114,32 +114,7 @@
     
 
     
-    <!-- Inline modal functions to ensure they're available immediately -->
-    <script>
-        // Modal functionality
-        function openContactModal() {
-            const modal = document.getElementById('contactModal');
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-            
-            // Accessibility improvements
-            modal.setAttribute('aria-hidden', 'false');
-            
-            // Set focus to the modal close button
-            setTimeout(() => {
-                document.querySelector('.modal-close').focus();
-            }, 100);
-        }
-        
-        function closeContactModal() {
-            const modal = document.getElementById('contactModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = ''; // Allow scrolling again
-            
-            // Accessibility improvements
-            modal.setAttribute('aria-hidden', 'true');
-        }
-    </script>
+   
     <meta name="msvalidate.01" content="C2A5F742CE663E0228F85FC05BD328EE" />
     <style>
          body {
@@ -197,6 +172,32 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "ra62fuda8g");
 </script>
+     <!-- Inline modal functions to ensure they're available immediately -->
+    <script>
+        // Modal functionality
+        function openContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            
+            // Accessibility improvements
+            modal.setAttribute('aria-hidden', 'false');
+            
+            // Set focus to the modal close button
+            setTimeout(() => {
+                document.querySelector('.modal-close').focus();
+            }, 100);
+        }
+        
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Allow scrolling again
+            
+            // Accessibility improvements
+            modal.setAttribute('aria-hidden', 'true');
+        }
+    </script>
 </head>
 <body>
     <!-- Preloader -->
