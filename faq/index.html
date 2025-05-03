@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Insurance Questions in Ontario | Harmony Plan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e67e22;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #444;
+            --white: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--white);
+        }
+        
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-harmony {
+            color: var(--white);
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        }
+        
+        .logo-plan {
+            color: var(--accent-color);
+            transition: color 0.3s ease;
+        }
+        
+        .logo-container:hover .logo-plan {
+            color: #f39c12;
+        }
+        
+        .search-container {
+            margin-top: 0;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-container input:focus {
+            background-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--white);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .page-title h1 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .page-title h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        .page-description {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+        
+        .insurance-section {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .insurance-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .insurance-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--accent-color);
+        }
+        
+        .insurance-section h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 15px;
+            font-size: 1.4em;
+            color: var(--accent-color);
+            background-color: rgba(230, 126, 34, 0.1);
+            padding: 10px;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        details {
+            margin-bottom: 1.5rem;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        details:last-child {
+            margin-bottom: 0;
+        }
+        
+        details:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        summary {
+            cursor: pointer;
+            padding: 1.2rem;
+            background-color: var(--light-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 7px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        summary:after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            transition: var(--transition);
+        }
+        
+        details[open] summary:after {
+            transform: rotate(180deg);
+        }
+        
+        details[open] summary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        details[open] summary:after {
+            color: var(--white);
+        }
+        
+        details p {
+            padding: 1.2rem;
+            margin: 0;
+            background-color: var(--white);
+            border-top: 1px solid #e1e1e1;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .highlight {
+            background-color: rgba(230, 126, 34, 0.2);
+            padding: 2px 0;
+            border-radius: 3px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .no-results h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+        
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        footer a:hover {
+            color: #f39c12;
+            text-decoration: underline;
+        }
+        
+        .main-site-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background-color: transparent;
+            color: var(--white);
+            text-decoration: none;
+            border: 2px solid var(--accent-color);
+            border-radius: 30px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+        
+        .main-site-link i {
+            margin-right: 8px;
+        }
+        
+        .main-site-link:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .insurance-section {
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
+            
+            .search-container {
+                max-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
+            .insurance-section {
+                padding: 1.5rem;
+            }
+            
+            summary {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+            
+            details p {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .page-description {
+                font-size: 1rem;
+            }
+            
+            .logo-img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .insurance-section:before {
+                width: 3px;
+            }
+            
+            .section-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="https://harmonyplan.ca" class="logo-container">
+                <div class="logo-img" style="background-image: url('https://raw.githubusercontent.com/harmonyca25/harmony-ca-redo/refs/heads/main/img/png/hpcalogo_no_bg.png');"></div>
+                <div class="logo-text">
+                    <span class="logo-harmony">Harmony</span>
+                    <span class="logo-plan">Plan</span>
+                </div>
+            </a>
+            <div class="search-container">
+                <input type="search" id="searchInput" placeholder="Search insurance questions...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="page-title">
+            <h1>Common Insurance Questions in Ontario</h1>
+        </div>
+        
+        <div class="page-description">
+            <p>Find answers to frequently asked questions about various insurance types relevant to Ontario residents. Use the search bar to quickly find information on specific insurance topics.</p>
+        </div>
+        
+        <div class="insurance-section" id="life-insurance">
+            <h2><span class="section-icon"><i class="fas fa-heartbeat"></i></span>Life Insurance</h2>
+            <details>
+                <summary>How much life insurance coverage do I need, and how can I calculate it based on my family's needs?</summary>
+                <p>The amount of life insurance coverage you need depends on your income, debts, and your family's financial needs. A common rule of thumb is to have coverage equal to 10-15 times your annual income. For example, if you earn $60,000 annually, you might need $600,000 to $900,000 in coverage. You can also use online calculators or consult with an agent to assess specific expenses like mortgages, education, or debts.</p>
+            </details>
+            <details>
+                <summary>What are the key differences between term life insurance and permanent life insurance, and which one is better for me?</summary>
+                <p>Term life insurance covers you for a fixed period (e.g., 10-30 years) with lower premiums but no cash value. Permanent life insurance, like whole life or universal life, offers lifelong coverage and builds cash value you can borrow against. Term is ideal for temporary needs, like a mortgage, while permanent suits long-term planning. An agent can help you choose based on your goals and budget.</p>
+            </details>
+            <details>
+                <summary>Can I still get life insurance if I have pre-existing health conditions, and how will it affect my premiums?</summary>
+                <p>Yes, you can get life insurance with pre-existing conditions, but premiums may be higher. Some insurers offer guaranteed issue policies without medical exams, though these have higher costs and lower coverage. An agent can find a policy that balances your health and budget.</p>
+            </details>
+            <details>
+                <summary>How do I choose the right life insurance policy from the many options available?</summary>
+                <p>Consider your financial goals, budget, and coverage needs. Decide between term vs. permanent insurance and whether you need riders like critical illness coverage. An agent can guide you through options to find the best fit.</p>
+            </details>
+            <details>
+                <summary>Are there tax benefits associated with life insurance in Canada, and how does it work?</summary>
+                <p>Yes, the death benefit paid to beneficiaries is generally tax-free. In permanent policies, cash value grows tax-deferred, but withdrawals exceeding premiums paid may be taxable. Consult a tax professional for personalized advice.</p>
+            </details>
+        </div>
+        
+        <div class="insurance-section" id="health-insurance">
+            <h2><span class="section-icon"><i class="fas fa-hospital"></i></span>Health Insurance</h2>
+            <details>
+                <summary>What services are covered by OHIP, and what common health expenses do I have to pay out-of-pocket?</summary>
+                <p>OHIP covers doctor visits, hospital stays, and emergency care but not prescription drugs (except for OHIP+ for those 24 and under), dental care, vision care, or paramedical services like physiotherapy. These are common out-of-pocket expenses.</p>
+            </details>
+            <details>
+                <summary>Why might I need private health insurance in addition to OHIP, and what additional benefits does it provide?</summary>
+                <p>Private health insurance covers expenses OHIP doesn't, like prescription drugs, dental, vision, and paramedical services. It also provides coverage for out-of-province or international travel, reducing your out-of-pocket costs.</p>
+            </details>
+            <details>
+                <summary>How can I find affordable private health insurance plans that suit my family's needs in Ontario?</summary>
+                <p>Compare plans from providers like Sun Life or Ontario Blue Cross. Look for group rates through employers or associations and consider your family's needs (e.g., dental, vision). An agent can help find cost-effective options.</p>
+            </details>
+            <details>
+                <summary>What are the best private health insurance options for dental care, vision care, and prescription drugs in Ontario?</summary>
+                <p>Providers like Sun Life and Manulife offer plans covering dental, vision, and prescriptions. For example, Sun Life's Health & Dental plans include routine dental and vision exams. Review plan details to match your needs.</p>
+            </details>
+            <details>
+                <summary>How does extended health insurance work, and what should I look for in a plan?</summary>
+                <p>Extended health insurance covers services OHIP excludes, like dental and vision care. Look for plans with high reimbursement rates (e.g., 70%), low deductibles, and coverage for your family's needs. Balance premiums with coverage limits.</p>
+            </details>
+        </div>
+        
+        <div class="insurance-section" id="critical-illness">
+            <h2><span class="section-icon"><i class="fas fa-notes-medical"></i></span>Critical Illness Insurance</h2>
+            <details>
+                <summary>What exactly is critical illness insurance, and why is it important to have in addition to my regular health coverage?</summary>
+                <p>Critical illness insurance pays a tax-free lump sum if you're diagnosed with conditions like cancer or stroke. It covers non-medical costs like mortgages, unlike health plans.</p>
+            </details>
+            <details>
+                <summary>Which specific illnesses are typically covered under a critical illness insurance policy?</summary>
+                <p>Includes cancer, heart attack, stroke, bypass surgery, and kidney failure. Verify the policy's list, as it varies.</p>
+            </details>
+            <details>
+                <summary>How much does critical illness insurance usually cost, and is it worth the investment for my financial security?</summary>
+                <p>Costs $20-$100 monthly based on age and coverage. It's valuable for dependents or debt holders, ensuring financial stability.</p>
+            </details>
+            <details>
+                <summary>Can I purchase critical illness insurance if I already have a serious health condition, and what are the implications?</summary>
+                <p>It's challenging; good health is often required. Guaranteed issue options have higher premiums and lower coverage.</p>
+            </details>
+            <details>
+                <summary>How does critical illness insurance complement my existing disability or life insurance policies?</summary>
+                <p>It provides a lump sum for recovery, disability replaces income, and life supports beneficiaries, forming a robust safety net.</p>
+            </details>
+        </div>
+        
+        <div class="insurance-section" id="disability">
+            <h2><span class="section-icon"><i class="fas fa-wheelchair"></i></span>Disability Insurance</h2>
+            <details>
+                <summary>What is disability insurance, and why should I consider getting it even if I'm young and healthy?</summary>
+                <p>It replaces a portion of your income if you're unable to work due to disability. Even young people face risks, and it covers essential expenses.</p>
+            </details>
+            <details>
+                <summary>What is the difference between short-term disability and long-term disability insurance, and do I need both?</summary>
+                <p>Short-term covers up to 26 weeks; long-term lasts years. Both may be needed based on employer plans and finances.</p>
+            </details>
+            <details>
+                <summary>How much disability insurance coverage should I have to adequately protect my income?</summary>
+                <p>Target 60-80% of income to maintain lifestyle while encouraging work return.</p>
+            </details>
+            <details>
+                <summary>Is the disability insurance provided by my employer sufficient, or should I look into additional personal coverage?</summary>
+                <p>Employer plans may have limits (e.g., waiting periods). Personal coverage adds flexibility and portability.</p>
+            </details>
+            <details>
+                <summary>Can I get disability insurance if I work in a high-risk profession, and how will it affect my premiums?</summary>
+                <p>Yes, but premiums rise with risk. Some policies exclude job-related injuries, so review terms.</p>
+            </details>
+        </div>
+        
+        <div class="insurance-section" id="travel">
+            <h2><span class="section-icon"><i class="fas fa-plane"></i></span>Travel Insurance</h2>
+            <details>
+                <summary>What does travel insurance typically cover, and why is it necessary even if I have OHIP coverage?</summary>
+                <p>It covers trip cancellations, medical emergencies, and lost luggage while traveling. OHIP's limited out-of-province coverage makes it essential for costs like evacuation.</p>
+            </details>
+            <details>
+                <summary>How do I select the most appropriate travel insurance plan for my specific trip and needs?</summary>
+                <p>Evaluate destination, trip length, activities, and health conditions. Ensure coverage for medical, cancellations, and baggage. Compare providers like CAA.</p>
+            </details>
+            <details>
+                <summary>Are there mandatory travel insurance requirements for certain destinations, such as the United States or Europe?</summary>
+                <p>Some destinations (e.g., U.S. for visas) require health insurance proof. Verify requirements and policy compliance.</p>
+            </details>
+            <details>
+                <summary>What is trip cancellation insurance, and under what circumstances can I claim it?</summary>
+                <p>Reimburses non-refunded costs for covered reasons like illness. Check policy terms for eligibility.</p>
+            </details>
+            <details>
+                <summary>Can I still get travel insurance if I have pre-existing medical conditions, and what should I disclose?</summary>
+                <p>Yes, with policies covering pre-existing conditions at higher premiums. Disclose all conditions to avoid claim denials.</p>
+            </details>
+        </div>
+        
+        <div class="insurance-section" id="tfsa">
+            <h2><span class="section-icon"><i class="fas fa-piggy-bank"></i></span>TFSA Plans</h2>
+            <details>
+                <summary>Can I hold segregated funds in my TFSA, and what are the benefits of doing so?</summary>
+                <p>Yes, offering tax-free growth, creditor protection (75-100%), and a death benefit for beneficiaries.</p>
+            </details>
+            <details>
+                <summary>How does the death benefit feature of segregated funds work when held within a TFSA?</summary>
+                <p>Beneficiaries receive the fund's value directly, bypassing probate. TFSA growth is tax-free, up to their contribution room.</p>
+            </details>
+            <details>
+                <summary>Are there other insurance-related products or strategies that I can incorporate into my TFSA?</summary>
+                <p>Hold insurance GICs or save for premiums. These provide tax-free growth for insurance or health costs.</p>
+            </details>
+            <details>
+                <summary>What should I consider when including insurance-linked investments in my TFSA portfolio?</summary>
+                <p>Evaluate fees, risk, returns, and benefits like creditor protection. Ensure TFSA eligibility and goal alignment.</p>
+            </details>
+            <details>
+                <summary>How can I use my TFSA to build a fund that can help cover future insurance premiums or unexpected health care costs?</summary>
+                <p>Contribute regularly and invest in low-risk options like GICs. Tax-free growth supports premiums or health expenses.</p>
+            </details>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <i class="fas fa-search"></i>
+            <h3>No matching questions found</h3>
+            <p>Try different keywords or browse the categories above.</p>
+        </div>
+    </main>
+    
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <footer>
+        <p>For more information or to discuss your insurance needs, contact us today.</p>
+        <a href="https://harmonyplan.ca" class="main-site-link"><i class="fas fa-home"></i> Back to Main Site</a>
+        <p>&copy; 2025 <a href="https://harmonyplan.ca">Harmony Plan</a>. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const detailsElements = document.querySelectorAll('details');
+            const summaryElements = document.querySelectorAll('summary');
+            const sections = document.querySelectorAll('.insurance-section');
+            const noResults = document.getElementById('noResults');
+            const backToTop = document.getElementById('backToTop');
+            
+            // Advanced search functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                let matchFound = false;
+                let matchedSections = new Set();
+                
+                // Reset all highlights
+                document.querySelectorAll('.highlight').forEach(el => {
+                    el.outerHTML = el.innerHTML;
+                });
+                
+                // Close all details elements
+                detailsElements.forEach(detail => {
+                    detail.open = false;
+                });
+                
+                if (searchTerm === '') {
+                    // Show all sections and questions when search is empty
+                    sections.forEach(section => {
+                        section.style.display = 'block';
+                        const questions = section.querySelectorAll('details');
+                        questions.forEach(q => q.style.display = 'block');
+                    });
+                    noResults.style.display = 'none';
+                    return;
+                }
+                
+                detailsElements.forEach(function(detail) {
+                    const summaryText = detail.querySelector('summary').textContent.toLowerCase();
+                    const answerText = detail.querySelector('p').textContent.toLowerCase();
+                    const section = detail.closest('.insurance-section');
+                    const sectionId = section.id;
+                    
+                    if (summaryText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                        detail.style.display = 'block';
+                        matchFound = true;
+                        matchedSections.add(sectionId);
+                        
+                        // Highlight matching text in summary
+                        if (summaryText.includes(searchTerm)) {
+                            const summary = detail.querySelector('summary');
+                            const regex = new RegExp(searchTerm, 'gi');
+                            summary.innerHTML = summary.textContent.replace(
+                                regex, 
+                                match => `<span class="highlight">${match}</span>`
+                            );
+                        }
+                        
+                        // Highlight matching text in answer
+                        if (answerText.includes(searchTerm)) {
+                            const paragraph = detail.querySelector('p');
+                            const regex = new RegExp(searchTerm, 'gi');
+                            paragraph.innerHTML = paragraph.textContent.replace(
+                                regex, 
+                                match => `<span class="highlight">${match}</span>`
+                            );
+                            
+                            // Open details with matching answer text
+                            detail.open = true;
+                        }
+                    } else {
+                        detail.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide sections based on matched questions
+                sections.forEach(section => {
+                    if (matchedSections.has(section.id)) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide no results message
+                if (matchFound) {
+                    noResults.style.display = 'none';
+                } else {
+                    noResults.style.display
