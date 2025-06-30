@@ -1,102 +1,944 @@
-:root {
-    --primary-dark: #0b1a3d; /* Very dark blue/navy */
-    --primary-accent: #d32f2f; /* Strong red accent */
-    --background-dark: #121212; /* Dark background */
-    --text-light: #f5f5f5; /* Light text for contrast */
-    --shadow-strong: 0 8px 20px rgba(211, 47, 47, 0.6);
-}
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonyplan Insurance Services | FSRA Licensed Insurance Agent Ontario | Life, Health, Travel Insurance</title>
+    <meta name="description" content="Rekha - FSRA licensed insurance agent serving Ontario. Life insurance, health insurance, critical illness, disability, travel insurance & retirement planning. Free consultation.">
+    <meta name="keywords" content="Ontario insurance agent, FSRA licensed, life insurance Ontario, health insurance Toronto, disability insurance, critical illness coverage, travel insurance Canada">
+    <link rel="canonical" href="https://harmonyplan.ca">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary-blue: #0066cc;
+            --vibrant-blue: #0080ff;
+            --deep-blue: #003d7a;
+            --electric-blue: #1a73e8;
+            --accent-gold: #ff6b35;
+            --success-green: #00c851;
+            --text-dark: #1a202c;
+            --text-medium: #4a5568;
+            --text-light: #718096;
+            --background-light: #f7fafc;
+            --pure-white: #ffffff;
+            --border-subtle: rgba(226, 232, 240, 0.8);
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--vibrant-blue) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-gold) 0%, #ff8f65 100%);
+            --gradient-subtle: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
 
-body {
-    background: var(--background-dark);
-    color: var(--text-light);
-    font-weight: 500;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.header {
-    background: var(--primary-dark);
-    box-shadow: var(--shadow-strong);
-}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background-light);
+            overflow-x: hidden;
+        }
 
-.logo {
-    color: var(--primary-accent);
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
+        /* Animated Background Elements */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
 
-.nav-links a {
-    color: var(--text-light);
-    font-weight: 700;
-    text-transform: uppercase;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
+        .bg-decoration::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 120%;
+            background: var(--gradient-primary);
+            opacity: 0.03;
+            transform: rotate(-15deg);
+        }
 
-.nav-links a:hover {
-    color: var(--primary-accent);
-    transform: scale(1.1);
-}
+        .bg-decoration::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 30%;
+            height: 80%;
+            background: var(--gradient-accent);
+            opacity: 0.03;
+            transform: rotate(20deg);
+        }
 
-.cta-header {
-    background: var(--primary-accent);
-    color: var(--text-light);
-    font-weight: 700;
-    border-radius: 12px;
-    padding: 1rem 2.5rem;
-    box-shadow: var(--shadow-strong);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-soft);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
 
-.cta-header:hover {
-    box-shadow: 0 0 15px var(--primary-accent);
-    transform: translateY(-4px);
-}
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-medium);
+        }
 
-.hero {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, #2c2c2c 100%);
-    color: var(--text-light);
-    padding: 12rem 2rem 8rem;
-}
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.hero-text h1 {
-    font-size: 5rem;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
 
-.hero-text .highlight {
-    background: none;
-    color: var(--primary-accent);
-    -webkit-text-fill-color: var(--primary-accent);
-}
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            box-shadow: var(--shadow-soft);
+        }
 
-.service-card {
-    background: #1e1e1e;
-    border: 2px solid var(--primary-accent);
-    box-shadow: var(--shadow-strong);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
 
-.service-card:hover {
-    transform: translateY(-12px) scale(1.05);
-    box-shadow: 0 12px 30px var(--primary-accent);
-}
+        .nav-links a {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-.service-cta {
-    background: var(--primary-accent);
-    color: var(--text-light);
-    font-weight: 700;
-    border-radius: 12px;
-    padding: 1rem 2rem;
-    box-shadow: var(--shadow-strong);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
+        .nav-links a:hover {
+            color: var(--primary-blue);
+            transform: translateY(-1px);
+        }
 
-.service-cta:hover {
-    box-shadow: 0 0 20px var(--primary-accent);
-    transform: translateY(-5px);
-}
-.footer {
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .cta-header:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--pure-white);
+            padding: 10rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -20%;
+            width: 60%;
+            height: 100%;
+            background: var(--gradient-subtle);
+            transform: skewX(-15deg);
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero-text .highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-medium);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .hero-credentials {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .credential-badge {
+            background: var(--pure-white);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid var(--success-green);
+            color: var(--success-green);
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.25rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--primary-blue);
+            padding: 1.25rem 2.5rem;
+            border: 2px solid var(--primary-blue);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-card {
+            background: var(--pure-white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-large);
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .hero-avatar {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 2rem;
+            background: var(--pure-white);
+            position: relative;
+        }
+
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gradient-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title .highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-medium);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: var(--pure-white);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s ease;
+            border: 1px solid var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover .service-image::before {
+            opacity: 0.6;
+        }
+
+        .service-content {
+            padding: 3rem;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-large);
+            border-color: rgba(0, 102, 204, 0.2);
+        }
+
+        .service-icon {
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1.25rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .service-description {
+            color: var(--text-medium);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 2.5rem;
+        }
+
+        .service-features li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-medium);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .service-features li:last-child {
+            border-bottom: none;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .service-card:hover .service-features li {
+            color: var(--text-dark);
+        }
+
+        .service-cta {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .service-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 2rem;
+            background: var(--background-light);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 5rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .about-visual {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-visual::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .profile-card {
+            background: var(--pure-white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-large);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .about-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .credentials-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .credential-item {
+            background: var(--pure-white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .credential-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .credential-item strong {
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--pure-white);
+            margin: 2rem;
+            padding: 0;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-large);
+            transform: scale(0.9);
+            animation: modalSlideIn 0.3s ease forwards;
+            position: relative;
+        }
+
+        @keyframes modalSlideIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 3rem;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem;
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: var(--pure-white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Trust Indicators */
+        .trust-section {
+            background: var(--background-light);
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .trust-item {
+            background: var(--pure-white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .trust-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .trust-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .trust-item h4 {
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .trust-item p {
+            color: var(--text-medium);
+            line-height: 1.6;
+        }
+
+        /* Form States */
+        .form-success, .form-error {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .form-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .form-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 1rem;
+            }
+            
+            .modal-body {
+                padding: 2rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-up.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+      .footer {
   background: var(--primary-blue);
   color: var(--pure-white);
   padding: 4rem 2rem 2rem;
@@ -253,3 +1095,582 @@ body {
   line-height: 1.6;
 }
 
+
+      
+    </style>
+</head>
+<body>
+    <div class="bg-decoration"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="#" class="logo">
+                <div class="logo-icon">🛡️</div>
+                Harmonyplan Insurance
+            </a>
+            <ul class="nav-links">
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link" onclick="openContactModal()">Contact</a></li>
+            </ul>
+            <button class="cta-header" onclick="openContactModal()">Free Consultation</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Professional <span class="highlight">Insurance Solutions</span> for Ontario Families</h1>
+                <p class="hero-subtitle">FSRA-licensed insurance expertise providing comprehensive life, health, critical illness, disability, and travel insurance since 2022. Protecting families across Toronto, Mississauga, and all of Ontario.</p>
+                
+                <div class="hero-credentials">
+                    <div class="credential-badge">
+                        🏛️ FSRA Licensed
+                    </div>
+                    <div class="credential-badge">
+                        🍁 Ontario Specialist
+                    </div>
+                    <div class="credential-badge">
+                        ⭐ Since 2022
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <button class="cta-primary" onclick="openContactModal()">Get Free Quote</button>
+                    <button class="cta-secondary" onclick="scrollToServices()">Explore Services</button>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="hero-avatar">👩‍💼</div>
+                    <h3 style="color: var(--text-dark); margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">Rekha</h3>
+                    <p style="color: var(--text-medium); margin-bottom: 1rem;">FSRA Licensed Agent</p>
+                    <p style="color: var(--text-light); font-size: 0.95rem;">Serving Ontario with personalized insurance solutions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+  <section class="flow" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="highlight">How It Works</span>
+      </h2>
+      <p class="section-subtitle">
+        Simple steps to secure your future with a trusted Ontario insurance advisor.
+      </p>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-icon">1</div>
+        <h3>Request a Free Consultation</h3>
+        <p>Contact us for a no-obligation insurance consultation. We’ll discuss your needs and answer your questions about life, health, travel, or retirement insurance in Ontario.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">2</div>
+        <h3>Personalized Plan Review</h3>
+        <p>Receive expert advice and a customized insurance plan tailored for Canadian residents, ensuring you get the best coverage at the right price.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">3</div>
+        <h3>Apply & Get Covered</h3>
+        <p>We guide you through a simple, transparent application process. Enjoy peace of mind knowing your insurance needs are handled by a licensed Ontario agent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Services Section -->
+    <section id="services" class="services fade-in-up">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Comprehensive <span class="highlight">Insurance Coverage</span></h2>
+                <p class="section-subtitle">Personalized insurance solutions designed to protect Ontario residents and their families through every stage of life with competitive rates and expert guidance</p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Life Insurance -->
+                <div class="service-card" onclick="selectService('life', 'Comprehensive life insurance coverage to protect your family\'s financial future. From term to permanent life insurance, find the right policy for Ontario residents with competitive rates from leading Canadian insurers.')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="service-icon">👨‍👩‍👧‍👦</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>Life Insurance Ontario</h3>
+                        <p class="service-description">Comprehensive life insurance coverage to protect your family's financial future. From term to permanent life insurance, find the right policy for Ontario residents with competitive rates from leading Canadian insurers.</p>
+                        <ul class="service-features">
+                            <li>Term & Permanent Life Insurance Options</li>
+                            <li>Competitive Rates from Leading Canadian Insurers</li>
+                            <li>Family Income Protection Planning</li>
+                            <li>Estate Planning Integration</li>
+                            <li>Coverage up to $5 Million Available</li>
+                        </ul>
+                        <button class="service-cta" onclick="event.stopPropagation(); selectService('life', 'Comprehensive life insurance coverage to protect your family\'s financial future. From term to permanent life insurance, find the right policy for Ontario residents with competitive rates from leading Canadian insurers.')">Get Life Insurance Quote</button>
+                    </div>
+                </div>
+
+                <!-- Health Insurance -->
+                <div class="service-card" onclick="selectService('health', 'Extended health benefits to supplement OHIP coverage. Comprehensive health insurance for individuals, families, and groups across Ontario with prescription drug coverage and paramedical services.')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="service-icon">🏥</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>Health Insurance Coverage</h3>
+                        <p class="service-description">Extended health benefits to supplement OHIP coverage. Comprehensive health insurance for individuals, families, and groups across Ontario with prescription drug coverage and paramedical services.</p>
+                        <ul class="service-features">
+                            <li>Extended Health Benefits Beyond OHIP</li>
+                            <li>Prescription Drug Coverage</li>
+                            <li>Dental & Vision Care</li>
+                            <li>Paramedical Services Coverage</li>
+                            <li>Emergency Travel Health Insurance</li>
+                        </ul>
+                        <button class="service-cta" onclick="event.stopPropagation(); selectService('health', 'Extended health benefits to supplement OHIP coverage. Comprehensive health insurance for individuals, families, and groups across Ontario with prescription drug coverage and paramedical services.')">Learn About Health Coverage</button>
+                    </div>
+                </div>
+
+                <!-- Critical Illness -->
+                <div class="service-card" onclick="selectService('critical', 'Financial protection against major illnesses including cancer, heart attack, and stroke. Lump-sum benefits when you need them most with no restrictions on how funds are used.')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="service-icon">🛡️</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>Critical Illness Insurance</h3>
+                        <p class="service-description">Financial protection against major illnesses including cancer, heart attack, and stroke. Lump-sum benefits when you need them most with no restrictions on how funds are used.</p>
+                        <ul class="service-features">
+                            <li>Cancer, Heart Attack, Stroke Protection</li>
+                            <li>Lump-Sum Benefit Payments</li>
+                            <li>No Restrictions on Fund Usage</li>
+                            <li>Return of Premium Options</li>
+                            <li>Coverage for 25+ Critical Conditions</li>
+                        </ul>
+                        <button class="service-cta" onclick="event.stopPropagation(); selectService('critical', 'Financial protection against major illnesses including cancer, heart attack, and stroke. Lump-sum benefits when you need them most with no restrictions on how funds are used.')">Protect Against Critical Illness</button>
+                    </div>
+                </div>
+
+                <!-- Disability Insurance -->
+                <div class="service-card" onclick="selectService('disability', 'Income replacement insurance for professionals and self-employed individuals. Protect your ability to earn income if disability prevents you from working with own occupation coverage.')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="service-icon">💼</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>Disability Insurance Ontario</h3>
+                        <p class="service-description">Income replacement insurance for professionals and self-employed individuals. Protect your ability to earn income if disability prevents you from working with own occupation coverage.</p>
+                        <ul class="service-features">
+                            <li>Short & Long-Term Disability Coverage</li>
+                            <li>Own Occupation Protection</li>
+                            <li>Income Replacement up to 85%</li>
+                            <li>Professional Occupation Discounts</li>
+                            <li>Cost of Living Adjustments</li>
+                        </ul>
+                        <button class="service-cta" onclick="event.stopPropagation(); selectService('disability', 'Income replacement insurance for professionals and self-employed individuals. Protect your ability to earn income if disability prevents you from working with own occupation coverage.')">Secure Your Income</button>
+                    </div>
+                </div>
+
+                <!-- Travel Insurance -->
+                <div class="service-card" onclick="selectService('travel', 'Comprehensive travel protection for trips within Canada and internationally. Emergency medical coverage and trip protection for Ontario residents with 24/7 assistance.')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="service-icon">✈️</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>Travel Insurance Canada</h3>
+                        <p class="service-description">Comprehensive travel protection for trips within Canada and internationally. Emergency medical coverage and trip protection for Ontario residents with 24/7 assistance.</p>
+                        <ul class="service-features">
+                            <li>Emergency Medical Coverage Abroad</li>
+                            <li>Trip Cancellation & Interruption</li>
+                            <li>Baggage & Personal Effects Protection</li>
+                            <li>24/7 Emergency Travel Assistance</li>
+                            <li>Multi-Trip Annual Plans Available</li>
+                        </ul>
+                        <button class="service-cta" onclick="event.stopPropagation(); selectService('travel', 'Comprehensive travel protection for trips within Canada and internationally. Emergency medical coverage and trip protection for Ontario residents with 24/7 assistance.')">Plan Safe Travels</button>
+                    </div>
+                </div>
+
+                <!-- Retirement Planning -->
+                <div class="service-card" onclick="selectService('retirement', 'Tax-efficient savings and investment strategies for retirement. RRSP, TFSA optimization and retirement income planning for Ontario residents with professional portfolio management.')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                        <div class="service-icon">🏖️</div>
+                    </div>
+                    <div class="service-content">
+                        <h3>Retirement Planning Ontario</h3>
+                        <p class="service-description">Tax-efficient savings and investment strategies for retirement. RRSP, TFSA optimization and retirement income planning for Ontario residents with professional portfolio management.</p>
+                        <ul class="service-features">
+                            <li>RRSP & TFSA Maximization Strategies</li>
+                            <li>Investment Portfolio Management</li>
+                            <li>Retirement Income Planning</li>
+                            <li>Tax-Efficient Withdrawal Strategies</li>
+                            <li>Estate & Legacy Planning</li>
+                        </ul>
+                        <button class="service-cta" onclick="event.stopPropagation(); selectService('retirement', 'Tax-efficient savings and investment strategies for retirement. RRSP, TFSA optimization and retirement income planning for Ontario residents with professional portfolio management.')">Build Your Retirement</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about fade-in-up">
+        <div class="about-content">
+            <div class="about-visual">
+                <div class="profile-card">
+                    <div class="profile-image">👩‍💼</div>
+                    <h3 style="color: var(--text-dark); margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; font-size: 1.5rem;">Rekha</h3>
+                    <p style="color: var(--primary-blue); font-weight: 600;">FSRA Licensed Insurance Agent</p>
+                </div>
+            </div>
+            
+            <div class="about-text">
+                <h2>Your Trusted Insurance Partner in Ontario</h2>
+                <p>Since becoming FSRA-licensed in 2022, I've dedicated myself to providing Ontarians with comprehensive insurance coverage and retirement planning solutions. My approach combines deep industry knowledge with a genuine commitment to understanding each client's unique situation.</p>
+                
+                <p>Whether you're in Toronto, Mississauga, Scarborough, or anywhere in Ontario, I take pride in explaining complex insurance terms in simple language, ensuring you understand exactly what you're signing up for. My goal is not just to sell policies but to build long-term relationships based on trust and exceptional service.</p>
+                
+                <p>I work with multiple leading Canadian insurance providers to offer you a wide range of options and competitive rates specifically tailored to Ontario residents and their unique needs.</p>
+                
+                <div class="credentials-showcase">
+                    <div class="credential-item">
+                        <strong>FSRA Licensed</strong>
+                        <span>Ontario Insurance Regulation</span>
+                    </div>
+                    <div class="credential-item">
+                        <strong>Multi-Provider Access</strong>
+                        <span>Leading Canadian Insurers</span>
+                    </div>
+                    <div class="credential-item">
+                        <strong>Ongoing Support</strong>
+                        <span>Claims & Annual Reviews</span>
+                    </div>
+                    <div class="credential-item">
+                        <strong>Local Expertise</strong>
+                        <span>Ontario Insurance Landscape</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-section">
+        <div class="trust-grid">
+            <div class="trust-item">
+                <div class="trust-icon">🏛️</div>
+                <h4>FSRA Licensed & Regulated</h4>
+                <p>Regulated by Financial Services Regulatory Authority of Ontario for your protection</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🍁</div>
+                <h4>Canadian Insurance Partners</h4>
+                <p>Partnerships with leading Canadian insurance companies for competitive rates</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">🔒</div>
+                <h4>Privacy & Security Protected</h4>
+                <p>PIPEDA compliant handling of all personal and financial information</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">⭐</div>
+                <h4>Complete Service Support</h4>
+                <p>From application to claims - comprehensive ongoing service and support</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Get Your Free Insurance Consultation</h3>
+                <p>Contact me today for personalized insurance solutions and competitive quotes</p>
+                <button class="close-modal" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-success" id="formSuccess">
+                        Thank you! I'll contact you within 24 hours to discuss your insurance needs.
+                    </div>
+                    <div class="form-error" id="formError">
+                        There was an error submitting your form. Please try again or call directly.
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City/Location in Ontario</label>
+                        <input type="text" id="city" name="city" placeholder="e.g., Toronto, Mississauga, Hamilton">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="insuranceType">Primary Insurance Interest *</label>
+                        <select id="insuranceType" name="insuranceType" required>
+                            <option value="">Select Insurance Type</option>
+                            <option value="life">Life Insurance</option>
+                            <option value="health">Health Insurance</option>
+                            <option value="critical">Critical Illness Insurance</option>
+                            <option value="disability">Disability Insurance</option>
+                            <option value="travel">Travel Insurance</option>
+                            <option value="retirement">Retirement Planning</option>
+                            <option value="multiple">Multiple Options</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Tell me about your insurance needs</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Please describe your current situation, family size, coverage needs, or any specific questions you have..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactPreference">Preferred Contact Method</label>
+                        <select id="contactPreference" name="contactPreference">
+                            <option value="phone">Phone Call</option>
+                            <option value="email">Email</option>
+                            <option value="text">Text Message</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Schedule Free Consultation
+                    </button>
+                    
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 1rem; text-align: center;">
+                        PIPEDA Compliance: Your information will only be used to respond to your inquiry and will not be shared with third parties without your consent.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+<footer class="footer">
+  <div class="container footer-container">
+    <div class="footer-branding">
+      <a href="/" class="logo">
+        <div class="logo-icon">HP</div>
+        Harmonyplan Insurance
+      </a>
+      <p class="footer-description">
+        FSRA Licensed Insurance Agent serving Ontario. Life, Health, Travel Insurance & Retirement Planning.
+      </p>
+    </div>
+    <nav class="footer-nav">
+      <ul class="footer-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About Rekha</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
+      </ul>
+    </nav>
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+      <p>Email: <a href="mailto:info@harmonyplan.ca">plan@harmonyplan.ca</a></p>
+      <p>Phone: <a href="tel:+14165551234">(905) 330-1216</a></p>
+      <p>Serving Ontario, Canada</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Harmonyplan Insurance Services. All rights reserved.</p>
+  </div>
+</footer>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "harmonyplan-insurance.firebaseapp.com",
+            projectId: "harmonyplan-insurance",
+            storageBucket: "harmonyplan-insurance.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        if (typeof firebase.analytics === 'function') {
+            firebase.analytics();
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling
+        function scrollToServices() {
+            document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Modal functions
+        function openContactModal() {
+            document.getElementById('contactModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            if (typeof firebase.analytics === 'function') {
+                firebase.analytics().logEvent('contact_modal_opened');
+            }
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openQuoteModal(serviceType) {
+            document.getElementById('insuranceType').value = serviceType;
+            openContactModal();
+            
+            if (typeof firebase.analytics === 'function') {
+                firebase.analytics().logEvent('service_interest', {
+                    service_type: serviceType
+                });
+            }
+        }
+
+        function selectService(serviceType, description) {
+            // Set the insurance type
+            document.getElementById('insuranceType').value = serviceType;
+            
+            // Fill the message area with the service description
+            document.getElementById('message').value = `I'm interested in ${serviceType} insurance. ${description}`;
+            
+            // Open the contact modal
+            openContactModal();
+            
+            // Track the interaction
+            if (typeof firebase.analytics === 'function') {
+                firebase.analytics().logEvent('service_selected', {
+                    service_type: serviceType,
+                    description_filled: true
+                });
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    const targetId = href.substring(1);
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formSuccess = document.getElementById('formSuccess');
+            const formError = document.getElementById('formError');
+            
+            formSuccess.style.display = 'none';
+            formError.style.display = 'none';
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                city: document.getElementById('city').value,
+                insuranceType: document.getElementById('insuranceType').value,
+                message: document.getElementById('message').value,
+                contactPreference: document.getElementById('contactPreference').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                source: 'harmonyplan-website'
+            };
+            
+            try {
+                await db.collection('leads').add(formData);
+                formSuccess.style.display = 'block';
+                this.reset();
+                
+                if (typeof firebase.analytics === 'function') {
+                    firebase.analytics().logEvent('lead_generated', {
+                        insurance_type: formData.insuranceType,
+                        contact_preference: formData.contactPreference
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                formError.style.display = 'block';
+                
+                if (typeof firebase.analytics === 'function') {
+                    firebase.analytics().logEvent('form_error', {
+                        error_message: error.message
+                    });
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Schedule Free Consultation';
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Analytics
+        if (typeof firebase.analytics === 'function') {
+            firebase.analytics().logEvent('page_view', {
+                page_title: 'Harmonyplan Insurance Services',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>
