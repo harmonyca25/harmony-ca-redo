@@ -164,14 +164,41 @@
       vertical-align: top;
     }
     </style>
-
+<!-- clarity exposure funnel tracking form submission -->
    <script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "ra62fuda8g");
+
+  // Track funnel stage using correct form ID
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('#contactForm'); // ✅ Correct form ID from your HTML
+    const firstInput = form?.querySelector('input, textarea, select');
+
+    firstInput?.addEventListener('focus', function () {
+      clarity("set", "lead_step", "form_started");
+    });
+
+    form?.addEventListener('submit', function () {
+      clarity("set", "lead_step", "form_submitted");
+    });
+  });
+</script>
+
+
+<!--    <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "ra62fuda8g");
-</script>
+       clarity("set", "lead_step", "form_started");
+clarity("set", "lead_step", "form_submitted");
+
+
+</script> -->
      <!-- Inline modal functions to ensure they're available immediately -->
     <script>
         // Modal functionality
